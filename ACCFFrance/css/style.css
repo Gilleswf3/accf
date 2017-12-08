@@ -1,0 +1,54 @@
+body{
+	font-family: 'Old Standard TT', serif;
+	max-width: 100%;
+	max-height: auto;
+	overflow:scroll;
+	overflow-y: hidden;
+}
+header {
+	min-height: 90px;
+}
+
+.carousel .item {
+	min-height: 280px;
+}
+
+#menu ul li a {
+	color: black;
+	margin-right: 10px;
+	position: relative;
+	top: 40px;
+	font-size: 18px;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+#menu ul li a:hover{
+	color: red;
+}
+.carousel-inner img {
+	display: block;
+  	max-width: 100%;
+	/*margin-left: 3%;*/
+  	height: auto;
+  	margin: 0;
+}
+footer {
+	border-top: 1px solid black;
+	min-height: 90px;
+}
+
+footer h5 {
+	display: inline-block;
+	font-weight: bold;
+	float: right;
+}
+.item {
+	max-height: 800px;
+}
+.carousel-caption h2,p {
+	position: relative;
+	bottom: 250px;
+}
+
+
