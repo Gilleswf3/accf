@@ -1,6 +1,7 @@
 {
     "require": {
         "silex/silex": "~2.0",
-        "propel/propel": "~2.0@dev"
+        "propel/propel": "~2.0@dev",
+        "twig/twig": "^2.0"
     }
 }
