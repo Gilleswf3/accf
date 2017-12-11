@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<database name="default" defaultIdMethod="native" namespace="Propel" defaultPhpNamingMethod="underscore">
+  <table name="agencies" idMethod="native" phpName="Agencies" namespace="Propel">
+    <column name="id_agency" phpName="IdAgency" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="address" phpName="Address" type="VARCHAR" size="255" required="true"/>
+    <column name="zipcode" phpName="Zipcode" type="VARCHAR" size="255" required="true"/>
+    <column name="city" phpName="City" type="VARCHAR" size="255" required="true"/>
+    <column name="area" phpName="Area" type="CHAR" sqlType="enum('92','69')" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="customers" idMethod="native" phpName="Customers" namespace="Propel">
+    <column name="id_customer" phpName="IdCustomer" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="firstname" phpName="Firstname" type="VARCHAR" size="255" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="255" required="true"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+    <column name="job" phpName="Job" type="VARCHAR" size="255" required="true"/>
+    <column name="company" phpName="Company" type="VARCHAR" size="255" required="true"/>
+    <column name="billto_address" phpName="BilltoAddress" type="VARCHAR" size="255" required="true"/>
+    <column name="billto_zipcode" phpName="BilltoZipcode" type="VARCHAR" size="255" required="true"/>
+    <column name="billto_city" phpName="BilltoCity" type="VARCHAR" size="255" required="true"/>
+    <column name="shipto_address" phpName="ShiptoAddress" type="VARCHAR" size="255" required="true"/>
+    <column name="shipto_zipcode" phpName="ShiptoZipcode" type="VARCHAR" size="255" required="true"/>
+    <column name="shipto_city" phpName="ShiptoCity" type="VARCHAR" size="255" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="employees" idMethod="native" phpName="Employees" namespace="Propel">
+    <column name="id_employee" phpName="IdEmployee" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="firstname" phpName="Firstname" type="VARCHAR" size="255" required="true"/>
+    <column name="lastname" phpName="Lastname" type="VARCHAR" size="255" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="255" required="true"/>
+    <column name="job" phpName="Job" type="VARCHAR" size="255" required="true"/>
+    <column name="picture" phpName="Picture" type="VARCHAR" size="255" required="true"/>
+    <column name="role" phpName="Role" type="VARCHAR" size="255" required="true"/>
+    <column name="id_agency" phpName="IdAgency" type="INTEGER" size="8" required="true"/>
+    <foreign-key foreignTable="agencies" name="employees_ibfk_1">
+      <reference local="id_agency" foreign="id_agency"/>
+    </foreign-key>
+    <index name="agency">
+      <index-column name="id_agency"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="orders" idMethod="native" phpName="Orders" namespace="Propel">
+    <column name="id_order" phpName="IdOrder" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_customer" phpName="IdCustomer" type="INTEGER" size="8" required="true"/>
+    <column name="id_product" phpName="IdProduct" type="INTEGER" size="8"/>
+    <column name="id_service" phpName="IdService" type="INTEGER" size="8"/>
+    <column name="order_date" phpName="OrderDate" type="DATE" required="true"/>
+    <foreign-key foreignTable="customers" name="orders_ibfk_1">
+      <reference local="id_customer" foreign="id_customer"/>
+    </foreign-key>
+    <foreign-key foreignTable="products" name="orders_ibfk_2">
+      <reference local="id_product" foreign="id_product"/>
+    </foreign-key>
+    <foreign-key foreignTable="services" name="orders_ibfk_3">
+      <reference local="id_service" foreign="id_service"/>
+    </foreign-key>
+    <index name="id_customer">
+      <index-column name="id_customer"/>
+    </index>
+    <index name="id_product">
+      <index-column name="id_product"/>
+    </index>
+    <index name="id_service">
+      <index-column name="id_service"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="products" idMethod="native" phpName="Products" namespace="Propel">
+    <column name="id_product" phpName="IdProduct" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="manufacturer" phpName="Manufacturer" type="VARCHAR" size="255" required="true"/>
+    <column name="product_main_category" phpName="ProductMainCategory" type="CHAR" sqlType="enum('Dispositifs anti-intrusion','Dispositifs anti-incendie','Dispositifs de pr
