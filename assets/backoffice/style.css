@@ -46,9 +46,10 @@ header span{
 } */
 
 
-/* #affichage{
-    min-height: 1500px;
-} */
+#displayContainer{
+    margin: 0 auto;
+    min-height: 700px;
+}
 
 
 footer{

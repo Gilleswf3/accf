@@ -2,6 +2,8 @@
     "require": {
         "silex/silex": "~2.0",
         "propel/propel": "~2.0@dev",
-        "twig/twig": "^2.0"
+        "twig/twig": "^2.0",
+        "symfony/asset": "^4.0",
+        "symfony/twig-bridge": "^4.0"
     }
 }
