@@ -14,7 +14,7 @@ return [
             'schemaDir' => 'C:\xampp\htdocs\accf',
 
             // The directory where Propel should output generated object model classes.
-            'phpDir' => 'C:\xampp/htdocs\accf\Model',
+            'phpDir' => 'C:\xampp\htdocs\accf',
         ],
         /*
         'database' => [

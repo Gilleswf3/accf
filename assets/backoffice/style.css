@@ -30,7 +30,7 @@ header span{
     display: none;
 }
 
-.accordionContent button{
+.accordionContent a{
     text-align: left;
 }
 
@@ -51,6 +51,19 @@ header span{
     min-height: 700px;
 }
 
+#displayAccfArea{
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    
+    /*min-height: 600px;*/
+}
+
+
+.dashboardContent{
+    min-height: 100px;
+}
 
 footer{
     min-height: 85px;

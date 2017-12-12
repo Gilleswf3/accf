@@ -1,6 +1,7 @@
 <?php 
 
 require_once './vendor/autoload.php';
+require_once 'config_propel.php';
 
 $app = new Silex\Application();
 
