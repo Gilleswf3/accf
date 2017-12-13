@@ -4,14 +4,17 @@ namespace Model\Propel;
 
 use Model\Propel\Base\EmployeesQuery as BaseEmployeesQuery;
 
+/**
+ * Skeleton subclass for performing query and update operations on the 'employees' table.
+ *
+ *
+ *
+ * You should add additional methods to this class to meet the
+ * application requirements.  This class will only be generated as
+ * long as it does not already exist in the output directory.
+ *
+ */
 class EmployeesQuery extends BaseEmployeesQuery
 {
 
-$employee = new Employee();
-$author->setFirstName('Jane');
-$author->setLastName('Austen');
-$author->save();
-    
-    
-    
 }

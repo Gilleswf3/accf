@@ -20,6 +20,21 @@ CREATE TABLE `agencies`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- content
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `content`;
+
+CREATE TABLE `content`
+(
+    `id_content` INTEGER NOT NULL AUTO_INCREMENT,
+    `picture_content` VARCHAR(255) NOT NULL,
+    `content_title` VARCHAR(255) NOT NULL,
+    `content_text` TEXT NOT NULL,
+    PRIMARY KEY (`id_content`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- customers
 -- ---------------------------------------------------------------------
 
@@ -29,7 +44,7 @@ CREATE TABLE `customers`
 (
     `id_customer` INTEGER(8) NOT NULL AUTO_INCREMENT,
     `firstname` VARCHAR(255) NOT NULL,
-    `name` VARCHAR(255) NOT NULL,
+    `lastname` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `phone` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
@@ -143,7 +158,6 @@ CREATE TABLE `standards`
     `id_standard` INTEGER(8) NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `subtitle` VARCHAR(255) NOT NULL,
-    `picture` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
     `id_employee` INTEGER(8) NOT NULL,
     PRIMARY KEY (`id_standard`),

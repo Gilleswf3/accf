@@ -23,14 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildStandardsQuery orderByIdStandard($order = Criteria::ASC) Order by the id_standard column
  * @method     ChildStandardsQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildStandardsQuery orderBySubtitle($order = Criteria::ASC) Order by the subtitle column
- * @method     ChildStandardsQuery orderByPicture($order = Criteria::ASC) Order by the picture column
  * @method     ChildStandardsQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildStandardsQuery orderByIdEmployee($order = Criteria::ASC) Order by the id_employee column
  *
  * @method     ChildStandardsQuery groupByIdStandard() Group by the id_standard column
  * @method     ChildStandardsQuery groupByTitle() Group by the title column
  * @method     ChildStandardsQuery groupBySubtitle() Group by the subtitle column
- * @method     ChildStandardsQuery groupByPicture() Group by the picture column
  * @method     ChildStandardsQuery groupByDescription() Group by the description column
  * @method     ChildStandardsQuery groupByIdEmployee() Group by the id_employee column
  *
@@ -60,7 +58,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildStandards findOneByIdStandard(int $id_standard) Return the first ChildStandards filtered by the id_standard column
  * @method     ChildStandards findOneByTitle(string $title) Return the first ChildStandards filtered by the title column
  * @method     ChildStandards findOneBySubtitle(string $subtitle) Return the first ChildStandards filtered by the subtitle column
- * @method     ChildStandards findOneByPicture(string $picture) Return the first ChildStandards filtered by the picture column
  * @method     ChildStandards findOneByDescription(string $description) Return the first ChildStandards filtered by the description column
  * @method     ChildStandards findOneByIdEmployee(int $id_employee) Return the first ChildStandards filtered by the id_employee column *
 
@@ -70,7 +67,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildStandards requireOneByIdStandard(int $id_standard) Return the first ChildStandards filtered by the id_standard column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStandards requireOneByTitle(string $title) Return the first ChildStandards filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStandards requireOneBySubtitle(string $subtitle) Return the first ChildStandards filtered by the subtitle column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildStandards requireOneByPicture(string $picture) Return the first ChildStandards filtered by the picture column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStandards requireOneByDescription(string $description) Return the first ChildStandards filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildStandards requireOneByIdEmployee(int $id_employee) Return the first ChildStandards filtered by the id_employee column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
@@ -78,7 +74,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildStandards[]|ObjectCollection findByIdStandard(int $id_standard) Return ChildStandards objects filtered by the id_standard column
  * @method     ChildStandards[]|ObjectCollection findByTitle(string $title) Return ChildStandards objects filtered by the title column
  * @method     ChildStandards[]|ObjectCollection findBySubtitle(string $subtitle) Return ChildStandards objects filtered by the subtitle column
- * @method     ChildStandards[]|ObjectCollection findByPicture(string $picture) Return ChildStandards objects filtered by the picture column
  * @method     ChildStandards[]|ObjectCollection findByDescription(string $description) Return ChildStandards objects filtered by the description column
  * @method     ChildStandards[]|ObjectCollection findByIdEmployee(int $id_employee) Return ChildStandards objects filtered by the id_employee column
  * @method     ChildStandards[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -179,7 +174,7 @@ abstract class StandardsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_standard, title, subtitle, picture, description, id_employee FROM standards WHERE id_standard = :p0';
+        $sql = 'SELECT id_standard, title, subtitle, description, id_employee FROM standards WHERE id_standard = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -358,31 +353,6 @@ abstract class StandardsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(StandardsTableMap::COL_SUBTITLE, $subtitle, $comparison);
-    }
-
-    /**
-     * Filter the query on the picture column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPicture('fooValue');   // WHERE picture = 'fooValue'
-     * $query->filterByPicture('%fooValue%', Criteria::LIKE); // WHERE picture LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $picture The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildStandardsQuery The current query, for fluid interface
-     */
-    public function filterByPicture($picture = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($picture)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(StandardsTableMap::COL_PICTURE, $picture, $comparison);
     }
 
     /**

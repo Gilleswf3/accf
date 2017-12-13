@@ -4,10 +4,8 @@ namespace Model\Propel\Base;
 
 use \Exception;
 use \PDO;
-use Model\Propel\Employees as ChildEmployees;
-use Model\Propel\EmployeesQuery as ChildEmployeesQuery;
-use Model\Propel\StandardsQuery as ChildStandardsQuery;
-use Model\Propel\Map\StandardsTableMap;
+use Model\Propel\ContentQuery as ChildContentQuery;
+use Model\Propel\Map\ContentTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,18 +19,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'standards' table.
+ * Base class that represents a row from the 'content' table.
  *
  *
  *
  * @package    propel.generator.Model.Propel.Base
  */
-abstract class Standards implements ActiveRecordInterface
+abstract class Content implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Model\\Propel\\Map\\StandardsTableMap';
+    const TABLE_MAP = '\\Model\\Propel\\Map\\ContentTableMap';
 
 
     /**
@@ -62,44 +60,32 @@ abstract class Standards implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id_standard field.
+     * The value for the id_content field.
      *
      * @var        int
      */
-    protected $id_standard;
+    protected $id_content;
 
     /**
-     * The value for the title field.
+     * The value for the picture_content field.
      *
      * @var        string
      */
-    protected $title;
+    protected $picture_content;
 
     /**
-     * The value for the subtitle field.
+     * The value for the content_title field.
      *
      * @var        string
      */
-    protected $subtitle;
+    protected $content_title;
 
     /**
-     * The value for the description field.
+     * The value for the content_text field.
      *
      * @var        string
      */
-    protected $description;
-
-    /**
-     * The value for the id_employee field.
-     *
-     * @var        int
-     */
-    protected $id_employee;
-
-    /**
-     * @var        ChildEmployees
-     */
-    protected $aEmployees;
+    protected $content_text;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -110,7 +96,7 @@ abstract class Standards implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Model\Propel\Base\Standards object.
+     * Initializes internal state of Model\Propel\Base\Content object.
      */
     public function __construct()
     {
@@ -205,9 +191,9 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Standards</code> instance.  If
-     * <code>obj</code> is an instance of <code>Standards</code>, delegates to
-     * <code>equals(Standards)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Content</code> instance.  If
+     * <code>obj</code> is an instance of <code>Content</code>, delegates to
+     * <code>equals(Content)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -273,7 +259,7 @@ abstract class Standards implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Standards The current object, for fluid interface
+     * @return $this|Content The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -335,158 +321,124 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id_standard] column value.
+     * Get the [id_content] column value.
      *
      * @return int
      */
-    public function getIdStandard()
+    public function getIdContent()
     {
-        return $this->id_standard;
+        return $this->id_content;
     }
 
     /**
-     * Get the [title] column value.
+     * Get the [picture_content] column value.
      *
      * @return string
      */
-    public function getTitle()
+    public function getPictureContent()
     {
-        return $this->title;
+        return $this->picture_content;
     }
 
     /**
-     * Get the [subtitle] column value.
+     * Get the [content_title] column value.
      *
      * @return string
      */
-    public function getSubtitle()
+    public function getContentTitle()
     {
-        return $this->subtitle;
+        return $this->content_title;
     }
 
     /**
-     * Get the [description] column value.
+     * Get the [content_text] column value.
      *
      * @return string
      */
-    public function getDescription()
+    public function getContentText()
     {
-        return $this->description;
+        return $this->content_text;
     }
 
     /**
-     * Get the [id_employee] column value.
-     *
-     * @return int
-     */
-    public function getIdEmployee()
-    {
-        return $this->id_employee;
-    }
-
-    /**
-     * Set the value of [id_standard] column.
+     * Set the value of [id_content] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @return $this|\Model\Propel\Content The current object (for fluent API support)
      */
-    public function setIdStandard($v)
+    public function setIdContent($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_standard !== $v) {
-            $this->id_standard = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_ID_STANDARD] = true;
+        if ($this->id_content !== $v) {
+            $this->id_content = $v;
+            $this->modifiedColumns[ContentTableMap::COL_ID_CONTENT] = true;
         }
 
         return $this;
-    } // setIdStandard()
+    } // setIdContent()
 
     /**
-     * Set the value of [title] column.
+     * Set the value of [picture_content] column.
      *
      * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @return $this|\Model\Propel\Content The current object (for fluent API support)
      */
-    public function setTitle($v)
+    public function setPictureContent($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_TITLE] = true;
+        if ($this->picture_content !== $v) {
+            $this->picture_content = $v;
+            $this->modifiedColumns[ContentTableMap::COL_PICTURE_CONTENT] = true;
         }
 
         return $this;
-    } // setTitle()
+    } // setPictureContent()
 
     /**
-     * Set the value of [subtitle] column.
+     * Set the value of [content_title] column.
      *
      * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @return $this|\Model\Propel\Content The current object (for fluent API support)
      */
-    public function setSubtitle($v)
+    public function setContentTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->subtitle !== $v) {
-            $this->subtitle = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_SUBTITLE] = true;
+        if ($this->content_title !== $v) {
+            $this->content_title = $v;
+            $this->modifiedColumns[ContentTableMap::COL_CONTENT_TITLE] = true;
         }
 
         return $this;
-    } // setSubtitle()
+    } // setContentTitle()
 
     /**
-     * Set the value of [description] column.
+     * Set the value of [content_text] column.
      *
      * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @return $this|\Model\Propel\Content The current object (for fluent API support)
      */
-    public function setDescription($v)
+    public function setContentText($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_DESCRIPTION] = true;
+        if ($this->content_text !== $v) {
+            $this->content_text = $v;
+            $this->modifiedColumns[ContentTableMap::COL_CONTENT_TEXT] = true;
         }
 
         return $this;
-    } // setDescription()
-
-    /**
-     * Set the value of [id_employee] column.
-     *
-     * @param int $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
-     */
-    public function setIdEmployee($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->id_employee !== $v) {
-            $this->id_employee = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_ID_EMPLOYEE] = true;
-        }
-
-        if ($this->aEmployees !== null && $this->aEmployees->getIdEmployee() !== $v) {
-            $this->aEmployees = null;
-        }
-
-        return $this;
-    } // setIdEmployee()
+    } // setContentText()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -524,20 +476,17 @@ abstract class Standards implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StandardsTableMap::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_standard = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ContentTableMap::translateFieldName('IdContent', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_content = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StandardsTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->title = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ContentTableMap::translateFieldName('PictureContent', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->picture_content = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StandardsTableMap::translateFieldName('Subtitle', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->subtitle = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ContentTableMap::translateFieldName('ContentTitle', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->content_title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : StandardsTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : StandardsTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_employee = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ContentTableMap::translateFieldName('ContentText', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->content_text = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -546,10 +495,10 @@ abstract class Standards implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = StandardsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = ContentTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Standards'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Content'), 0, $e);
         }
     }
 
@@ -568,9 +517,6 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aEmployees !== null && $this->id_employee !== $this->aEmployees->getIdEmployee()) {
-            $this->aEmployees = null;
-        }
     } // ensureConsistency
 
     /**
@@ -594,13 +540,13 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(ContentTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildStandardsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildContentQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -610,7 +556,6 @@ abstract class Standards implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aEmployees = null;
         } // if (deep)
     }
 
@@ -620,8 +565,8 @@ abstract class Standards implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Standards::setDeleted()
-     * @see Standards::isDeleted()
+     * @see Content::setDeleted()
+     * @see Content::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -630,11 +575,11 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ContentTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildStandardsQuery::create()
+            $deleteQuery = ChildContentQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -669,7 +614,7 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ContentTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -688,7 +633,7 @@ abstract class Standards implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                StandardsTableMap::addInstanceToPool($this);
+                ContentTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -713,18 +658,6 @@ abstract class Standards implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
-
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aEmployees !== null) {
-                if ($this->aEmployees->isModified() || $this->aEmployees->isNew()) {
-                    $affectedRows += $this->aEmployees->save($con);
-                }
-                $this->setEmployees($this->aEmployees);
-            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -757,30 +690,27 @@ abstract class Standards implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[StandardsTableMap::COL_ID_STANDARD] = true;
-        if (null !== $this->id_standard) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . StandardsTableMap::COL_ID_STANDARD . ')');
+        $this->modifiedColumns[ContentTableMap::COL_ID_CONTENT] = true;
+        if (null !== $this->id_content) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ContentTableMap::COL_ID_CONTENT . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_STANDARD)) {
-            $modifiedColumns[':p' . $index++]  = 'id_standard';
+        if ($this->isColumnModified(ContentTableMap::COL_ID_CONTENT)) {
+            $modifiedColumns[':p' . $index++]  = 'id_content';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'title';
+        if ($this->isColumnModified(ContentTableMap::COL_PICTURE_CONTENT)) {
+            $modifiedColumns[':p' . $index++]  = 'picture_content';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_SUBTITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'subtitle';
+        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TITLE)) {
+            $modifiedColumns[':p' . $index++]  = 'content_title';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
-        }
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_EMPLOYEE)) {
-            $modifiedColumns[':p' . $index++]  = 'id_employee';
+        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TEXT)) {
+            $modifiedColumns[':p' . $index++]  = 'content_text';
         }
 
         $sql = sprintf(
-            'INSERT INTO standards (%s) VALUES (%s)',
+            'INSERT INTO content (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -789,20 +719,17 @@ abstract class Standards implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id_standard':
-                        $stmt->bindValue($identifier, $this->id_standard, PDO::PARAM_INT);
+                    case 'id_content':
+                        $stmt->bindValue($identifier, $this->id_content, PDO::PARAM_INT);
                         break;
-                    case 'title':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                    case 'picture_content':
+                        $stmt->bindValue($identifier, $this->picture_content, PDO::PARAM_STR);
                         break;
-                    case 'subtitle':
-                        $stmt->bindValue($identifier, $this->subtitle, PDO::PARAM_STR);
+                    case 'content_title':
+                        $stmt->bindValue($identifier, $this->content_title, PDO::PARAM_STR);
                         break;
-                    case 'description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case 'id_employee':
-                        $stmt->bindValue($identifier, $this->id_employee, PDO::PARAM_INT);
+                    case 'content_text':
+                        $stmt->bindValue($identifier, $this->content_text, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -817,7 +744,7 @@ abstract class Standards implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setIdStandard($pk);
+        $this->setIdContent($pk);
 
         $this->setNew(false);
     }
@@ -850,7 +777,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = StandardsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = ContentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -867,19 +794,16 @@ abstract class Standards implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getIdStandard();
+                return $this->getIdContent();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getPictureContent();
                 break;
             case 2:
-                return $this->getSubtitle();
+                return $this->getContentTitle();
                 break;
             case 3:
-                return $this->getDescription();
-                break;
-            case 4:
-                return $this->getIdEmployee();
+                return $this->getContentText();
                 break;
             default:
                 return null;
@@ -898,47 +822,28 @@ abstract class Standards implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
-        if (isset($alreadyDumpedObjects['Standards'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Content'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Standards'][$this->hashCode()] = true;
-        $keys = StandardsTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Content'][$this->hashCode()] = true;
+        $keys = ContentTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdStandard(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getSubtitle(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getIdEmployee(),
+            $keys[0] => $this->getIdContent(),
+            $keys[1] => $this->getPictureContent(),
+            $keys[2] => $this->getContentTitle(),
+            $keys[3] => $this->getContentText(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aEmployees) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'employees';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'employees';
-                        break;
-                    default:
-                        $key = 'Employees';
-                }
-
-                $result[$key] = $this->aEmployees->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -952,11 +857,11 @@ abstract class Standards implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Model\Propel\Standards
+     * @return $this|\Model\Propel\Content
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = StandardsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = ContentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -967,25 +872,22 @@ abstract class Standards implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Model\Propel\Standards
+     * @return $this|\Model\Propel\Content
      */
     public function setByPosition($pos, $value)
     {
         switch ($pos) {
             case 0:
-                $this->setIdStandard($value);
+                $this->setIdContent($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setPictureContent($value);
                 break;
             case 2:
-                $this->setSubtitle($value);
+                $this->setContentTitle($value);
                 break;
             case 3:
-                $this->setDescription($value);
-                break;
-            case 4:
-                $this->setIdEmployee($value);
+                $this->setContentText($value);
                 break;
         } // switch()
 
@@ -1011,22 +913,19 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = StandardsTableMap::getFieldNames($keyType);
+        $keys = ContentTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setIdStandard($arr[$keys[0]]);
+            $this->setIdContent($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTitle($arr[$keys[1]]);
+            $this->setPictureContent($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setSubtitle($arr[$keys[2]]);
+            $this->setContentTitle($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDescription($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setIdEmployee($arr[$keys[4]]);
+            $this->setContentText($arr[$keys[3]]);
         }
     }
 
@@ -1047,7 +946,7 @@ abstract class Standards implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Model\Propel\Standards The current object, for fluid interface
+     * @return $this|\Model\Propel\Content The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1067,22 +966,19 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(StandardsTableMap::DATABASE_NAME);
+        $criteria = new Criteria(ContentTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_STANDARD)) {
-            $criteria->add(StandardsTableMap::COL_ID_STANDARD, $this->id_standard);
+        if ($this->isColumnModified(ContentTableMap::COL_ID_CONTENT)) {
+            $criteria->add(ContentTableMap::COL_ID_CONTENT, $this->id_content);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_TITLE)) {
-            $criteria->add(StandardsTableMap::COL_TITLE, $this->title);
+        if ($this->isColumnModified(ContentTableMap::COL_PICTURE_CONTENT)) {
+            $criteria->add(ContentTableMap::COL_PICTURE_CONTENT, $this->picture_content);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_SUBTITLE)) {
-            $criteria->add(StandardsTableMap::COL_SUBTITLE, $this->subtitle);
+        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TITLE)) {
+            $criteria->add(ContentTableMap::COL_CONTENT_TITLE, $this->content_title);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_DESCRIPTION)) {
-            $criteria->add(StandardsTableMap::COL_DESCRIPTION, $this->description);
-        }
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_EMPLOYEE)) {
-            $criteria->add(StandardsTableMap::COL_ID_EMPLOYEE, $this->id_employee);
+        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TEXT)) {
+            $criteria->add(ContentTableMap::COL_CONTENT_TEXT, $this->content_text);
         }
 
         return $criteria;
@@ -1100,8 +996,8 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildStandardsQuery::create();
-        $criteria->add(StandardsTableMap::COL_ID_STANDARD, $this->id_standard);
+        $criteria = ChildContentQuery::create();
+        $criteria->add(ContentTableMap::COL_ID_CONTENT, $this->id_content);
 
         return $criteria;
     }
@@ -1114,7 +1010,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getIdStandard();
+        $validPk = null !== $this->getIdContent();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1134,18 +1030,18 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getIdStandard();
+        return $this->getIdContent();
     }
 
     /**
-     * Generic method to set the primary key (id_standard column).
+     * Generic method to set the primary key (id_content column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdStandard($key);
+        $this->setIdContent($key);
     }
 
     /**
@@ -1154,7 +1050,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getIdStandard();
+        return null === $this->getIdContent();
     }
 
     /**
@@ -1163,20 +1059,19 @@ abstract class Standards implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Model\Propel\Standards (or compatible) type.
+     * @param      object $copyObj An object of \Model\Propel\Content (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setSubtitle($this->getSubtitle());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setIdEmployee($this->getIdEmployee());
+        $copyObj->setPictureContent($this->getPictureContent());
+        $copyObj->setContentTitle($this->getContentTitle());
+        $copyObj->setContentText($this->getContentText());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdStandard(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdContent(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1189,7 +1084,7 @@ abstract class Standards implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Model\Propel\Standards Clone of current object.
+     * @return \Model\Propel\Content Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1203,71 +1098,16 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildEmployees object.
-     *
-     * @param  ChildEmployees $v
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setEmployees(ChildEmployees $v = null)
-    {
-        if ($v === null) {
-            $this->setIdEmployee(NULL);
-        } else {
-            $this->setIdEmployee($v->getIdEmployee());
-        }
-
-        $this->aEmployees = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildEmployees object, it will not be re-added.
-        if ($v !== null) {
-            $v->addStandards($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildEmployees object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildEmployees The associated ChildEmployees object.
-     * @throws PropelException
-     */
-    public function getEmployees(ConnectionInterface $con = null)
-    {
-        if ($this->aEmployees === null && ($this->id_employee != 0)) {
-            $this->aEmployees = ChildEmployeesQuery::create()->findPk($this->id_employee, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aEmployees->addStandardss($this);
-             */
-        }
-
-        return $this->aEmployees;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aEmployees) {
-            $this->aEmployees->removeStandards($this);
-        }
-        $this->id_standard = null;
-        $this->title = null;
-        $this->subtitle = null;
-        $this->description = null;
-        $this->id_employee = null;
+        $this->id_content = null;
+        $this->picture_content = null;
+        $this->content_title = null;
+        $this->content_text = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1288,7 +1128,6 @@ abstract class Standards implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aEmployees = null;
     }
 
     /**
@@ -1298,7 +1137,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(StandardsTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(ContentTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

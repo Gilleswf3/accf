@@ -79,11 +79,11 @@ abstract class Customers implements ActiveRecordInterface
     protected $firstname;
 
     /**
-     * The value for the name field.
+     * The value for the lastname field.
      *
      * @var        string
      */
-    protected $name;
+    protected $lastname;
 
     /**
      * The value for the email field.
@@ -428,13 +428,13 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [lastname] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getLastname()
     {
-        return $this->name;
+        return $this->lastname;
     }
 
     /**
@@ -588,24 +588,24 @@ abstract class Customers implements ActiveRecordInterface
     } // setFirstname()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [lastname] column.
      *
      * @param string $v new value
      * @return $this|\Model\Propel\Customers The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setLastname($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[CustomersTableMap::COL_NAME] = true;
+        if ($this->lastname !== $v) {
+            $this->lastname = $v;
+            $this->modifiedColumns[CustomersTableMap::COL_LASTNAME] = true;
         }
 
         return $this;
-    } // setName()
+    } // setLastname()
 
     /**
      * Set the value of [email] column.
@@ -869,8 +869,8 @@ abstract class Customers implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CustomersTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->firstname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CustomersTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->name = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CustomersTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->lastname = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CustomersTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
             $this->email = (null !== $col) ? (string) $col : null;
@@ -1138,8 +1138,8 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_FIRSTNAME)) {
             $modifiedColumns[':p' . $index++]  = 'firstname';
         }
-        if ($this->isColumnModified(CustomersTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+        if ($this->isColumnModified(CustomersTableMap::COL_LASTNAME)) {
+            $modifiedColumns[':p' . $index++]  = 'lastname';
         }
         if ($this->isColumnModified(CustomersTableMap::COL_EMAIL)) {
             $modifiedColumns[':p' . $index++]  = 'email';
@@ -1191,8 +1191,8 @@ abstract class Customers implements ActiveRecordInterface
                     case 'firstname':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
-                    case 'name':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case 'lastname':
+                        $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
                         break;
                     case 'email':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
@@ -1296,7 +1296,7 @@ abstract class Customers implements ActiveRecordInterface
                 return $this->getFirstname();
                 break;
             case 2:
-                return $this->getName();
+                return $this->getLastname();
                 break;
             case 3:
                 return $this->getEmail();
@@ -1363,7 +1363,7 @@ abstract class Customers implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getIdCustomer(),
             $keys[1] => $this->getFirstname(),
-            $keys[2] => $this->getName(),
+            $keys[2] => $this->getLastname(),
             $keys[3] => $this->getEmail(),
             $keys[4] => $this->getPhone(),
             $keys[5] => $this->getPassword(),
@@ -1438,7 +1438,7 @@ abstract class Customers implements ActiveRecordInterface
                 $this->setFirstname($value);
                 break;
             case 2:
-                $this->setName($value);
+                $this->setLastname($value);
                 break;
             case 3:
                 $this->setEmail($value);
@@ -1506,7 +1506,7 @@ abstract class Customers implements ActiveRecordInterface
             $this->setFirstname($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setName($arr[$keys[2]]);
+            $this->setLastname($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setEmail($arr[$keys[3]]);
@@ -1588,8 +1588,8 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_FIRSTNAME)) {
             $criteria->add(CustomersTableMap::COL_FIRSTNAME, $this->firstname);
         }
-        if ($this->isColumnModified(CustomersTableMap::COL_NAME)) {
-            $criteria->add(CustomersTableMap::COL_NAME, $this->name);
+        if ($this->isColumnModified(CustomersTableMap::COL_LASTNAME)) {
+            $criteria->add(CustomersTableMap::COL_LASTNAME, $this->lastname);
         }
         if ($this->isColumnModified(CustomersTableMap::COL_EMAIL)) {
             $criteria->add(CustomersTableMap::COL_EMAIL, $this->email);
@@ -1711,7 +1711,7 @@ abstract class Customers implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setFirstname($this->getFirstname());
-        $copyObj->setName($this->getName());
+        $copyObj->setLastname($this->getLastname());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setPassword($this->getPassword());
@@ -2066,7 +2066,7 @@ abstract class Customers implements ActiveRecordInterface
     {
         $this->id_customer = null;
         $this->firstname = null;
-        $this->name = null;
+        $this->lastname = null;
         $this->email = null;
         $this->phone = null;
         $this->password = null;

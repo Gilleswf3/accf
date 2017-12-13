@@ -2,6 +2,16 @@
 
 
 {% block content %}
+    
+      {% for employees in employeess %}
        
+      <p>{{ employees.firstname }}</p>
+      <p>{{ employees.lastname }}</p>
+      <p>{{ employees.email }}</p>
+      <p>{{ employees.phone }}</p>
+      <p>{{ employees.job }}</p>
+      <img src="{{asset('images/'~employees.picture)}}"/>
+     
+    {% endfor %}
     
 {% endblock %}
