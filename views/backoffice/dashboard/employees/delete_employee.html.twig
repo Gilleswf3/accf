@@ -1,0 +1,60 @@
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+    <div class="w3-col l1 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+            <h2 class="w3-margin w3-teal">Supprimer un employé</h2>
+            
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Fonction</th>
+                <th>Photo</th>
+                <th>Niveau d'accès</th>
+                <th>Agence</th>
+                <th>Suppression</th>
+            </tr>
+
+            {% for employee in employees %}
+
+            <tr>
+                <td>{{ employee.firstname }}</td>
+                <td>{{ employee.lastname }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.phone }}</td>
+                <td>{{ employee.job }}</td>
+                <td>
+                    {% if employee.idEmployee == 1 %}
+                         <img src="{{asset('images/homme.png')}}" width="100px;" alt="avatar_homme">
+                    {% else %}
+                         <img src="{{asset('images/femme.png')}}" width="100px;" alt="avatar_femme">                        
+                    {% endif %}
+                </td>
+
+                <td>{{ employee.role }}</td>
+
+                {% if employee.idAgency == 1 %}
+                    <td>Rhône-Alpes</td>
+                {% else %}
+                    <td>Ile de France</td>
+                {% endif %}
+
+                <td>Supprimer</td>
+              
+            </tr>
+
+            {% endfor %}
+           
+        </table>
+            
+    </div>
+        
+{% endblock %}

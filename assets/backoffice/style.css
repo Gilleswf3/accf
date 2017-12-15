@@ -45,17 +45,24 @@ header span{
     content: "\2796";
 } */
 
+.MarginColumn{
+    visibility: hidden;
+}
 
 #displayContainer{
     margin: 0 auto;
     min-height: 700px;
 }
 
+#loginForm{
+   margin-top: 260px;
+}
+
 #displayAccfArea{
-    margin-top: 0px;
+/*    margin-top: 0px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0px;
+    margin-bottom: 0px;*/
     
     /*min-height: 600px;*/
 }

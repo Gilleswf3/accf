@@ -30,8 +30,8 @@
             </div>
 
             <div class="w3-center w3-col m6 l2">
-                <a href="">
-                    <span class="w3-right w3-text-white">Déconnexion</span>
+                <a href="{{ path('login') }}">
+                    <span class="w3-right w3-text-white">Connexion</span>
                 </a>
             </div>
         </header>
@@ -39,6 +39,20 @@
         <main class="w3-row">
             <nav class="w3-col s6 m1 l2 w3-grey" id="leftmenu">
 
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des agences</button>
+                    <div class="accordionContent">
+                        <a href="{{ path('ajouter_agence') }}" class="w3-block w3-button w3-small">Ajouter une agence</a>
+                        <a href="{{ path('afficher_agence') }}" class="w3-block w3-button w3-small">Afficher les agences</a>
+                        <a href="{{ path('modifier_agence') }}" class="w3-block w3-button w3-small">Modifier une agence</a>
+                        <a href="{{ path('supprimer_agence') }}" class="w3-block w3-button w3-small">Supprimer une agence</a>
+                    </div>
+
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-hover-silver w3-hover-text-black w3-text-white accordion">Gestion des clients</button>
+                <div class="accordionContent">
+                    <a href="{{ path('afficher_client') }}" class="w3-block w3-button w3-small">Afficher les détails d'un client</a>
+                    <a href="{{ path('afficher_clients') }}" class="w3-block w3-button w3-small">Afficher tous les clients</a>
+                </div>
+                  
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-hover-silver w3-hover-text-black w3-text-white accordion">Gestion des commandes</button>
                 <div class="accordionContent">
                     <a href="{{ path('afficher_commande') }}" class="w3-block w3-button w3-small">Afficher les détails d'une commande</a>
@@ -48,37 +62,37 @@
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des employés</button>
                     <div class="accordionContent">
                         <a href="{{ path('ajouter_employe') }}" class="w3-block w3-button w3-small">Ajouter un employé</a>
-                        <a href="{{ path('afficher_employe') }}" class="w3-block w3-button w3-small">Afficher les détails d'un employé</a>
-                        <a href="{{ path('mettre_a_jour_employe') }}" class="w3-block w3-button w3-small">Mettre à jour un employé</a>
+                        <a href="{{ path('afficher_employe') }}" class="w3-block w3-button w3-small">Afficher les employés</a>
+                        <a href="{{ path('mettre_a_jour_employe') }}" class="w3-block w3-button w3-small">Modifier un employé</a>
                         <a href="{{ path('supprimer_employe') }}" class="w3-block w3-button w3-small">Supprimer un employé</a>
-                    </div>
-
-                <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des publications</button>
-                    <div class="accordionContent">
-                        <button class="w3-block w3-button w3-small">Ajouter un article</button>
-                        <button class="w3-block w3-button w3-small">Afficher les détails d'un article</button>
-                        <button class="w3-block w3-button w3-small">Mettre à jour un article</button>
-                        <button class="w3-block w3-button w3-small">Supprimer un article</button>
                     </div>
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des produits</button>
                 <div class="accordionContent">
-                    <button class="w3-block w3-button w3-small">Ajouter un produit</button>
-                    <button class="w3-block w3-button w3-small">Afficher les détails d'un produit</button>
-                    <button class="w3-block w3-button w3-small">Mettre à jour un produit</button>
-                    <button class="w3-block w3-button w3-small">Supprimer un produit</button>
+                     <a href="{{ path('create_products') }}" class="w3-block w3-button w3-small">Ajouter un produit</a>
+                    <a href="{{ path('read_products') }}" class="w3-block w3-button w3-small">Afficher un produit</a>
+                   <a href="{{ path('update_products') }}" class="w3-block w3-button w3-small">Modifier un produit</a>
+                   <a href="{{ path('delete_products') }}" class="w3-block w3-button w3-small">Supprimer un produit</a>
                 </div>
 
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des publications</button>
+                    <div class="accordionContent">
+                        <a href="{{ path('ajouter_publication') }}" class="w3-block w3-button w3-small">Ajouter une publication</a>
+                        <a href="{{ path('afficher_publication') }}" class="w3-block w3-button w3-small">Afficher une publication</a>
+                        <a href="{{ path('modifier_publication') }}" class="w3-block w3-button w3-small">Modifier une publication</a>
+                        <a href="{{ path('supprimer_publication') }}" class="w3-block w3-button w3-small">Supprimer une publication</a>
+                    </div>
+               
                 <button class="w3-block w3-border-bottom w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des services</button>
                 <div class="accordionContent">
-                    <button class="w3-block w3-button w3-small">Ajouter un service</button>
-                    <button class="w3-block w3-button w3-small">Afficher les détails d'un service</button>
-                    <button class="w3-block w3-button w3-small">Mettre à jour un service</button>
-                    <button class="w3-block w3-button w3-small">Supprimer un service</button>
+                    <a href="{{ path('create_services') }}" class="w3-block w3-button w3-small">Ajouter un service</a>
+                     <a href="{{ path('read_services') }}" class="w3-block w3-button w3-small">Afficher un service</a>
+                    <a href="{{ path('update_services') }}" class="w3-block w3-button w3-small">Modifier un service</a>
+                    <a href="{{ path('delete_services') }}" class="w3-block w3-button w3-small">Supprimer un service</a>
                 </div>
             </nav>
             
-            <div class="w3-border w3-border-red w3-center w3-col s6 m11 l10" id="displayContainer">
+            <div class="w3-center w3-col s6 m11 l10" id="displayContainer">
                 {% block title %}{% endblock %}
                 {% block content %}{% endblock %}
             </div>

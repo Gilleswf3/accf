@@ -1,0 +1,36 @@
+{# empty Twig template #}
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title  %}
+    <h1>Afficher un produit</h1>
+    {% endblock %}
+    
+    {% block content %}
+        
+        <table class="w3-border w3-border-green w3-col l11 w3-margin dashboardContent">
+            <caption> Produits </caption>
+            <thead>
+            <tr> 
+                <th> Nom du produit </th>
+                <th> Photo </th>
+                <th> Catégorie </th>
+                <th> Fonction du produit </th>
+                <th> Description du produit </th>
+                <th> Prix </th>
+                <th> Prix TTC </th>
+                <th> Société de fabriquation</th>
+            </tr>  
+            </thead>   
+            <tbody>
+                <tr>
+                    <td> Co-assist </td>
+                    <td> photo </td>
+                    <td> Dispositifs de prevention médicale </td>
+                    <td> Détection des chutes </td>
+                    <td> Une solution de détection automatique de chutes </td>
+                    <td> 60 </td>
+                    <td> 72 </td>
+                    <td> honeywell </td>
+                </tr>
+        </table>
+        {% endblock %}

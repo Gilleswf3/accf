@@ -5,7 +5,7 @@ use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Propel;
 
 // Load the configuration file 
-$configManager = new ConfigurationManager( 'propel.php' );
+$configManager = new ConfigurationManager ('propel.php' );
 
 // Set up the connection manager
 $manager = new ConnectionManagerSingle();

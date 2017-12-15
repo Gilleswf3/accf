@@ -1,0 +1,45 @@
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+    
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top w3-padding" id="displayAccfArea">
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Supprimer une agence</h2>
+        
+            <tr>
+                <th>Adresse</th>
+                <th>Code postal</th>
+                <th>Ville</th>
+                <th>Région</th>
+                <th>Suppression</th>
+            </tr>
+
+            {% for agency in agencies %}
+
+            <tr>
+                <td>{{ agency.address }}</td>
+                <td>{{ agency.zipcode }}</td>
+                <td>{{ agency.city }}</td>
+                
+                {% if agency.area == 69 %}
+                    <td>Rhone-Alpes</td>
+                {% else %}
+                    <td>Ile de France</td>
+                {% endif %}
+       
+                <td>Supprimer</td>
+            </tr>
+
+            {% endfor %}
+           
+        </table>
+                
+    </div>
+        
+{% endblock %}

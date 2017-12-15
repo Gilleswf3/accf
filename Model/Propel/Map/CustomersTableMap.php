@@ -84,7 +84,7 @@ class CustomersTableMap extends TableMap
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'customers.name';
+    const COL_NAME = 'customers.lastname';
 
     /**
      * the column name for the email field
