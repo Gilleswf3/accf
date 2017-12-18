@@ -11,12 +11,38 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
 
 
 //ROUTE DU DASHBOARD LOGIN
+
 $backofficeGroup->match('/login', function(Request $request) use ($app) {
-    $authorizedUsers = \Model\Propel\EmployeesQuery::create()->find();
-    return $app['twig']->render('backoffice/login.html.twig', array(
-                'authorizedUsers' => $authorizedUsers
-    ));
+
+    $email = $request->request->get('_email');
+    $role = $request->request->get('_role');
+    
+    var_dump($email);
+    var_dump($role);
+
+    $employe1 = Model\Propel\Base\EmployeesQuery::create()->findOneByEmail($email);
+    $employe2 = Model\Propel\Base\EmployeesQuery::create()->findOneByRole($role);
+    
+//    var_dump($employe);
+
+    if(!empty($employe1) && !empty($employe2)) {
+//        var_dump($employe);
+        return $app->redirect($app["url_generator"]->generate("dashboard"));
+    }
+    else{
+        return $app['twig']->render('backoffice/login.html.twig');
+    }
+    
+//    return $app['twig']->render('backoffice/login.html.twig', array(
+//    ));
 })->bind('login');
+
+////$backofficeGroup->match('/login', function(Request $request) use ($app) {
+//    $authorizedUsers = \Model\Propel\EmployeesQuery::create()->find();
+//    return $app['twig']->render('backoffice/login.html.twig', array(
+//                'authorizedUsers' => $authorizedUsers
+//    ));
+//})->bind('login');
 
 
 //ROUTE DE LA PAGE EDITION AGENCE
