@@ -20,8 +20,6 @@
                 <th>Suppression</th>
             </tr>
 
-            {% for agency in agencies %}
-
             <tr>
                 <td>{{ agency.address }}</td>
                 <td>{{ agency.zipcode }}</td>
@@ -32,11 +30,13 @@
                 {% else %}
                     <td>Ile de France</td>
                 {% endif %}
-       
-                <td><button>Supprimer</button></td>
-            </tr>
 
-            {% endfor %}
+                <td>
+                    <a href="{{ path('supprimer_agence', { id: agency.idAgency }) }}">Supprimer</a>
+                </td>
+
+{#                <td><button>Supprimer</button></td>#}
+            </tr>
            
         </table>
                 

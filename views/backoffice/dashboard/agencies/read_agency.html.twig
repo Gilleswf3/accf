@@ -14,15 +14,19 @@
             <h2 class="w3-margin w3-teal">Afficher les agences</h2>
             
             <tr>
+                <th>Numéro</th>
                 <th>Adresse</th>
                 <th>Code postal</th>
                 <th>Ville</th>
                 <th>Région</th>
+                <th>Modification</th>
+                <th>Suppression</th>
             </tr>
 
             {% for agency in agencies %}
 
             <tr>
+                <td>{{ agency.idAgency }}</td>
                 <td>{{ agency.address }}</td>
                 <td>{{ agency.zipcode }}</td>
                 <td>{{ agency.city }}</td>
@@ -33,6 +37,14 @@
                     <td>Ile de France</td>
                 {% endif %}
 
+                <td>
+                    <a href="{{ path('editer_agence', { id: agency.idAgency }) }}">Modifier</a>
+                </td>
+               
+                <td>
+                    <a href="{{ path('supprimer_agence', { id: agency.idAgency }) }}">Supprimer</a>
+                </td>
+               
             </tr>
 
             {% endfor %}

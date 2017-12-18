@@ -1,0 +1,64 @@
+{#{% extends "backoffice/layout.html.twig" %}
+
+{#{% block title 'Tableau de bord' %}#}
+{#
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+    <div class="w3-col l3">Marge</div>
+
+    <div class="w3-border w3-border-blue w3-card w3-col l6 w3-margin-top" id="displayAccfArea">
+        <form class="w3-container" id="servicesForm">
+
+            <h2 class="w3-teal">Ajouter un service</h2>
+
+            <label>Nom</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Description</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Prix HT </label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Prix TVA </label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            
+
+            
+
+            <button class="w3-button w3-grey w3-margin">Ajouter</button>
+              
+        </form>
+    </div>
+        
+{% endblock %}
+#}
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top" id="displayAccfArea">
+        <form class="w3-container" id="servicesForm" method="post" action="{{ path('editer_services' , { id : service.idService }) }}">
+            
+            <h2 class="w3-teal">Ajouter ou modifier un service</h2>
+
+            <label>Titre</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_title" value="{{ service.title }}">
+            <label>Description</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_desciption" value="{{ service.description }}">
+            <label>Prix HT</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_priceVatExcluded" value="{{  service.priceVatExcluded }}">
+            <label>Prix TVA</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_priceVatIncluded" value="{{  service.priceVatIncluded }}">
+             
+            
+            <button class="w3-button w3-grey w3-margin">Ajouter ou modifier</button>
+              
+        </form>
+    </div>
+        
+{% endblock %}

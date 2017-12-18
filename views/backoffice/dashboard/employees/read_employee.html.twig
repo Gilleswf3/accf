@@ -12,6 +12,7 @@
             <h2 class="w3-margin w3-teal">Afficher les employés</h2>
             
             <tr>
+                <th>Numéro</th>
                 <th>Prénom</th>
                 <th>Nom</th>
                 <th>Email</th>
@@ -20,11 +21,16 @@
                 <th>Photo</th>
                 <th>Niveau d'accès</th>
                 <th>Agence</th>
+                <th>Suppression</th>
             </tr>
 
             {% for employee in employees %}
 
             <tr>
+                <td>
+                    <a href="{{ path('editer_employe', { id: employee.idEmployee }) }}">{{ employee.idEmployee }}</a>
+{#                    {{ employee.idEmployee }}#}
+                </td>
                 <td>{{ employee.firstname }}</td>
                 <td>{{ employee.lastname }}</td>
                 <td>{{ employee.email }}</td>
@@ -44,7 +50,12 @@
                 {% else %}
                     <td>Ile de France</td>
                 {% endif %}
-                               
+
+                <td>
+                    <a href="{{ path('supprimer_employe', { id: employee.idEmployee }) }}">Supprimer</a>
+                </td>
+
+                
             </tr>
 
             {% endfor %}

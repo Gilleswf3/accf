@@ -1,36 +1,64 @@
-{# empty Twig template #}
 {% extends "backoffice/layout.html.twig" %}
 
-{% block title  %}
-    <h1>Afficher un produit</h1>
-    {% endblock %}
     
-    {% block content %}
+{% block content %}
+
+<div class="w3-col l1 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+        <table class="w3-centered w3-col l12 w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Afficher les produits</h2>
         
-        <table class="w3-border w3-border-green w3-col l11 w3-margin dashboardContent">
-            <caption> Produits </caption>
-            <thead>
-            <tr> 
-                <th> Nom du produit </th>
-                <th> Photo </th>
-                <th> Catégorie </th>
-                <th> Fonction du produit </th>
-                <th> Description du produit </th>
-                <th> Prix </th>
-                <th> Prix TTC </th>
-                <th> Société de fabriquation</th>
-            </tr>  
-            </thead>   
-            <tbody>
-                <tr>
-                    <td> Co-assist </td>
-                    <td> photo </td>
-                    <td> Dispositifs de prevention médicale </td>
-                    <td> Détection des chutes </td>
-                    <td> Une solution de détection automatique de chutes </td>
-                    <td> 60 </td>
-                    <td> 72 </td>
-                    <td> honeywell </td>
-                </tr>
+            <tr>
+                <th>id </th>
+                <th>Titre</th>
+                <th>Fabricant</th>
+                {#<th>Catégorie</th>#}
+                <th>Sous catégorie</th>             
+                <th>Description</th>
+                <th>Photos</th>
+                <th>Prix HT</th>
+                <th>Prix TTC</th>
+                <th> Suppression </th>
+                <th> Modification </th>
+            </tr>
+
+            {% for product in products %}
+                               
+            <tr>
+                              
+                <td><p>plus d'infos</p>
+                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('read_selected_product', { id: product.idProduct }) }}" role="button" > {{ product.idProduct }}</a>
+                </td> 
+            
+                   <td>{{ product.title}}</td>
+          
+                <td>{{ product.manufacturer }}</td>
+                {#<td>{{ product.productMainCategory }}</td>#}
+                <td>{{ product.productSubCategory }}</td>
+                
+                <td>{{ product.description|truncate(40, true, "...")}}</td>
+                
+                <td>
+              <img src="{{asset('images/produits/'~product.picture)}}" width="100" height="100"/>
+                </td>
+                <td>{{ product.priceVatExcluded }}</td>
+                <td>{{ product.priceVatIncluded }}</td>
+                <td>
+                    <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('suppress_products', { id: product.idProduct }) }}" role="button" >  Supprimer </a>
+                   
+                <td>
+                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('editer_produits', { id: product.idProduct }) }}" role="button" >  Modifier </a>
+                </td>
+              
+            </tr>
+
+            {% endfor %}
+           
         </table>
-        {% endblock %}
+          
+                
+    </div>
+    
+{% endblock %}

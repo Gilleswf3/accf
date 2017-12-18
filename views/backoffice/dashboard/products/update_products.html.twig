@@ -1,10 +1,36 @@
 {# empty Twig template #}
 {% extends "backoffice/layout.html.twig" %}
 
-{% block title  %}
-    <h1> Mettre à jour  un produit </h1>
-    {% endblock %}
+
     
     {% block content %}
-        <div class="w3-border w3-border-green w3-col l3 w3-margin dashboardContent">Mettre à jour un produit</div>
-        {% endblock %}
+     
+       
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-border w3-border-blue w3-card w3-col l6 w3-margin-top" id="displayAccfArea">
+        <form class="w3-container" id="employeeForm">
+
+            <h2 class="w3-teal">Modifier un produit</h2>
+
+            <label>Fabriquant</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Catégorie</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Sous catégorie</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Titre</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Description</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Prix HT</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Prix TVA</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+
+            <button class="w3-button w3-grey w3-margin">Modifier</button>
+              
+        </form>
+    </div>
+        
+{% endblock %}

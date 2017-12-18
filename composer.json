@@ -4,7 +4,8 @@
         "propel/propel": "~2.0@dev",
         "twig/twig": "^2.0",
         "symfony/asset": "^4.0",
-        "symfony/twig-bridge": "^4.0"
+        "symfony/twig-bridge": "^4.0",
+        "twig/extensions": "^1.5"
     },
     "autoload": {
         "psr-4": { "Model\\": "Model" }

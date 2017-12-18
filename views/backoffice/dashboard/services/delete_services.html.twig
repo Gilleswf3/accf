@@ -1,12 +1,47 @@
-{# empty Twig template #}
-{# empty Twig template #}
-{# empty Twig template #}
+
+          
+          
+          {# empty Twig template #}
 {% extends "backoffice/layout.html.twig" %}
 
-{% block title  %}
-    <h1>Supprimer un service</h1>
-    {% endblock %}
+
     
     {% block content %}
-        <div class="w3-border w3-border-green w3-col l3 w3-margin dashboardContent">Supprimer un service</div>
-          {% endblock %}
+       
+
+    
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top w3-padding" id="displayAccfArea">
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Supprimer un service</h2>
+        
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Prix HT</th>
+                <th>Prix TVA</th>
+
+                
+            </tr>
+
+          {% for service in services %}
+
+            <tr>
+                <td>{{ service.title }}</td>
+                <td>{{ service.description }}</td>
+                <td>{{ service.priceVatExcluded }}</td>
+                <td>{{ service.priceVatIncluded }}</td>
+       
+                 <td><button>Supprimer</button></td>
+            <button> <a href="delete_services?id='.$row['id'].'">Supprimer</a>';</button>
+            </tr>
+
+            {% endfor %}
+           
+        </table>
+                
+    </div>
+        
+{% endblock %}

@@ -1,12 +1,59 @@
-{# empty Twig template #}
+
 {# empty Twig template #}
 {% extends "backoffice/layout.html.twig" %}
 
-{% block title  %}
-    <h1>Afficher un service</h1>
-    {% endblock %}
+
     
-    {% block content %}
-        <div class="w3-border w3-border-green w3-col l3 w3-margin dashboardContent">Afficher un service</div>
-          {% endblock %}
-{# empty Twig template #}
+{% block content %}
+
+<div class="w3-col l1 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+        <table class="w3-centered w3-col l12 w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Afficher les services</h2>
+        
+            <tr>
+                
+                 <th>Titre</th>
+                <th>Description</th>
+                <th>Prix HT</th>
+                <th>Prix TVA</th>             
+                <th> Suppression </th>
+                <th> Modification </th>
+            </tr>
+
+            {% for service in services %}
+
+                
+                
+            <tr>
+               
+               
+               
+            
+                   <td>{{ service.title}}</td>
+          
+                <td>{{ service.description }}</td>
+                <td>{{ service.priceVatExcluded }}</td>
+                <td>{{ service.priceVatIncluded }}</td>
+                <td>
+                    <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('suppress_services', { id: service.idService }) }}" role="button" >  Supprimer </a>
+                   
+                </td>
+                <td>
+                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('editer_services', { id: service.idService }) }}" role="button" >  Modifier </a>
+                </td>
+               
+            </tr>
+
+            {% endfor %}
+           
+        </table>
+          
+   
+
+                
+    </div>
+    
+{% endblock %}

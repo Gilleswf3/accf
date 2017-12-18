@@ -1,0 +1,46 @@
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top" id="displayAccfArea">
+        <form class="w3-container" id="employeeForm" method="post" action="{{ path('editer_employe' , { id : employe.idEmployee }) }}">
+
+            <h2 class="w3-teal">Ajouter ou modifier un employé</h2>
+
+            <label>Prénom</label>
+            <input class="w3-border w3-input w3-light-grey" name="_firstname" type="text" value="{{ employe.firstname }}">
+            <label>Nom</label>
+            <input class="w3-border w3-input w3-light-grey" name="_lastname" type="text" value="{{ employe.lastname }}">
+            <label>Email</label>
+            <input class="w3-border w3-input w3-light-grey" name="_email" type="email" value="{{ employe.email }}">
+            <label>Téléphone</label>
+            <input class="w3-border w3-input w3-light-grey" name="_phone" type="text" value="{{ employe.phone }}">
+            <label>Fonction</label>
+            <input class="w3-border w3-input w3-light-grey" name="_job" type="text" value="{{ employe.job }}">
+            <label>Photo</label>
+            <input class="w3-border w3-input w3-light-grey" name="_picture" type="file" value="{{ employe.picture }}">
+            <label>Niveau d'accès</label>
+  
+            <select class="w3-border w3-select" name="_role">
+                <option value="">Administrateur</option>
+                <option value="">Membre</option>
+            </select>
+
+{#            <input class="w3-border w3-input w3-light-grey" type="text">#}
+            <label>Agence</label>
+
+            <select class="w3-border w3-select" name="_agency">
+                <option value="92">Ile-de-France</option>
+                <option value="69">Rhône-Alpes</option>
+            </select>
+
+            <button class="w3-button w3-grey w3-margin">Ajouter ou Modifier</button>
+              
+        </form>
+    </div>
+        
+{% endblock %}

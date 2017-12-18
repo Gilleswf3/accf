@@ -9,7 +9,7 @@
     <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
 
         <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
-            <h2 class="w3-margin w3-teal">Afficher toutes vos commandes</h2>
+            <h2 class="w3-margin w3-teal">Afficher toutes les commandes</h2>
             
             <tr>
                 <th>Numéro de commande</th>
@@ -17,7 +17,6 @@
                 <th>Référence produit</th>
                 <th>Référence service</th>
                 <th>Date de commande</th>
-                <th>Suppression</th>
             </tr>
 
             {% for order in orders %}
@@ -27,10 +26,11 @@
                 <td>{{ order.idCustomer }}</td>
                 <td>{{ order.idProduct }}</td>
                 <td>{{ order.idService }}</td>
-                <td>Date</td>
+                <td>{{ order.orderDate | date('d/m/Y') }}</td>
 {#                <td>{{ order.orderDate }}</td>#}
-                <td><a href="{{ path('afficher_commandes') }}">Supprimer</a></td>
             </tr>
+            
+            <input type="datetime" name="date"/>
 
             {% endfor %}
            

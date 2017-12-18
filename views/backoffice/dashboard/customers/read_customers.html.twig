@@ -6,17 +6,12 @@
 {% block content %}
     <div class="w3-col l1 MarginColumn">Marge</div>
 
-    <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
+    <div class="w3-card w3-col l11 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
 
         <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
             <h2 class="w3-margin w3-teal">Afficher les clients</h2>
             
             <tr>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Fonction</th>
                 <th>Société</th>
                 <th>Adresse de facturation</th>
                 <th>Code Postal</th>
@@ -29,12 +24,10 @@
             {% for customer in customers %}
 
             <tr>
-                <td>{{ customer.firstname }}</td>
-                <td>{{ customer.lastname }}</td>
-                <td>{{ customer.email }}</td>
-                <td>{{ customer.phone }}</td>
-                <td>{{ customer.job }}</td>
-                <td>{{ customer.company }}</td>
+                <td>
+                    <a href="{{ path('afficher_client', { company: customer.company }) }}">{{ customer.company }}</a>
+                </td>
+{#                <td>{{ customer.company }}</td>#}
                 <td>{{ customer.billtoAddress }}</td>
                 <td>{{ customer.billtoZipcode }}</td>
                 <td>{{ customer.billtoCity }}</td>
