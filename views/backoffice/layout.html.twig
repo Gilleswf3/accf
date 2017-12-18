@@ -16,14 +16,14 @@
 
     <body>
         <header class="w3-container w3-grey w3-row">
-            <div class="w3-col s12 m6 l2">
+            <div class="w3-col s12 m6 l2" id="headerLeft">
                 <a href="{{ path('dashboard') }}">
                     <img class="w3-padding-16" src="{{ asset('backoffice/logo_accf.png') }}">                    
 {#                    <img class="w3-padding-16" src="/var/www/html/accf/backoffice/Assets/logo_accf.png">#}
                 </a>
             </div>
 
-            <div class="w3-center w3-col l8">
+            <div class="w3-center w3-col l8" id="headerCenter">
                 <a href="{{ path('dashboard') }}">
                     <span class="w3-xlarge w3-text-white">Bienvenue sur votre interface d'administration ACCF</span>
                 </a>
@@ -37,7 +37,7 @@
         </header>
 
         <main class="w3-row">
-            <nav class="w3-col s6 m1 l2 w3-grey" id="leftmenu">
+            <nav class="w3-col s12 m3 l2 w3-grey" id="leftmenu">
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des agences</button>
                     <div class="accordionContent">
@@ -92,7 +92,7 @@
                 </div>
             </nav>
             
-            <div class="w3-center w3-col s6 m11 l10" id="displayContainer">
+            <div class="w3-center w3-col s12 m9 l9" id="displayContainer">
                 {% block title %}{% endblock %}
                 {% block content %}{% endblock %}
             </div>

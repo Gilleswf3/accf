@@ -22,7 +22,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCustomersQuery orderByIdCustomer($order = Criteria::ASC) Order by the id_customer column
  * @method     ChildCustomersQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
- * @method     ChildCustomersQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     ChildCustomersQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
  * @method     ChildCustomersQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildCustomersQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method     ChildCustomersQuery orderByPassword($order = Criteria::ASC) Order by the password column
@@ -37,7 +37,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCustomersQuery groupByIdCustomer() Group by the id_customer column
  * @method     ChildCustomersQuery groupByFirstname() Group by the firstname column
- * @method     ChildCustomersQuery groupByName() Group by the name column
+ * @method     ChildCustomersQuery groupByLastname() Group by the lastname column
  * @method     ChildCustomersQuery groupByEmail() Group by the email column
  * @method     ChildCustomersQuery groupByPhone() Group by the phone column
  * @method     ChildCustomersQuery groupByPassword() Group by the password column
@@ -75,7 +75,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCustomers findOneByIdCustomer(int $id_customer) Return the first ChildCustomers filtered by the id_customer column
  * @method     ChildCustomers findOneByFirstname(string $firstname) Return the first ChildCustomers filtered by the firstname column
- * @method     ChildCustomers findOneByName(string $name) Return the first ChildCustomers filtered by the name column
+ * @method     ChildCustomers findOneByLastname(string $lastname) Return the first ChildCustomers filtered by the lastname column
  * @method     ChildCustomers findOneByEmail(string $email) Return the first ChildCustomers filtered by the email column
  * @method     ChildCustomers findOneByPhone(string $phone) Return the first ChildCustomers filtered by the phone column
  * @method     ChildCustomers findOneByPassword(string $password) Return the first ChildCustomers filtered by the password column
@@ -93,7 +93,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCustomers requireOneByIdCustomer(int $id_customer) Return the first ChildCustomers filtered by the id_customer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByFirstname(string $firstname) Return the first ChildCustomers filtered by the firstname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildCustomers requireOneByName(string $name) Return the first ChildCustomers filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCustomers requireOneByLastname(string $lastname) Return the first ChildCustomers filtered by the lastname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByEmail(string $email) Return the first ChildCustomers filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByPhone(string $phone) Return the first ChildCustomers filtered by the phone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByPassword(string $password) Return the first ChildCustomers filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -109,7 +109,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomers[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCustomers objects based on current ModelCriteria
  * @method     ChildCustomers[]|ObjectCollection findByIdCustomer(int $id_customer) Return ChildCustomers objects filtered by the id_customer column
  * @method     ChildCustomers[]|ObjectCollection findByFirstname(string $firstname) Return ChildCustomers objects filtered by the firstname column
- * @method     ChildCustomers[]|ObjectCollection findByName(string $name) Return ChildCustomers objects filtered by the name column
+ * @method     ChildCustomers[]|ObjectCollection findByLastname(string $lastname) Return ChildCustomers objects filtered by the lastname column
  * @method     ChildCustomers[]|ObjectCollection findByEmail(string $email) Return ChildCustomers objects filtered by the email column
  * @method     ChildCustomers[]|ObjectCollection findByPhone(string $phone) Return ChildCustomers objects filtered by the phone column
  * @method     ChildCustomers[]|ObjectCollection findByPassword(string $password) Return ChildCustomers objects filtered by the password column
@@ -219,7 +219,7 @@ abstract class CustomersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_customer, firstname, name, email, phone, password, job, company, billto_address, billto_zipcode, billto_city, shipto_address, shipto_zipcode, shipto_city FROM customers WHERE id_customer = :p0';
+        $sql = 'SELECT id_customer, firstname, lastname, email, phone, password, job, company, billto_address, billto_zipcode, billto_city, shipto_address, shipto_zipcode, shipto_city FROM customers WHERE id_customer = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -376,28 +376,28 @@ abstract class CustomersQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the name column
+     * Filter the query on the lastname column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
-     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE name LIKE '%fooValue%'
+     * $query->filterByLastname('fooValue');   // WHERE lastname = 'fooValue'
+     * $query->filterByLastname('%fooValue%', Criteria::LIKE); // WHERE lastname LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     string $lastname The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildCustomersQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByLastname($lastname = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($name)) {
+            if (is_array($lastname)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(CustomersTableMap::COL_NAME, $name, $comparison);
+        return $this->addUsingAlias(CustomersTableMap::COL_LASTNAME, $lastname, $comparison);
     }
 
     /**

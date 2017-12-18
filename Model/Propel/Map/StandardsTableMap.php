@@ -59,7 +59,7 @@ class StandardsTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class StandardsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the id_standard field
@@ -85,11 +85,6 @@ class StandardsTableMap extends TableMap
      * the column name for the subtitle field
      */
     const COL_SUBTITLE = 'standards.subtitle';
-
-    /**
-     * the column name for the picture field
-     */
-    const COL_PICTURE = 'standards.picture';
 
     /**
      * the column name for the description field
@@ -113,11 +108,11 @@ class StandardsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdStandard', 'Title', 'Subtitle', 'Picture', 'Description', 'IdEmployee', ),
-        self::TYPE_CAMELNAME     => array('idStandard', 'title', 'subtitle', 'picture', 'description', 'idEmployee', ),
-        self::TYPE_COLNAME       => array(StandardsTableMap::COL_ID_STANDARD, StandardsTableMap::COL_TITLE, StandardsTableMap::COL_SUBTITLE, StandardsTableMap::COL_PICTURE, StandardsTableMap::COL_DESCRIPTION, StandardsTableMap::COL_ID_EMPLOYEE, ),
-        self::TYPE_FIELDNAME     => array('id_standard', 'title', 'subtitle', 'picture', 'description', 'id_employee', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('IdStandard', 'Title', 'Subtitle', 'Description', 'IdEmployee', ),
+        self::TYPE_CAMELNAME     => array('idStandard', 'title', 'subtitle', 'description', 'idEmployee', ),
+        self::TYPE_COLNAME       => array(StandardsTableMap::COL_ID_STANDARD, StandardsTableMap::COL_TITLE, StandardsTableMap::COL_SUBTITLE, StandardsTableMap::COL_DESCRIPTION, StandardsTableMap::COL_ID_EMPLOYEE, ),
+        self::TYPE_FIELDNAME     => array('id_standard', 'title', 'subtitle', 'description', 'id_employee', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -127,11 +122,11 @@ class StandardsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdStandard' => 0, 'Title' => 1, 'Subtitle' => 2, 'Picture' => 3, 'Description' => 4, 'IdEmployee' => 5, ),
-        self::TYPE_CAMELNAME     => array('idStandard' => 0, 'title' => 1, 'subtitle' => 2, 'picture' => 3, 'description' => 4, 'idEmployee' => 5, ),
-        self::TYPE_COLNAME       => array(StandardsTableMap::COL_ID_STANDARD => 0, StandardsTableMap::COL_TITLE => 1, StandardsTableMap::COL_SUBTITLE => 2, StandardsTableMap::COL_PICTURE => 3, StandardsTableMap::COL_DESCRIPTION => 4, StandardsTableMap::COL_ID_EMPLOYEE => 5, ),
-        self::TYPE_FIELDNAME     => array('id_standard' => 0, 'title' => 1, 'subtitle' => 2, 'picture' => 3, 'description' => 4, 'id_employee' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('IdStandard' => 0, 'Title' => 1, 'Subtitle' => 2, 'Description' => 3, 'IdEmployee' => 4, ),
+        self::TYPE_CAMELNAME     => array('idStandard' => 0, 'title' => 1, 'subtitle' => 2, 'description' => 3, 'idEmployee' => 4, ),
+        self::TYPE_COLNAME       => array(StandardsTableMap::COL_ID_STANDARD => 0, StandardsTableMap::COL_TITLE => 1, StandardsTableMap::COL_SUBTITLE => 2, StandardsTableMap::COL_DESCRIPTION => 3, StandardsTableMap::COL_ID_EMPLOYEE => 4, ),
+        self::TYPE_FIELDNAME     => array('id_standard' => 0, 'title' => 1, 'subtitle' => 2, 'description' => 3, 'id_employee' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -154,7 +149,6 @@ class StandardsTableMap extends TableMap
         $this->addPrimaryKey('id_standard', 'IdStandard', 'INTEGER', true, 8, null);
         $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('subtitle', 'Subtitle', 'VARCHAR', true, 255, null);
-        $this->addColumn('picture', 'Picture', 'VARCHAR', true, 255, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
         $this->addForeignKey('id_employee', 'IdEmployee', 'INTEGER', 'employees', 'id_employee', true, 8, null);
     } // initialize()
@@ -317,14 +311,12 @@ class StandardsTableMap extends TableMap
             $criteria->addSelectColumn(StandardsTableMap::COL_ID_STANDARD);
             $criteria->addSelectColumn(StandardsTableMap::COL_TITLE);
             $criteria->addSelectColumn(StandardsTableMap::COL_SUBTITLE);
-            $criteria->addSelectColumn(StandardsTableMap::COL_PICTURE);
             $criteria->addSelectColumn(StandardsTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(StandardsTableMap::COL_ID_EMPLOYEE);
         } else {
             $criteria->addSelectColumn($alias . '.id_standard');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.subtitle');
-            $criteria->addSelectColumn($alias . '.picture');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.id_employee');
         }

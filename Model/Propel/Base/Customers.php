@@ -79,7 +79,7 @@ abstract class Customers implements ActiveRecordInterface
     protected $firstname;
 
     /**
-     * The value for the name field.
+     * The value for the lastname field.
      *
      * @var        string
      */
@@ -428,7 +428,7 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [lastname] column value.
      *
      * @return string
      */
@@ -588,7 +588,7 @@ abstract class Customers implements ActiveRecordInterface
     } // setFirstname()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [lastname] column.
      *
      * @param string $v new value
      * @return $this|\Model\Propel\Customers The current object (for fluent API support)
@@ -601,11 +601,11 @@ abstract class Customers implements ActiveRecordInterface
 
         if ($this->lastname !== $v) {
             $this->lastname = $v;
-            $this->modifiedColumns[CustomersTableMap::COL_NAME] = true;
+            $this->modifiedColumns[CustomersTableMap::COL_LASTNAME] = true;
         }
 
         return $this;
-    } // setName()
+    } // setLastname()
 
     /**
      * Set the value of [email] column.
@@ -869,7 +869,7 @@ abstract class Customers implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CustomersTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->firstname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CustomersTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CustomersTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->lastname = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CustomersTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
@@ -1138,7 +1138,7 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_FIRSTNAME)) {
             $modifiedColumns[':p' . $index++]  = 'firstname';
         }
-        if ($this->isColumnModified(CustomersTableMap::COL_NAME)) {
+        if ($this->isColumnModified(CustomersTableMap::COL_LASTNAME)) {
             $modifiedColumns[':p' . $index++]  = 'lastname';
         }
         if ($this->isColumnModified(CustomersTableMap::COL_EMAIL)) {
@@ -1191,7 +1191,7 @@ abstract class Customers implements ActiveRecordInterface
                     case 'firstname':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
-                    case 'name':
+                    case 'lastname':
                         $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
                         break;
                     case 'email':
@@ -1588,8 +1588,8 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_FIRSTNAME)) {
             $criteria->add(CustomersTableMap::COL_FIRSTNAME, $this->firstname);
         }
-        if ($this->isColumnModified(CustomersTableMap::COL_NAME)) {
-            $criteria->add(CustomersTableMap::COL_NAME, $this->lastname);
+        if ($this->isColumnModified(CustomersTableMap::COL_LASTNAME)) {
+            $criteria->add(CustomersTableMap::COL_LASTNAME, $this->lastname);
         }
         if ($this->isColumnModified(CustomersTableMap::COL_EMAIL)) {
             $criteria->add(CustomersTableMap::COL_EMAIL, $this->email);
@@ -1711,7 +1711,7 @@ abstract class Customers implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setFirstname($this->getFirstname());
-        $copyObj->setName($this->getLastname());
+        $copyObj->setLastname($this->getLastname());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setPassword($this->getPassword());

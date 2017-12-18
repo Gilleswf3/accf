@@ -4,12 +4,6 @@ namespace Model\Propel;
 
 use Model\Propel\Base\ProductsQuery as BaseProductsQuery;
 
-
-
-
-
-
-
 /**
  * Skeleton subclass for performing query and update operations on the 'products' table.
  *

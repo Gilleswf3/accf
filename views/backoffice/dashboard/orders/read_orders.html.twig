@@ -6,17 +6,18 @@
 {% block content %}
     <div class="w3-col l1 MarginColumn">Marge</div>
 
-    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+    <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
 
         <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
             <h2 class="w3-margin w3-teal">Afficher toutes vos commandes</h2>
             
             <tr>
                 <th>Numéro de commande</th>
-                <th>Numéro de client<th>
+                <th>Numéro de client</th>
                 <th>Référence produit</th>
                 <th>Référence service</th>
                 <th>Date de commande</th>
+                <th>Suppression</th>
             </tr>
 
             {% for order in orders %}
@@ -24,9 +25,11 @@
             <tr>
                 <td>{{ order.idOrder }}</td>
                 <td>{{ order.idCustomer }}</td>
-                <td>{{ order.idProduit }}</td>
+                <td>{{ order.idProduct }}</td>
                 <td>{{ order.idService }}</td>
-                <td>{{ order.orderDate }}</td>
+                <td>Date</td>
+{#                <td>{{ order.orderDate }}</td>#}
+                <td><a href="{{ path('afficher_commandes') }}">Supprimer</a></td>
             </tr>
 
             {% endfor %}

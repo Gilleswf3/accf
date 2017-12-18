@@ -83,13 +83,6 @@ abstract class Standards implements ActiveRecordInterface
     protected $subtitle;
 
     /**
-     * The value for the picture field.
-     *
-     * @var        string
-     */
-    protected $picture;
-
-    /**
      * The value for the description field.
      *
      * @var        string
@@ -372,16 +365,6 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Get the [picture] column value.
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
-    }
-
-    /**
      * Get the [description] column value.
      *
      * @return string
@@ -460,26 +443,6 @@ abstract class Standards implements ActiveRecordInterface
 
         return $this;
     } // setSubtitle()
-
-    /**
-     * Set the value of [picture] column.
-     *
-     * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
-     */
-    public function setPicture($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->picture !== $v) {
-            $this->picture = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_PICTURE] = true;
-        }
-
-        return $this;
-    } // setPicture()
 
     /**
      * Set the value of [description] column.
@@ -570,13 +533,10 @@ abstract class Standards implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StandardsTableMap::translateFieldName('Subtitle', TableMap::TYPE_PHPNAME, $indexType)];
             $this->subtitle = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : StandardsTableMap::translateFieldName('Picture', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->picture = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : StandardsTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : StandardsTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : StandardsTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : StandardsTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_employee = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -586,7 +546,7 @@ abstract class Standards implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = StandardsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = StandardsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Standards'), 0, $e);
@@ -812,9 +772,6 @@ abstract class Standards implements ActiveRecordInterface
         if ($this->isColumnModified(StandardsTableMap::COL_SUBTITLE)) {
             $modifiedColumns[':p' . $index++]  = 'subtitle';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_PICTURE)) {
-            $modifiedColumns[':p' . $index++]  = 'picture';
-        }
         if ($this->isColumnModified(StandardsTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = 'description';
         }
@@ -840,9 +797,6 @@ abstract class Standards implements ActiveRecordInterface
                         break;
                     case 'subtitle':
                         $stmt->bindValue($identifier, $this->subtitle, PDO::PARAM_STR);
-                        break;
-                    case 'picture':
-                        $stmt->bindValue($identifier, $this->picture, PDO::PARAM_STR);
                         break;
                     case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
@@ -922,12 +876,9 @@ abstract class Standards implements ActiveRecordInterface
                 return $this->getSubtitle();
                 break;
             case 3:
-                return $this->getPicture();
-                break;
-            case 4:
                 return $this->getDescription();
                 break;
-            case 5:
+            case 4:
                 return $this->getIdEmployee();
                 break;
             default:
@@ -963,9 +914,8 @@ abstract class Standards implements ActiveRecordInterface
             $keys[0] => $this->getIdStandard(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getSubtitle(),
-            $keys[3] => $this->getPicture(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getIdEmployee(),
+            $keys[3] => $this->getDescription(),
+            $keys[4] => $this->getIdEmployee(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1032,12 +982,9 @@ abstract class Standards implements ActiveRecordInterface
                 $this->setSubtitle($value);
                 break;
             case 3:
-                $this->setPicture($value);
-                break;
-            case 4:
                 $this->setDescription($value);
                 break;
-            case 5:
+            case 4:
                 $this->setIdEmployee($value);
                 break;
         } // switch()
@@ -1076,13 +1023,10 @@ abstract class Standards implements ActiveRecordInterface
             $this->setSubtitle($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setPicture($arr[$keys[3]]);
+            $this->setDescription($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDescription($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setIdEmployee($arr[$keys[5]]);
+            $this->setIdEmployee($arr[$keys[4]]);
         }
     }
 
@@ -1133,9 +1077,6 @@ abstract class Standards implements ActiveRecordInterface
         }
         if ($this->isColumnModified(StandardsTableMap::COL_SUBTITLE)) {
             $criteria->add(StandardsTableMap::COL_SUBTITLE, $this->subtitle);
-        }
-        if ($this->isColumnModified(StandardsTableMap::COL_PICTURE)) {
-            $criteria->add(StandardsTableMap::COL_PICTURE, $this->picture);
         }
         if ($this->isColumnModified(StandardsTableMap::COL_DESCRIPTION)) {
             $criteria->add(StandardsTableMap::COL_DESCRIPTION, $this->description);
@@ -1231,7 +1172,6 @@ abstract class Standards implements ActiveRecordInterface
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSubtitle($this->getSubtitle());
-        $copyObj->setPicture($this->getPicture());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setIdEmployee($this->getIdEmployee());
         if ($makeNew) {
@@ -1326,7 +1266,6 @@ abstract class Standards implements ActiveRecordInterface
         $this->id_standard = null;
         $this->title = null;
         $this->subtitle = null;
-        $this->picture = null;
         $this->description = null;
         $this->id_employee = null;
         $this->alreadyInSave = false;

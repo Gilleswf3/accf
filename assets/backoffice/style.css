@@ -79,3 +79,44 @@ footer{
 footer span{
     line-height: 85px;
 }
+
+/*MEDIA QUERY MEDIUM SCREEN*/
+
+@media screen and (min-width: 602px) and (max-width: 992px) {
+    #headerCenter{
+        display: none;
+    }
+}
+
+
+/*MEDIA QUERY SMALL SCREEN*/
+
+@media screen and (max-width: 601px) {    
+/*    #headerLeft{
+        width: auto;
+    }*/
+       
+    #headerCenter{
+        display: none;
+    }
+
+    form h2{
+        font-size: 16px;
+    }
+    
+    form label{
+        font-size: 14px;        
+    }
+    
+    form input{
+        font-size: 12px;
+    }
+    
+    #displayAccfArea h2{
+        font-size: 16px;
+    }
+
+    table{
+        font-size: 12px;
+    }
+}

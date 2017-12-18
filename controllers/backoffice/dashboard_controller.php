@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+
 $backofficeGroup = $app['controllers_factory'];
 
 //ROUTE DU DASHBOARD BACKOFFICE
@@ -8,13 +10,31 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
 })->bind('dashboard');
 
 //ROUTE DU DASHBOARD LOGIN
-$backofficeGroup->match('/login', function() use ($app) {
+$backofficeGroup->match('/login', function(Request $request) use ($app) {
     $authorizedUsers = \Model\Propel\EmployeesQuery::create()->find();
     return $app['twig']->render('backoffice/login.html.twig', array(
         'authorizedUsers' => $authorizedUsers
-));
+));        
 })->bind('login');
 
+//SHAREMYCODE YWK
+//ROUTE DU DASHBOARD LOGIN
+//$backofficeGroup->match('/login', function(Request $request) use ($app) {
+//
+//    $Email = $request->request->get('_email');
+//    var_dump($email);
+//    $Role = $request->request->get('_role');
+//    var_dump($role);
+
+//    $authorizedUsers = \Model\Propel\EmployeesQuery::create()
+//        ->getEmail($Email)
+//        ->getRole($Role)
+//        ->find();
+//    return $app['twig']->render('backoffice/login.html.twig', array(
+//        'authorizedUsers' => $authorizedUsers
+//));
+//})->method('GET|POST')
+//->bind('login');
 
 //ROUTE DE LA PAGE CREATION AGENCE
 $backofficeGroup->match('/ajouter_agence', function() use ($app) {

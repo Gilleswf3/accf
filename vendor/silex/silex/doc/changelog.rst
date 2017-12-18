@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.1 (2017-12-14)
+------------------
+
+* added support for Swiftmailer SSL stream_context_options option
+* fixed usage of namespaces for Twig paths
+
 2.2.0 (2017-07-23)
 ------------------
 
