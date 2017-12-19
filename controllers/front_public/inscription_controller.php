@@ -3,9 +3,9 @@
 use Model\Propel\Base\Customers;
 use Symfony\Component\HttpFoundation\Request;
 
-$privateGroup = $app['controllers_factory'];
+$publicGroup = $app['controllers_factory'];
 
-$privateGroup->match('/inscription', function(Request $request) use ($app) {
+$publicGroup->match('/inscription', function(Request $request) use ($app) {
 
             if ($request->request->all()) {
                 $lastname = $request->request->get('_lastname');
@@ -48,12 +48,12 @@ $privateGroup->match('/inscription', function(Request $request) use ($app) {
                 
             }
             
-            return $app['twig']->render('frontoffice/front_private/inscription.html.twig');
+            return $app['twig']->render('frontoffice/front_public/inscription.html.twig');
         })
         ->method('GET|POST')
         ->bind('inscription');
 
-$app->mount('/frontoffice', $privateGroup);
+$app->mount('/frontoffice', $publicGroup);
 
 
 
