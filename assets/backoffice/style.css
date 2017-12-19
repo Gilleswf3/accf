@@ -2,6 +2,11 @@
     font-family: "Ubuntu", sans-serif;
 }
 
+header{
+/*    position: fixed;
+    left:0px;*/
+}
+
 header a{
     text-decoration: none;
 }
@@ -10,11 +15,23 @@ header span{
     line-height: 85px;
 }
 
+#dashboardTitle{
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+main{
+    display: flex;
+    align-content: left;
+    flex-flow: row wrap;
+}
+
 #leftmenu{
     min-height: 800px;
     /*position: fixed;*/
-    z-index:1;
-    overflow-x: hidden;
+    /*top:0px;*/
+    /*z-index:1;*/
+    /*overflow-x: hidden;*/
 }
 
 .accordion{
@@ -52,25 +69,38 @@ header span{
 }
 
 #displayContainer{
-    margin: 0 auto;
-    min-height: 700px;
+    /*margin: 0 auto;*/
+    /*min-height: 700px;*/
 }
 
 #loginForm{
    margin-top: 260px;
 }
 
-#displayAccfArea{
+.displayAccfArea{
 /*    margin-top: 0px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0px;*/
-    
     /*min-height: 600px;*/
+}
+
+.dashboardAlert{
+    min-height: 200px;
 }
 
 .dashboardContent{
     min-height: 200px;
+}
+
+.dashboardLine{
+    margin-top: 32px;
+    min-height: 24px;
+    margin-bottom: 32px;
+}
+
+#dashboardLastContent{
+    margin-bottom: 200px;
 }
 
 footer{
@@ -120,4 +150,9 @@ footer span{
     table{
         font-size: 12px;
     }
+    
+    table h2{
+        font-size: 16px;
+    }
+    
 }

@@ -5,9 +5,34 @@ use Symfony\Component\HttpFoundation\Request;
 $backofficeGroup = $app['controllers_factory'];
 
 //ROUTE DU DASHBOARD BACKOFFICE
+//$backofficeGroup->get('/dashboard', function() use ($app) {
+//    return $app['twig']->render('backoffice/dashboard/index.html.twig');
+//})->bind('dashboard');
+
+
 $backofficeGroup->get('/dashboard', function() use ($app) {
-    return $app['twig']->render('backoffice/dashboard/index.html.twig');
+    $agencies = \Model\Propel\AgenciesQuery::create()->find();
+    $employees = \Model\Propel\EmployeesQuery::create()->find();
+    $products = \Model\Propel\ProductsQuery::create()->find();
+    $services = \Model\Propel\ServicesQuery::create()->find();
+
+    //ORDER STATS
+    $dailyOrdersCount = Model\Propel\CustomersQuery::create()->count();
+    $weeklyOrdersCount = Model\Propel\CustomersQuery::create()->count();
+    $monthlyOrdersCount = Model\Propel\CustomersQuery::create()->count();
+    
+    return $app['twig']->render('backoffice/dashboard/index.html.twig', array(
+        'agencies' => $agencies,
+        'employees' => $employees,
+        'products' => $products,
+        'services' => $services,
+        'dailyOrdersCount' => $dailyOrdersCount,
+        'weeklyOrdersCount' => $weeklyOrdersCount,
+        'monthlyOrdersCount' => $monthlyOrdersCount            
+    ));
 })->bind('dashboard');
+
+
 
 
 //ROUTE DU DASHBOARD LOGIN
@@ -33,7 +58,6 @@ $backofficeGroup->match('/login', function(Request $request) use ($app) {
         return $app['twig']->render('backoffice/login.html.twig');
     }
     
-
 })->bind('login');
 
 ////$backofficeGroup->match('/login', function(Request $request) use ($app) {
@@ -168,7 +192,7 @@ $backofficeGroup->match('/employes/editer_employe/{id}', function(Request $reque
 $backofficeGroup->get('/employes/afficher_employe', function() use ($app) {
     $employees = \Model\Propel\EmployeesQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/employees/read_employee.html.twig', array(
-                'employees' => $employees
+        'employees' => $employees
     ));
 })->bind('afficher_employe');
 
@@ -236,9 +260,9 @@ $backofficeGroup->match('/products/editer_produits/{id}', function(Request $requ
 
 // ROUTE DE LA PAGE AFFICHAGE DES PRODUITS
 $backofficeGroup->get('/products/read_products', function() use ($app) {
-    $product = \Model\Propel\ProductsQuery::create()->find();
+    $products = \Model\Propel\ProductsQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/products/read_products.html.twig', array(
-        'products' => $product
+        'products' => $products
     ));
 })->bind('read_products');
 

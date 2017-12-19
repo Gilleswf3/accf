@@ -1,30 +1,264 @@
 {% extends "backoffice/layout.html.twig" %}
 
 {% block title %}
-    <h1>Tableau de bord</h1>
+    <div class="w3-container w3-row-padding">
+        <div class="w3-col l1 MarginColumn">Marge</div>
+        <h1 class="w3-col l11 w3-grey w3-large w3-round-large w3-text-white" id="dashboardTitle">Tableau de bord</h1>
+    </div>
 {% endblock %}
-        
+
 {% block content %}
     <div class="w3-container w3-row-padding">
         <div class="w3-col l1 MarginColumn">Marge</div>
-        <div class="w3-card w3-col l5 w3-margin dashboardContent">Vos agences</div>
-        <div class="w3-border w3-border-red w3-col l5 w3-margin dashboardContent">Vos clients</div>
+        
+        <div class="w3-card w3-col l5 w3-margin w3-responsive w3-white dashboardAlert">
+            <table class="w3-centered w3-hoverable w3-margin-bottom w3-table-all">
+                <h2 class="w3-teal">Derniers clients inscrits</h2>
+
+                <tr>
+                    <th>Dernier jour</th>
+                    <th>Dernière semaine</th>
+                    <th>Dernier mois</th>
+                </tr>
+
+                <tr>
+                    <td>{{ dailyOrdersCount}}</td> 
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                </tr>
+                
+            </table>
+        </div>
+
+        <div class="w3-card w3-col l5 w3-margin w3-responsive w3-white dashboardAlert">
+            <table class="w3-centered w3-hoverable w3-margin-bottom w3-table-all">
+                <h2 class="w3-teal">Dernières commandes</h2>
+       
+                <tr>
+                    <th></th>
+                    <th>Nombre de commandes</th>
+                    <th>Montant minimal</th>
+                    <th>Montant moyen</th>
+                    <th>Montant maximal</th>             
+                    <th>Montant total</th>
+                </tr>
+                               
+                <tr>
+                    <td>Dernier jour</td> 
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                </tr>
+                
+                <tr>
+                    <td>Dernière semaine</td> 
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                </tr>
+
+                <tr>
+                    <td>Dernier mois</td> 
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyOrdersCount}}</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+                
+    {#______________________SEPARATEUR____________________________#}
+    <div class="w3-container w3-row-padding">
+        <div class="w3-col l2 MarginColumn">Marge</div>
+        <div class="w3-col l9 w3-grey w3-large w3-round-large dashboardLine"></div>
+    </div>
+    {#______________________SEPARATEUR____________________________#}
+    
+    
+    <div class="w3-col l1 MarginColumn">Marge</div>
+
+        <div class="w3-card w3-col l10 w3-margin w3-padding w3-responsive displayAccfArea">    
+
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+            <h2 class="w3-margin w3-teal">Afficher les employés</h2>            
+            <tr>
+                <th>Numéro</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Fonction</th>
+                <th>Photo</th>
+                <th>Niveau d'accès</th>
+                <th>Agence</th>
+            </tr>
+
+            {% for employee in employees %}
+
+            <tr>
+                <td>{{ employee.idEmployee }}</td>
+                <td>{{ employee.firstname }}</td>
+                <td>{{ employee.lastname }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.phone }}</td>
+                <td>{{ employee.job }}</td>
+                <td>
+                    <img src="{{asset('images/'~employee.picture)}}" width="100" height="100"/>            
+                </td>
+
+                <td>{{ employee.role }}</td>
+                <td>{{ employee.idAgency }}</td>
+            </tr>
+
+            {% endfor %}
+           
+        </table>            
     </div>
 
+    {#______________________SEPARATEUR____________________________#}
     <div class="w3-container w3-row-padding">
-        <div class="w3-col l1 MarginColumn">Marge</div>
-        <div class="w3-border w3-border-red w3-col l5 w3-margin dashboardContent">Vos commandes</div>
-        <div class="w3-border w3-border-green w3-col l5 w3-margin dashboardContent">Vos employés</div>
+        <div class="w3-col l2 MarginColumn">Marge</div>
+        <div class="w3-col l9 w3-grey w3-large w3-round-large dashboardLine"></div>
+    </div>
+    {#______________________SEPARATEUR____________________________#}
+
+    
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin w3-padding w3-responsive displayAccfArea">    
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+            <h2 class="w3-margin w3-teal">Afficher les agences</h2>
+            
+            <tr>
+                <th>Numéro</th>
+                <th>Adresse</th>
+                <th>Code postal</th>
+                <th>Ville</th>
+                <th>Département</th>
+            </tr>
+
+            {% for agency in agencies %}
+
+            <tr>
+                <td>{{ agency.idAgency }}</td>
+                <td>{{ agency.address }}</td>
+                <td>{{ agency.zipcode }}</td>
+                <td>{{ agency.city }}</td>
+                <td>{{ agency.area }}</td>
+                
+{#                {% if agency.area == 69 %}
+                    <td>Rhône-Alpes</td>
+                {% else %}
+                    <td>Ile de France</td>
+                {% endif %}
+#}               
+            </tr>
+
+            {% endfor %}           
+        </table>          
     </div>
 
+    {#______________________SEPARATEUR____________________________#}
+    <div class="w3-container w3-row-padding">
+        <div class="w3-col l2 MarginColumn">Marge</div>
+        <div class="w3-col l9 w3-grey w3-large w3-round-large dashboardLine"></div>
+    </div>
+    {#______________________SEPARATEUR____________________________#}
+    
+    <div class="w3-col l1 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l10 w3-margin w3-padding w3-responsive displayAccfArea">    
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Afficher les produits</h2>
+        
+            <tr>
+                <th>id </th>
+                <th>Titre</th>
+                <th>Fabricant</th>
+                <th>Sous catégorie</th>             
+                <th>Description</th>
+                <th>Photos</th>
+                <th>Prix HT</th>
+                <th>Prix TTC</th>
+            </tr>
+
+            {% for product in products %}
+                               
+            <tr>
+                <td><p>plus d'infos</p>
+                    <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('read_selected_product', { id: product.idProduct }) }}" role="button" > {{ product.idProduct }}</a>
+                </td>
+            
+                <td>{{ product.title}}</td>
+          
+                <td>{{ product.manufacturer }}</td>
+                <td>{{ product.productSubCategory }}</td>                
+                <td>{{ product.description|truncate(40, true, "...")}}</td>
+                
+                <td>
+                    <img src="{{asset('images/produits/'~product.picture)}}" width="100" height="100"/>
+                </td>
+                <td>{{ product.priceVatExcluded }}</td>
+                <td>{{ product.priceVatIncluded }}</td>
+            </tr>
+
+            {% endfor %}           
+        </table>
+    </div>   
+  
+    {#______________________SEPARATEUR____________________________#}
+    <div class="w3-container w3-row-padding">
+        <div class="w3-col l2 MarginColumn">Marge</div>
+        <div class="w3-col l9 w3-grey w3-large w3-round-large dashboardLine"></div>
+    </div>
+    {#______________________SEPARATEUR____________________________#}
+
+    
     <div class="w3-container w3-row-padding">
         <div class="w3-col l1 MarginColumn">Marge</div>
-        <div class="w3-border w3-border-red w3-col l5 w3-margin dashboardContent">Vos produits</div>
         <div class="w3-border w3-border-blue w3-col l5 w3-margin dashboardContent">Vos publications</div>
     </div>
 
+    {#______________________SEPARATEUR____________________________#}
     <div class="w3-container w3-row-padding">
         <div class="w3-col l2 MarginColumn">Marge</div>
-        <div class="w3-border w3-border-red w3-col l8 w3-margin dashboardContent">Vos services</div>
+        <div class="w3-col l9 w3-grey w3-large w3-round-large dashboardLine"></div>
     </div>
+    {#______________________SEPARATEUR____________________________#}
+
+    <div class="w3-col l1 MarginColumn">Marge</div>
+
+        <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive displayAccfArea" id="dashboardLastContent">
+            <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+                <h2 class="w3-margin w3-teal">Afficher les services</h2>
+
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Prix HT</th>
+                    <th>Prix TVA</th>             
+                </tr>
+
+                {% for service in services %}
+
+                <tr>
+                    <td>{{ service.title}}</td>
+                    <td>{{ service.description }}</td>
+                    <td>{{ service.priceVatExcluded }}</td>
+                    <td>{{ service.priceVatIncluded }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </table>            
+
+        </div>    
 {% endblock %}

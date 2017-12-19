@@ -40,12 +40,14 @@
 
                 <td>{{ employee.role }}</td>
 
-                {% if employee.idAgency == 1 %}
+                <td>{{ employee.idAgency }}</td>
+                
+{#                {% if employee.idAgency == 1 %}
                     <td>Rhône-Alpes</td>
                 {% else %}
                     <td>Ile de France</td>
                 {% endif %}
-
+#}
                 <td>
                     <a href="{{ path('editer_employe', { id: employee.idEmployee }) }}">Modifier</a>
                 </td>
