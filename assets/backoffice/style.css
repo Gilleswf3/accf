@@ -11,8 +11,10 @@ header span{
 }
 
 #leftmenu{
-    /* min-height:calc (100% - 150px); */
     min-height: 800px;
+    /*position: fixed;*/
+    z-index:1;
+    overflow-x: hidden;
 }
 
 .accordion{
@@ -68,7 +70,7 @@ header span{
 }
 
 .dashboardContent{
-    min-height: 100px;
+    min-height: 200px;
 }
 
 footer{

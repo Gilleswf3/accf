@@ -22,17 +22,16 @@
             <label>Fonction</label>
             <input class="w3-border w3-input w3-light-grey" name="_job" type="text" value="{{ employe.job }}">
             <label>Photo</label>
-            <input class="w3-border w3-input w3-light-grey" name="_picture" type="file" value="{{ employe.picture }}">
-            <label>Niveau d'accès</label>
-  
+            <input class="w3-border w3-input w3-light-grey" name="_picture" type="file" value="">
+
+            <label>Niveau d'accès</label>  
             <select class="w3-border w3-select" name="_role">
-                <option value="">Administrateur</option>
-                <option value="">Membre</option>
+                <option value="administrateur">Administrateur</option>
+                <option value="membre">Membre</option>
             </select>
 
 {#            <input class="w3-border w3-input w3-light-grey" type="text">#}
             <label>Agence</label>
-
             <select class="w3-border w3-select" name="_agency">
                 <option value="92">Ile-de-France</option>
                 <option value="69">Rhône-Alpes</option>

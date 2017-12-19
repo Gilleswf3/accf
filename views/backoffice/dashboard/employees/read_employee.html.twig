@@ -21,30 +21,25 @@
                 <th>Photo</th>
                 <th>Niveau d'accès</th>
                 <th>Agence</th>
+                <th>Modification</th>
                 <th>Suppression</th>
             </tr>
 
             {% for employee in employees %}
 
             <tr>
-                <td>
-                    <a href="{{ path('editer_employe', { id: employee.idEmployee }) }}">{{ employee.idEmployee }}</a>
-{#                    {{ employee.idEmployee }}#}
-                </td>
+                <td>{{ employee.idEmployee }}</td>
                 <td>{{ employee.firstname }}</td>
                 <td>{{ employee.lastname }}</td>
                 <td>{{ employee.email }}</td>
                 <td>{{ employee.phone }}</td>
                 <td>{{ employee.job }}</td>
                 <td>
-                    {% if employee.idEmployee == 1 %}
-                         <img src="{{asset('images/homme.png')}}" width="100px;" alt="avatar_homme">
-                    {% else %}
-                         <img src="{{asset('images/femme.png')}}" width="100px;" alt="avatar_femme">                        
-                    {% endif %}
+                    <img src="{{asset('images/'~employee.picture)}}" width="100" height="100"/>            
                 </td>
 
                 <td>{{ employee.role }}</td>
+
                 {% if employee.idAgency == 1 %}
                     <td>Rhône-Alpes</td>
                 {% else %}
@@ -52,9 +47,12 @@
                 {% endif %}
 
                 <td>
+                    <a href="{{ path('editer_employe', { id: employee.idEmployee }) }}">Modifier</a>
+                </td>
+                
+                <td>
                     <a href="{{ path('supprimer_employe', { id: employee.idEmployee }) }}">Supprimer</a>
                 </td>
-
                 
             </tr>
 

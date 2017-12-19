@@ -33,8 +33,7 @@ $backofficeGroup->match('/login', function(Request $request) use ($app) {
         return $app['twig']->render('backoffice/login.html.twig');
     }
     
-//    return $app['twig']->render('backoffice/login.html.twig', array(
-//    ));
+
 })->bind('login');
 
 ////$backofficeGroup->match('/login', function(Request $request) use ($app) {
