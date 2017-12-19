@@ -11,10 +11,10 @@ return [
     'propel' => [
         'paths' => [
             // The directory where Propel expects to find your `schema.xml` file.
-            'schemaDir' => 'C:\xampp\htdocs\accf',
+            'schemaDir' => 'C:\xampp\htdocs\accf2',
 
             // The directory where Propel should output generated object model classes.
-            'phpDir' => 'C:\xampp\htdocs\accf',
+            'phpDir' => 'C:\xampp\htdocs\accf2',
         ],
         /*
         'database' => [

@@ -7,6 +7,8 @@ $app = new Silex\Application();
 
 $app['debug'] = true;
 
+define('RACINE_SITE', 'accf2/assets/images');
+
 require_once './Model/services.php';
 
 require_once 'controllers/backoffice/dashboard_controller.php';
