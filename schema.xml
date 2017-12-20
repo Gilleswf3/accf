@@ -26,6 +26,7 @@
     <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
     <column name="phone" phpName="Phone" type="VARCHAR" size="255" required="true"/>
     <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+    <column name="registration_date" phpName="RegistrationDate" type="DATE" required="true"/>
     <column name="job" phpName="Job" type="VARCHAR" size="255" required="true"/>
     <column name="company" phpName="Company" type="VARCHAR" size="255" required="true"/>
     <column name="billto_address" phpName="BilltoAddress" type="VARCHAR" size="255" required="true"/>

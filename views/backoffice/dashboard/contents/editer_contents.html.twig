@@ -1,0 +1,32 @@
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top" id="displayAccfArea">
+        <form class="w3-container" id="contentsForm" method="post" action="{{ path('editer_publication' , { id : content.idContent }) }}">
+            
+            <h2 class="w3-teal">Ajouter ou modifier une publication</h2>
+
+       
+            
+            <label>Photo</label>
+            <input class="w3-border w3-input w3-light-grey" name="_pictureContent" type="file" value="{{ content.pictureContent }}">
+            
+            <label>Titre</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_contentTitle" value="{{ content.contentTitle }}">
+            <label>Texte</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_contentText" value="{{ content.contentText }}">
+            <label>Sous titre</label>
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_subtitle" value="{{ content.subtitle }}">
+
+            <button class="w3-button w3-grey w3-margin">Ajouter ou modifier</button>
+              
+        </form>
+    </div>
+        
+{% endblock %}{# empty Twig template #}

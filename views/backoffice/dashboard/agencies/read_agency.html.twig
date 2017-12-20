@@ -18,7 +18,7 @@
                 <th>Adresse</th>
                 <th>Code postal</th>
                 <th>Ville</th>
-                <th>Région</th>
+                <th>Département</th>
                 <th>Modification</th>
                 <th>Suppression</th>
             </tr>
@@ -30,13 +30,15 @@
                 <td>{{ agency.address }}</td>
                 <td>{{ agency.zipcode }}</td>
                 <td>{{ agency.city }}</td>
+                <td>{{ agency.area }}</td>
 
-                {% if agency.area == 69 %}
+                
+ {#               {% if agency.area == 69 %}
                     <td>Rhône-Alpes</td>
                 {% else %}
                     <td>Ile de France</td>
                 {% endif %}
-
+#}
                 <td>
                     <a href="{{ path('editer_agence', { id: agency.idAgency }) }}">Modifier</a>
                 </td>

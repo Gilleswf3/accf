@@ -59,7 +59,7 @@ class CustomersTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 14;
+    const NUM_COLUMNS = 15;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class CustomersTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 14;
+    const NUM_HYDRATE_COLUMNS = 15;
 
     /**
      * the column name for the id_customer field
@@ -100,6 +100,11 @@ class CustomersTableMap extends TableMap
      * the column name for the password field
      */
     const COL_PASSWORD = 'customers.password';
+
+    /**
+     * the column name for the registration_date field
+     */
+    const COL_REGISTRATION_DATE = 'customers.registration_date';
 
     /**
      * the column name for the job field
@@ -153,11 +158,11 @@ class CustomersTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdCustomer', 'Firstname', 'Lastname', 'Email', 'Phone', 'Password', 'Job', 'Company', 'BilltoAddress', 'BilltoZipcode', 'BilltoCity', 'ShiptoAddress', 'ShiptoZipcode', 'ShiptoCity', ),
-        self::TYPE_CAMELNAME     => array('idCustomer', 'firstname', 'lastname', 'email', 'phone', 'password', 'job', 'company', 'billtoAddress', 'billtoZipcode', 'billtoCity', 'shiptoAddress', 'shiptoZipcode', 'shiptoCity', ),
-        self::TYPE_COLNAME       => array(CustomersTableMap::COL_ID_CUSTOMER, CustomersTableMap::COL_FIRSTNAME, CustomersTableMap::COL_LASTNAME, CustomersTableMap::COL_EMAIL, CustomersTableMap::COL_PHONE, CustomersTableMap::COL_PASSWORD, CustomersTableMap::COL_JOB, CustomersTableMap::COL_COMPANY, CustomersTableMap::COL_BILLTO_ADDRESS, CustomersTableMap::COL_BILLTO_ZIPCODE, CustomersTableMap::COL_BILLTO_CITY, CustomersTableMap::COL_SHIPTO_ADDRESS, CustomersTableMap::COL_SHIPTO_ZIPCODE, CustomersTableMap::COL_SHIPTO_CITY, ),
-        self::TYPE_FIELDNAME     => array('id_customer', 'firstname', 'lastname', 'email', 'phone', 'password', 'job', 'company', 'billto_address', 'billto_zipcode', 'billto_city', 'shipto_address', 'shipto_zipcode', 'shipto_city', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+        self::TYPE_PHPNAME       => array('IdCustomer', 'Firstname', 'Lastname', 'Email', 'Phone', 'Password', 'RegistrationDate', 'Job', 'Company', 'BilltoAddress', 'BilltoZipcode', 'BilltoCity', 'ShiptoAddress', 'ShiptoZipcode', 'ShiptoCity', ),
+        self::TYPE_CAMELNAME     => array('idCustomer', 'firstname', 'lastname', 'email', 'phone', 'password', 'registrationDate', 'job', 'company', 'billtoAddress', 'billtoZipcode', 'billtoCity', 'shiptoAddress', 'shiptoZipcode', 'shiptoCity', ),
+        self::TYPE_COLNAME       => array(CustomersTableMap::COL_ID_CUSTOMER, CustomersTableMap::COL_FIRSTNAME, CustomersTableMap::COL_LASTNAME, CustomersTableMap::COL_EMAIL, CustomersTableMap::COL_PHONE, CustomersTableMap::COL_PASSWORD, CustomersTableMap::COL_REGISTRATION_DATE, CustomersTableMap::COL_JOB, CustomersTableMap::COL_COMPANY, CustomersTableMap::COL_BILLTO_ADDRESS, CustomersTableMap::COL_BILLTO_ZIPCODE, CustomersTableMap::COL_BILLTO_CITY, CustomersTableMap::COL_SHIPTO_ADDRESS, CustomersTableMap::COL_SHIPTO_ZIPCODE, CustomersTableMap::COL_SHIPTO_CITY, ),
+        self::TYPE_FIELDNAME     => array('id_customer', 'firstname', 'lastname', 'email', 'phone', 'password', 'registration_date', 'job', 'company', 'billto_address', 'billto_zipcode', 'billto_city', 'shipto_address', 'shipto_zipcode', 'shipto_city', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -167,11 +172,11 @@ class CustomersTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdCustomer' => 0, 'Firstname' => 1, 'Lastname' => 2, 'Email' => 3, 'Phone' => 4, 'Password' => 5, 'Job' => 6, 'Company' => 7, 'BilltoAddress' => 8, 'BilltoZipcode' => 9, 'BilltoCity' => 10, 'ShiptoAddress' => 11, 'ShiptoZipcode' => 12, 'ShiptoCity' => 13, ),
-        self::TYPE_CAMELNAME     => array('idCustomer' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'password' => 5, 'job' => 6, 'company' => 7, 'billtoAddress' => 8, 'billtoZipcode' => 9, 'billtoCity' => 10, 'shiptoAddress' => 11, 'shiptoZipcode' => 12, 'shiptoCity' => 13, ),
-        self::TYPE_COLNAME       => array(CustomersTableMap::COL_ID_CUSTOMER => 0, CustomersTableMap::COL_FIRSTNAME => 1, CustomersTableMap::COL_LASTNAME => 2, CustomersTableMap::COL_EMAIL => 3, CustomersTableMap::COL_PHONE => 4, CustomersTableMap::COL_PASSWORD => 5, CustomersTableMap::COL_JOB => 6, CustomersTableMap::COL_COMPANY => 7, CustomersTableMap::COL_BILLTO_ADDRESS => 8, CustomersTableMap::COL_BILLTO_ZIPCODE => 9, CustomersTableMap::COL_BILLTO_CITY => 10, CustomersTableMap::COL_SHIPTO_ADDRESS => 11, CustomersTableMap::COL_SHIPTO_ZIPCODE => 12, CustomersTableMap::COL_SHIPTO_CITY => 13, ),
-        self::TYPE_FIELDNAME     => array('id_customer' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'password' => 5, 'job' => 6, 'company' => 7, 'billto_address' => 8, 'billto_zipcode' => 9, 'billto_city' => 10, 'shipto_address' => 11, 'shipto_zipcode' => 12, 'shipto_city' => 13, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+        self::TYPE_PHPNAME       => array('IdCustomer' => 0, 'Firstname' => 1, 'Lastname' => 2, 'Email' => 3, 'Phone' => 4, 'Password' => 5, 'RegistrationDate' => 6, 'Job' => 7, 'Company' => 8, 'BilltoAddress' => 9, 'BilltoZipcode' => 10, 'BilltoCity' => 11, 'ShiptoAddress' => 12, 'ShiptoZipcode' => 13, 'ShiptoCity' => 14, ),
+        self::TYPE_CAMELNAME     => array('idCustomer' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'password' => 5, 'registrationDate' => 6, 'job' => 7, 'company' => 8, 'billtoAddress' => 9, 'billtoZipcode' => 10, 'billtoCity' => 11, 'shiptoAddress' => 12, 'shiptoZipcode' => 13, 'shiptoCity' => 14, ),
+        self::TYPE_COLNAME       => array(CustomersTableMap::COL_ID_CUSTOMER => 0, CustomersTableMap::COL_FIRSTNAME => 1, CustomersTableMap::COL_LASTNAME => 2, CustomersTableMap::COL_EMAIL => 3, CustomersTableMap::COL_PHONE => 4, CustomersTableMap::COL_PASSWORD => 5, CustomersTableMap::COL_REGISTRATION_DATE => 6, CustomersTableMap::COL_JOB => 7, CustomersTableMap::COL_COMPANY => 8, CustomersTableMap::COL_BILLTO_ADDRESS => 9, CustomersTableMap::COL_BILLTO_ZIPCODE => 10, CustomersTableMap::COL_BILLTO_CITY => 11, CustomersTableMap::COL_SHIPTO_ADDRESS => 12, CustomersTableMap::COL_SHIPTO_ZIPCODE => 13, CustomersTableMap::COL_SHIPTO_CITY => 14, ),
+        self::TYPE_FIELDNAME     => array('id_customer' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'password' => 5, 'registration_date' => 6, 'job' => 7, 'company' => 8, 'billto_address' => 9, 'billto_zipcode' => 10, 'billto_city' => 11, 'shipto_address' => 12, 'shipto_zipcode' => 13, 'shipto_city' => 14, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -197,6 +202,7 @@ class CustomersTableMap extends TableMap
         $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', true, 255, null);
         $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
+        $this->addColumn('registration_date', 'RegistrationDate', 'DATE', true, null, null);
         $this->addColumn('job', 'Job', 'VARCHAR', true, 255, null);
         $this->addColumn('company', 'Company', 'VARCHAR', true, 255, null);
         $this->addColumn('billto_address', 'BilltoAddress', 'VARCHAR', true, 255, null);
@@ -368,6 +374,7 @@ class CustomersTableMap extends TableMap
             $criteria->addSelectColumn(CustomersTableMap::COL_EMAIL);
             $criteria->addSelectColumn(CustomersTableMap::COL_PHONE);
             $criteria->addSelectColumn(CustomersTableMap::COL_PASSWORD);
+            $criteria->addSelectColumn(CustomersTableMap::COL_REGISTRATION_DATE);
             $criteria->addSelectColumn(CustomersTableMap::COL_JOB);
             $criteria->addSelectColumn(CustomersTableMap::COL_COMPANY);
             $criteria->addSelectColumn(CustomersTableMap::COL_BILLTO_ADDRESS);
@@ -383,6 +390,7 @@ class CustomersTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.phone');
             $criteria->addSelectColumn($alias . '.password');
+            $criteria->addSelectColumn($alias . '.registration_date');
             $criteria->addSelectColumn($alias . '.job');
             $criteria->addSelectColumn($alias . '.company');
             $criteria->addSelectColumn($alias . '.billto_address');

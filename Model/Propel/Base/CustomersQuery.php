@@ -26,6 +26,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomersQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildCustomersQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method     ChildCustomersQuery orderByPassword($order = Criteria::ASC) Order by the password column
+ * @method     ChildCustomersQuery orderByRegistrationDate($order = Criteria::ASC) Order by the registration_date column
  * @method     ChildCustomersQuery orderByJob($order = Criteria::ASC) Order by the job column
  * @method     ChildCustomersQuery orderByCompany($order = Criteria::ASC) Order by the company column
  * @method     ChildCustomersQuery orderByBilltoAddress($order = Criteria::ASC) Order by the billto_address column
@@ -41,6 +42,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomersQuery groupByEmail() Group by the email column
  * @method     ChildCustomersQuery groupByPhone() Group by the phone column
  * @method     ChildCustomersQuery groupByPassword() Group by the password column
+ * @method     ChildCustomersQuery groupByRegistrationDate() Group by the registration_date column
  * @method     ChildCustomersQuery groupByJob() Group by the job column
  * @method     ChildCustomersQuery groupByCompany() Group by the company column
  * @method     ChildCustomersQuery groupByBilltoAddress() Group by the billto_address column
@@ -79,6 +81,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomers findOneByEmail(string $email) Return the first ChildCustomers filtered by the email column
  * @method     ChildCustomers findOneByPhone(string $phone) Return the first ChildCustomers filtered by the phone column
  * @method     ChildCustomers findOneByPassword(string $password) Return the first ChildCustomers filtered by the password column
+ * @method     ChildCustomers findOneByRegistrationDate(string $registration_date) Return the first ChildCustomers filtered by the registration_date column
  * @method     ChildCustomers findOneByJob(string $job) Return the first ChildCustomers filtered by the job column
  * @method     ChildCustomers findOneByCompany(string $company) Return the first ChildCustomers filtered by the company column
  * @method     ChildCustomers findOneByBilltoAddress(string $billto_address) Return the first ChildCustomers filtered by the billto_address column
@@ -97,6 +100,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomers requireOneByEmail(string $email) Return the first ChildCustomers filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByPhone(string $phone) Return the first ChildCustomers filtered by the phone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByPassword(string $password) Return the first ChildCustomers filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCustomers requireOneByRegistrationDate(string $registration_date) Return the first ChildCustomers filtered by the registration_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByJob(string $job) Return the first ChildCustomers filtered by the job column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByCompany(string $company) Return the first ChildCustomers filtered by the company column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByBilltoAddress(string $billto_address) Return the first ChildCustomers filtered by the billto_address column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -113,6 +117,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomers[]|ObjectCollection findByEmail(string $email) Return ChildCustomers objects filtered by the email column
  * @method     ChildCustomers[]|ObjectCollection findByPhone(string $phone) Return ChildCustomers objects filtered by the phone column
  * @method     ChildCustomers[]|ObjectCollection findByPassword(string $password) Return ChildCustomers objects filtered by the password column
+ * @method     ChildCustomers[]|ObjectCollection findByRegistrationDate(string $registration_date) Return ChildCustomers objects filtered by the registration_date column
  * @method     ChildCustomers[]|ObjectCollection findByJob(string $job) Return ChildCustomers objects filtered by the job column
  * @method     ChildCustomers[]|ObjectCollection findByCompany(string $company) Return ChildCustomers objects filtered by the company column
  * @method     ChildCustomers[]|ObjectCollection findByBilltoAddress(string $billto_address) Return ChildCustomers objects filtered by the billto_address column
@@ -219,7 +224,7 @@ abstract class CustomersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_customer, firstname, lastname, email, phone, password, job, company, billto_address, billto_zipcode, billto_city, shipto_address, shipto_zipcode, shipto_city FROM customers WHERE id_customer = :p0';
+        $sql = 'SELECT id_customer, firstname, lastname, email, phone, password, registration_date, job, company, billto_address, billto_zipcode, billto_city, shipto_address, shipto_zipcode, shipto_city FROM customers WHERE id_customer = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -473,6 +478,49 @@ abstract class CustomersQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CustomersTableMap::COL_PASSWORD, $password, $comparison);
+    }
+
+    /**
+     * Filter the query on the registration_date column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRegistrationDate('2011-03-14'); // WHERE registration_date = '2011-03-14'
+     * $query->filterByRegistrationDate('now'); // WHERE registration_date = '2011-03-14'
+     * $query->filterByRegistrationDate(array('max' => 'yesterday')); // WHERE registration_date > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $registrationDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCustomersQuery The current query, for fluid interface
+     */
+    public function filterByRegistrationDate($registrationDate = null, $comparison = null)
+    {
+        if (is_array($registrationDate)) {
+            $useMinMax = false;
+            if (isset($registrationDate['min'])) {
+                $this->addUsingAlias(CustomersTableMap::COL_REGISTRATION_DATE, $registrationDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($registrationDate['max'])) {
+                $this->addUsingAlias(CustomersTableMap::COL_REGISTRATION_DATE, $registrationDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CustomersTableMap::COL_REGISTRATION_DATE, $registrationDate, $comparison);
     }
 
     /**

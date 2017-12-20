@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/accf/assets/backoffice/style.css</file>
+            <file>file:/C:/xampp/htdocs/accf/views/backoffice/dashboard/employees/read_employee.html.twig</file>
+            <file>file:/C:/xampp/htdocs/accf/views/backoffice/dashboard/index.html.twig</file>
+            <file>file:/C:/xampp/htdocs/accf/views/backoffice/dashboard/services/read_services.html.twig</file>
+            <file>file:/C:/xampp/htdocs/accf/views/backoffice/layout.html.twig</file>
+            <file>file:/C:/xampp/htdocs/accf/views/backoffice/dashboard/products/read_products.html.twig</file>
+            <file>file:/C:/xampp/htdocs/accf/controllers/backoffice/dashboard_controller.php</file>
+        </group>
     </open-files>
 </project-private>

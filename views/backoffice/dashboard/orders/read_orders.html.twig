@@ -13,30 +13,33 @@
             
             <tr>
                 <th>Numéro de commande</th>
-                <th>Numéro de client</th>
-                <th>Référence produit</th>
-                <th>Référence service</th>
+                <th>Nom du client</th>
+                <th>Montant des produits</th>
+                <th>Montant des services</th>
                 <th>Date de commande</th>
             </tr>
 
             {% for order in orders %}
 
             <tr>
-                <td>{{ order.idOrder }}</td>
-                <td>{{ order.idCustomer }}</td>
-                <td>{{ order.idProduct }}</td>
-                <td>{{ order.idService }}</td>
+                <td>
+{#                    <a href="{{ path('afficher_client', { company: customer.company }) }}">{{ customer.company }}</a>#}
+                    <a href="{{ path('afficher_commande', { idOrder: order.idOrder }) }}">{{ order.idOrder }}</a>
+                </td>
+
+                <td>{{ order.virtualColumns.customerName }}</td>
+                <td>{{ order.virtualColumns.productAmount|number_format(2, ',', ' ') }}</td>
+                <td>{{ order.virtualColumns.serviceAmount|number_format(2, ',', ' ') }}</td>
                 <td>{{ order.orderDate | date('d/m/Y') }}</td>
             </tr>
+
+            {% endfor %}
 
 {#TRAITEMENT PHP EVENTUEL            #}
 {#          $datetime = Datetime::createFromFormat('d/m/Y');
             $dateBdd = $datetime->toFormat('Y-m-d');
 #}
-            {% endfor %}
            
-        </table>
-            
-    </div>
-    
+        </table>           
+    </div>    
 {% endblock %}

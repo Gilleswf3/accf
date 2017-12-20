@@ -22,9 +22,9 @@
                 </tr>
 
                 <tr>
-                    <td>{{ dailyOrdersCount}}</td> 
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ dailyCustomersCount }}</td> 
+                    <td>{{ weeklyCustomersCount }}</td>
+                    <td>{{ monthlyCustomersCount }}</td>
                 </tr>
                 
             </table>
@@ -45,29 +45,29 @@
                                
                 <tr>
                     <td>Dernier jour</td> 
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ lastDayOrders }}</td>
+                    <td>{{ (lastDayMinimalOrder.virtualColumns.productMinimalPrice + lastDayMinimalOrder.virtualColumns.serviceMinimalPrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastDayAverageOrder.virtualColumns.productAveragePrice + lastDayAverageOrder.virtualColumns.serviceAveragePrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastDayMaximalOrder.virtualColumns.productMaximalPrice + lastDayMaximalOrder.virtualColumns.serviceMaximalPrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastDayOrderSum.virtualColumns.productSum + lastDayOrderSum.virtualColumns.serviceSum)|number_format(2, ',', ' ') }}</td>
                 </tr>
                 
                 <tr>
                     <td>Dernière semaine</td> 
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ lastWeekOrders }}</td>
+                    <td>{{ (lastWeekMinimalOrder.virtualColumns.productMinimalPrice + lastWeekMinimalOrder.virtualColumns.serviceMinimalPrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastWeekAverageOrder.virtualColumns.productAveragePrice + lastWeekAverageOrder.virtualColumns.serviceAveragePrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastWeekMaximalOrder.virtualColumns.productMaximalPrice + lastWeekMaximalOrder.virtualColumns.serviceMaximalPrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastWeekOrderSum.virtualColumns.productSum + lastWeekOrderSum.virtualColumns.serviceSum)|number_format(2, ',', ' ') }}</td>
                 </tr>
 
                 <tr>
                     <td>Dernier mois</td> 
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
-                    <td>{{ dailyOrdersCount}}</td>
+                    <td>{{ lastMonthOrders }}</td>
+                    <td>{{ (lastMonthMinimalOrder.virtualColumns.productMinimalPrice + lastMonthMinimalOrder.virtualColumns.serviceMinimalPrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastMonthAverageOrder.virtualColumns.productAveragePrice + lastMonthAverageOrder.virtualColumns.serviceAveragePrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastMonthMaximalOrder.virtualColumns.productMaximalPrice + lastMonthMaximalOrder.virtualColumns.serviceMaximalPrice)|number_format(2, ',', ' ') }}</td>
+                    <td>{{ (lastMonthOrderSum.virtualColumns.productSum + lastMonthOrderSum.virtualColumns.serviceSum)|number_format(2, ',', ' ') }}</td>
                 </tr>
 
             </table>

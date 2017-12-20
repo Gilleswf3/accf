@@ -16,19 +16,174 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
     $products = \Model\Propel\ProductsQuery::create()->find();
     $services = \Model\Propel\ServicesQuery::create()->find();
 
+    //CUSTOMER STATS
+    $dailyCustomersCount = Model\Propel\CustomersQuery::create()
+        ->filterByRegistrationDate(array('min' => time() - 1 * 24 * 60 * 60))
+        ->count();
+    $weeklyCustomersCount = Model\Propel\CustomersQuery::create()
+        ->filterByRegistrationDate(array('min' => time() - 7 * 24 * 60 * 60))
+        ->count();
+    $monthlyCustomersCount = Model\Propel\CustomersQuery::create()
+        ->filterByRegistrationDate(array('min' => time() - 30 * 24 * 60 * 60))
+        ->count();
+
+    
+    
     //ORDER STATS
-    $dailyOrdersCount = Model\Propel\CustomersQuery::create()->count();
-    $weeklyOrdersCount = Model\Propel\CustomersQuery::create()->count();
-    $monthlyOrdersCount = Model\Propel\CustomersQuery::create()->count();
+    $lastDayOrders = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => time() - 1 * 24 * 60 * 60))
+        ->count();
+
+    $lastWeekOrders = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => time() - 7 * 24 * 60 * 60))
+        ->count();
+
+    $lastMonthOrders = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => time() - 30 * 24 * 60 * 60))
+        ->count();
+
+    
+    //COMMANDES MINIMALES
+    
+    $lastDayMinimalOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 1 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('MIN(Products.PriceVatExcluded)', 'productMinimalPrice')
+        ->withColumn('MIN(Services.PriceVatExcluded)', 'serviceMinimalPrice')
+        ->findOne();
+
+    $lastWeekMinimalOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 7 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('MIN(Products.PriceVatExcluded)', 'productMinimalPrice')
+        ->withColumn('MIN(Services.PriceVatExcluded)', 'serviceMinimalPrice')
+        ->findOne();
+
+    $lastMonthMinimalOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 30 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('MIN(Products.PriceVatExcluded)', 'productMinimalPrice')
+        ->withColumn('MIN(Services.PriceVatExcluded)', 'serviceMinimalPrice')
+        ->findOne();
+
+    
+    //COMMANDES MOYENNES
+        
+    $lastDayAverageOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 1 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('AVG(Products.PriceVatExcluded)', 'productAveragePrice')
+        ->withColumn('AVG(Services.PriceVatExcluded)', 'serviceAveragePrice')
+        ->findOne();
+
+    $lastWeekAverageOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 7 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('AVG(Products.PriceVatExcluded)', 'productAveragePrice')
+        ->withColumn('AVG(Services.PriceVatExcluded)', 'serviceAveragePrice')
+        ->findOne();
+
+    $lastMonthAverageOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 30 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('AVG(Products.PriceVatExcluded)', 'productAveragePrice')
+        ->withColumn('AVG(Services.PriceVatExcluded)', 'serviceAveragePrice')
+        ->findOne();
+
+    
+    //COMMANDES MAXIMALES
+
+    $lastDayMaximalOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 1 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('MAX(Products.PriceVatExcluded)', 'productMaximalPrice')
+        ->withColumn('MAX(Services.PriceVatExcluded)', 'serviceMaximalPrice')
+        ->findOne();
+
+    $lastWeekMaximalOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 7 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('MAX(Products.PriceVatExcluded)', 'productMaximalPrice')
+        ->withColumn('MAX(Services.PriceVatExcluded)', 'serviceMaximalPrice')
+        ->findOne();
+    
+    $lastMonthMaximalOrder = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 30 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('MAX(Products.PriceVatExcluded)', 'productMaximalPrice')
+        ->withColumn('MAX(Services.PriceVatExcluded)', 'serviceMaximalPrice')
+        ->findOne();
+
+    
+    //SOMME COMMANDES
+
+    $lastDayOrderSum = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 1 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('SUM(Products.PriceVatExcluded)', 'productSum')
+        ->withColumn('SUM(Services.PriceVatExcluded)', 'serviceSum')
+        ->findOne();
+
+    $lastWeekOrderSum = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 7 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('SUM(Products.PriceVatExcluded)', 'productSum')
+        ->withColumn('SUM(Services.PriceVatExcluded)', 'serviceSum')
+        ->findOne();
+
+    $lastMonthOrderSum = Model\Propel\OrdersQuery::create()
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 30 * 24 * 60 * 60)))
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('SUM(Products.PriceVatExcluded)', 'productSum')
+        ->withColumn('SUM(Services.PriceVatExcluded)', 'serviceSum')
+        ->findOne();
+    
+    
+//    var_dump($lastDayMinimalOrder);
     
     return $app['twig']->render('backoffice/dashboard/index.html.twig', array(
         'agencies' => $agencies,
         'employees' => $employees,
         'products' => $products,
         'services' => $services,
-        'dailyOrdersCount' => $dailyOrdersCount,
-        'weeklyOrdersCount' => $weeklyOrdersCount,
-        'monthlyOrdersCount' => $monthlyOrdersCount            
+        
+        'dailyCustomersCount' => $dailyCustomersCount,
+        'weeklyCustomersCount' => $weeklyCustomersCount,
+        'monthlyCustomersCount' => $monthlyCustomersCount,
+            
+        'lastDayOrders' => $lastDayOrders,
+        'lastWeekOrders' => $lastWeekOrders,
+        'lastMonthOrders' => $lastMonthOrders,
+            
+        'lastDayMinimalOrder' => $lastDayMinimalOrder,
+        'lastWeekMinimalOrder' => $lastWeekMinimalOrder,
+        'lastMonthMinimalOrder' => $lastMonthMinimalOrder,
+            
+        'lastDayAverageOrder' => $lastDayAverageOrder,
+        'lastWeekAverageOrder' => $lastWeekAverageOrder,
+        'lastMonthAverageOrder' => $lastMonthAverageOrder,
+
+        'lastDayMaximalOrder' => $lastDayMaximalOrder,
+        'lastWeekMaximalOrder' => $lastWeekMaximalOrder,
+        'lastMonthMaximalOrder' => $lastMonthMaximalOrder,
+        
+        'lastDayOrderSum' => $lastDayOrderSum,
+        'lastWeekOrderSum' => $lastWeekOrderSum,
+        'lastMonthOrderSum' => $lastMonthOrderSum
+
+            
     ));
 })->bind('dashboard');
 
@@ -137,18 +292,38 @@ $backofficeGroup->get('/afficher_clients', function() use ($app) {
 
 
 //ROUTE DE LA PAGE AFFICHAGE DETAILS COMMANDE
-$backofficeGroup->get('/afficher_commande', function() use ($app) {
-    $orders = \Model\Propel\OrdersQuery::create()->find();
+$backofficeGroup->get('/afficher_commande/{idOrder}', function($idOrder) use ($app) {
+    $order = \Model\Propel\OrdersQuery::create()
+        ->joinWithCustomers()
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('(Customers.Company)', 'customerName')
+        ->withColumn('(Customers.Email)', 'customerEmail')
+        ->withColumn('(Products.ProductMainCategory)', 'productCategory')
+        ->withColumn('(Products.PriceVatExcluded)', 'productAmount')
+        ->withColumn('(Services.Title)', 'serviceTitle')
+        ->withColumn('(Services.PriceVatExcluded)', 'serviceAmount')
+        ->findOneByIdOrder($idOrder);
     return $app['twig']->render('backoffice/dashboard/orders/read_order.html.twig', array(
-        'orders' => $orders
+        'order' => $order
     ));
 })->bind('afficher_commande');
 
 //ROUTE DE LA PAGE AFFICHAGE COMMANDES
 $backofficeGroup->get('/afficher_commandes', function() use ($app) {
-    $orders = \Model\Propel\OrdersQuery::create()->find();
+    $orders = \Model\Propel\OrdersQuery::create()
+        ->joinWithCustomers()
+        ->joinWithProducts()
+        ->joinWithServices()
+        ->withColumn('(Customers.Company)', 'customerName')
+        ->withColumn('(Products.PriceVatExcluded)', 'productAmount')
+        ->withColumn('(Services.PriceVatExcluded)', 'serviceAmount')
+        ->limit(10)
+        ->orderByIdOrder('desc')
+        ->find();
+
     return $app['twig']->render('backoffice/dashboard/orders/read_orders.html.twig', array(
-                'orders' => $orders
+        'orders' => $orders
     ));
 })->bind('afficher_commandes');
 
@@ -205,20 +380,70 @@ $backofficeGroup->get('/employees/supprimer_employe', function() use ($app) {
 })->bind('supprimer_employe');
 
 
+//ROUTE DE LA PAGE EDITION/MODIFICATION PUBLICATIONS
+$backofficeGroup->match('/editer_contents/{id}', function(Request $request,  $id = null) use ($app) {
+    if($id) {
+        $content = Model\Propel\Base\ContentQuery::create()->findOneByIdContent($id);
+    } else {
+        $content = new Model\Propel\Content();
+    }
+    if($request->request->all()) {
+        $pictureContent = $request->request->get('_pictureContent');
+        $contentTitle = $request->request->get('_contentTitle');
+        $contentText = $request->request->get('_contentText');
+        $subTitle = $request->request->get('_subtitle');
+       
+
+        
+        // si tout va bien sauvegarde de l'entité
+        $content->setPictureContent($pictureContent);
+        $content->setContentTitle($contentTitle);
+        $content->setContentText($contentText);
+        $content->setSubTitle($subTitle);
+       
+        $content->save();
+    }
+    return $app['twig']->render('backoffice/dashboard/contents/editer_contents.html.twig', ['content' => $content]);
+})
+->value('id', null)
+->bind('editer_publication');
+
+
+// ROUTE DE LA PAGE AFFICHAGE DES PUBLICATIONS
+$backofficeGroup->get('/contents/read_publication', function() use ($app) {
+    $content = \Model\Propel\ContentQuery::create()->find();
+    return $app['twig']->render('backoffice/dashboard/contents/read_contents.html.twig', array(
+        'contents' => $content
+    ));
+})->bind('afficher_publication');
+
+
+
+
+//ROUTE DE LA PAGE SUPPRESSION PUBLICATIONS
+$backofficeGroup->match('/read_publication/{id}', function($id = null) use ($app) {
+        $result = \Model\Propel\ContentQuery::create()->filterByIdContent($id)->delete();
+        return $app->redirect($app["url_generator"]->generate("read_publication"));
+    })
+    ->value('id', null)
+    ->bind('supprimer_publication');
+
+
+
 //ROUTE DE LA PAGE EDITER PUBLICATION
-$backofficeGroup->get('/standards/editer_publication', function() use ($app) {
-    return $app['twig']->render('backoffice/dashboard/standards/edit_standard.html.twig');
-})->bind('editer_publication');
+//$backofficeGroup->get('/standards/editer_publication', function() use ($app) {
+//    return $app['twig']->render('backoffice/dashboard/standards/edit_standard.html.twig');
+//})->bind('editer_publication');
 
 //ROUTE DE LA PAGE SUPPRIMER PUBLICATION
-$backofficeGroup->get('/standards/supprimer_publication', function() use ($app) {
-    return $app['twig']->render('backoffice/dashboard/standards/delete_standard.html.twig');
-})->bind('supprimer_publication');
+//$backofficeGroup->get('/standards/supprimer_publication', function() use ($app) {
+//    return $app['twig']->render('backoffice/dashboard/standards/delete_standard.html.twig');
+//})->bind('supprimer_publication');
 
 //ROUTE DE LA PAGE AFFICHER PUBLICATION
-$backofficeGroup->get('/standards/afficher_publication', function() use ($app) {
-    return $app['twig']->render('backoffice/dashboard/standards/read_standard.html.twig');
-})->bind('afficher_publication');
+//$backofficeGroup->get('/standards/afficher_publication', function() use ($app) {
+//    return $app['twig']->render('backoffice/dashboard/standards/read_standard.html.twig');
+//})->bind('afficher_publication');
 
 
 
@@ -284,7 +509,55 @@ $backofficeGroup->match('/read_products/{id}', function($id = null) use ($app) {
     ->value('id', null)
     ->bind('suppress_products');
 
+    
+//ROUTE DU FILTRE DES PRODUITS
+    $backofficeGroup->get('/filtre_produits', function() use ($app) {
+        $filtres = \Model\Propel\ProductsQuery::create()->find();
 
+        $desenfumages = Model\Propel\ProductsQuery::create()
+            ->filterByProductSubCategory('Desenfumage')
+            ->find();
+    
+        $detectionChutes = Model\Propel\ProductsQuery::create()
+             ->filterByProductSubCategory('Detection des chutes')
+             ->find();
+        
+        $alarmes = Model\Propel\ProductsQuery::create()
+             ->filterByProductSubCategory('Alarmes')
+             ->find();
+        
+        $appelMalades = Model\Propel\ProductsQuery::create()
+             ->filterByProductSubCategory('Appel Malade')
+             ->find();
+        
+        $controleAcces = Model\Propel\ProductsQuery::create()
+             ->filterByProductSubCategory('Controle d\'acces')
+             ->find();
+             
+         $videoSurveillances  = Model\Propel\ProductsQuery::create()
+              ->filterByProductSubCategory('Video-surveillance')
+              ->find();
+         
+         $detectionIncendies  = Model\Propel\ProductsQuery::create()
+              ->filterByProductSubCategory('Detection incendie')
+               ->find();
+                 
+          $eclairageSecurites  = Model\Propel\ProductsQuery::create()
+              ->filterByProductSubCategory('Eclairage de securite')
+                  ->find();
+                                       
+    return $app['twig']->render('backoffice/dashboard/products/filtre_produits.html.twig', array(
+        'filtres' => $filtres,
+        'desenfumages' => $desenfumages,
+        'detectionChutes' => $detectionChutes,
+        'alarmes' => $alarmes,
+        'appelMalades' => $appelMalades,     
+        'controleAcces' => $controleAcces,
+        'videoSurveillances' => $videoSurveillances,
+        'detectionIncendies' => $detectionIncendies,
+        'eclairageSecurites' => $eclairageSecurites
+));
+})      ->bind('filtre_produits');
 
 
 //ROUTE DE LA PAGE EDITION/MODIFICATION SERVICES

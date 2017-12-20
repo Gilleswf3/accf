@@ -7,34 +7,33 @@
 
     <div class="w3-col l1 MarginColumn">Marge</div>
 
-    <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
+    <div class="w3-card w3-col l11 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
 
         <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
             <h2 class="w3-margin w3-teal">Afficher les détails d'une commande</h2>
             
             <tr>
                 <th>Numéro de commande</th>
-                <th>Numéro de client</th>
+                <th>Nom du client</th>
+                <th>Acheteur</th>
                 <th>Référence produit</th>
+                <th>Montant produits</th>
                 <th>Référence service</th>
+                <th>Montant services</th>
                 <th>Date de commande</th>
             </tr>
 
-            {% for order in orders %}
-
             <tr>
                 <td>{{ order.idOrder }}</td>
-                <td>{{ order.idCustomer }}</td>
-                <td>{{ order.idProduct }}</td>
-                <td>{{ order.idService }}</td>
-                <td>Date</td>
-                {#                <td>{{ order.orderDate }}</td>#}
+                <td>{{ order.virtualColumns.customerName }}</td>
+                <td>{{ order.virtualColumns.customerEmail }}</td>
+                <td>{{ order.virtualColumns.productCategory }}</td>
+                <td>{{ order.virtualColumns.productAmount|number_format(2, ',', ' ') }}</td>
+                <td>{{ order.virtualColumns.serviceTitle }}</td>
+                <td>{{ order.virtualColumns.serviceAmount|number_format(2, ',', ' ') }}</td>
+                <td>{{ order.orderDate | date('d/m/Y') }}</td>
             </tr>
-
-            {% endfor %}
            
-        </table>
-            
-    </div>
-    
+        </table>            
+    </div>    
 {% endblock %}

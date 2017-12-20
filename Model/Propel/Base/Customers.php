@@ -2,6 +2,7 @@
 
 namespace Model\Propel\Base;
 
+use \DateTime;
 use \Exception;
 use \PDO;
 use Model\Propel\Customers as ChildCustomers;
@@ -22,6 +23,7 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'customers' table.
@@ -105,6 +107,13 @@ abstract class Customers implements ActiveRecordInterface
      * @var        string
      */
     protected $password;
+
+    /**
+     * The value for the registration_date field.
+     *
+     * @var        DateTime
+     */
+    protected $registration_date;
 
     /**
      * The value for the job field.
@@ -468,6 +477,26 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
+     * Get the [optionally formatted] temporal [registration_date] column value.
+     *
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getRegistrationDate($format = NULL)
+    {
+        if ($format === null) {
+            return $this->registration_date;
+        } else {
+            return $this->registration_date instanceof \DateTimeInterface ? $this->registration_date->format($format) : null;
+        }
+    }
+
+    /**
      * Get the [job] column value.
      *
      * @return string
@@ -666,6 +695,26 @@ abstract class Customers implements ActiveRecordInterface
 
         return $this;
     } // setPassword()
+
+    /**
+     * Sets the value of [registration_date] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
+     */
+    public function setRegistrationDate($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->registration_date !== null || $dt !== null) {
+            if ($this->registration_date === null || $dt === null || $dt->format("Y-m-d") !== $this->registration_date->format("Y-m-d")) {
+                $this->registration_date = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[CustomersTableMap::COL_REGISTRATION_DATE] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setRegistrationDate()
 
     /**
      * Set the value of [job] column.
@@ -881,28 +930,34 @@ abstract class Customers implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CustomersTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
             $this->password = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CustomersTableMap::translateFieldName('Job', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CustomersTableMap::translateFieldName('RegistrationDate', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00') {
+                $col = null;
+            }
+            $this->registration_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CustomersTableMap::translateFieldName('Job', TableMap::TYPE_PHPNAME, $indexType)];
             $this->job = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CustomersTableMap::translateFieldName('Company', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CustomersTableMap::translateFieldName('Company', TableMap::TYPE_PHPNAME, $indexType)];
             $this->company = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CustomersTableMap::translateFieldName('BilltoAddress', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CustomersTableMap::translateFieldName('BilltoAddress', TableMap::TYPE_PHPNAME, $indexType)];
             $this->billto_address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CustomersTableMap::translateFieldName('BilltoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CustomersTableMap::translateFieldName('BilltoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->billto_zipcode = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CustomersTableMap::translateFieldName('BilltoCity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CustomersTableMap::translateFieldName('BilltoCity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->billto_city = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CustomersTableMap::translateFieldName('ShiptoAddress', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CustomersTableMap::translateFieldName('ShiptoAddress', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CustomersTableMap::translateFieldName('ShiptoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CustomersTableMap::translateFieldName('ShiptoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_zipcode = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CustomersTableMap::translateFieldName('ShiptoCity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CustomersTableMap::translateFieldName('ShiptoCity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_city = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -912,7 +967,7 @@ abstract class Customers implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 14; // 14 = CustomersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 15; // 15 = CustomersTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Customers'), 0, $e);
@@ -1150,6 +1205,9 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = 'password';
         }
+        if ($this->isColumnModified(CustomersTableMap::COL_REGISTRATION_DATE)) {
+            $modifiedColumns[':p' . $index++]  = 'registration_date';
+        }
         if ($this->isColumnModified(CustomersTableMap::COL_JOB)) {
             $modifiedColumns[':p' . $index++]  = 'job';
         }
@@ -1202,6 +1260,9 @@ abstract class Customers implements ActiveRecordInterface
                         break;
                     case 'password':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
+                        break;
+                    case 'registration_date':
+                        $stmt->bindValue($identifier, $this->registration_date ? $this->registration_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                     case 'job':
                         $stmt->bindValue($identifier, $this->job, PDO::PARAM_STR);
@@ -1308,27 +1369,30 @@ abstract class Customers implements ActiveRecordInterface
                 return $this->getPassword();
                 break;
             case 6:
-                return $this->getJob();
+                return $this->getRegistrationDate();
                 break;
             case 7:
-                return $this->getCompany();
+                return $this->getJob();
                 break;
             case 8:
-                return $this->getBilltoAddress();
+                return $this->getCompany();
                 break;
             case 9:
-                return $this->getBilltoZipcode();
+                return $this->getBilltoAddress();
                 break;
             case 10:
-                return $this->getBilltoCity();
+                return $this->getBilltoZipcode();
                 break;
             case 11:
-                return $this->getShiptoAddress();
+                return $this->getBilltoCity();
                 break;
             case 12:
-                return $this->getShiptoZipcode();
+                return $this->getShiptoAddress();
                 break;
             case 13:
+                return $this->getShiptoZipcode();
+                break;
+            case 14:
                 return $this->getShiptoCity();
                 break;
             default:
@@ -1367,15 +1431,20 @@ abstract class Customers implements ActiveRecordInterface
             $keys[3] => $this->getEmail(),
             $keys[4] => $this->getPhone(),
             $keys[5] => $this->getPassword(),
-            $keys[6] => $this->getJob(),
-            $keys[7] => $this->getCompany(),
-            $keys[8] => $this->getBilltoAddress(),
-            $keys[9] => $this->getBilltoZipcode(),
-            $keys[10] => $this->getBilltoCity(),
-            $keys[11] => $this->getShiptoAddress(),
-            $keys[12] => $this->getShiptoZipcode(),
-            $keys[13] => $this->getShiptoCity(),
+            $keys[6] => $this->getRegistrationDate(),
+            $keys[7] => $this->getJob(),
+            $keys[8] => $this->getCompany(),
+            $keys[9] => $this->getBilltoAddress(),
+            $keys[10] => $this->getBilltoZipcode(),
+            $keys[11] => $this->getBilltoCity(),
+            $keys[12] => $this->getShiptoAddress(),
+            $keys[13] => $this->getShiptoZipcode(),
+            $keys[14] => $this->getShiptoCity(),
         );
+        if ($result[$keys[6]] instanceof \DateTimeInterface) {
+            $result[$keys[6]] = $result[$keys[6]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -1450,27 +1519,30 @@ abstract class Customers implements ActiveRecordInterface
                 $this->setPassword($value);
                 break;
             case 6:
-                $this->setJob($value);
+                $this->setRegistrationDate($value);
                 break;
             case 7:
-                $this->setCompany($value);
+                $this->setJob($value);
                 break;
             case 8:
-                $this->setBilltoAddress($value);
+                $this->setCompany($value);
                 break;
             case 9:
-                $this->setBilltoZipcode($value);
+                $this->setBilltoAddress($value);
                 break;
             case 10:
-                $this->setBilltoCity($value);
+                $this->setBilltoZipcode($value);
                 break;
             case 11:
-                $this->setShiptoAddress($value);
+                $this->setBilltoCity($value);
                 break;
             case 12:
-                $this->setShiptoZipcode($value);
+                $this->setShiptoAddress($value);
                 break;
             case 13:
+                $this->setShiptoZipcode($value);
+                break;
+            case 14:
                 $this->setShiptoCity($value);
                 break;
         } // switch()
@@ -1518,28 +1590,31 @@ abstract class Customers implements ActiveRecordInterface
             $this->setPassword($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setJob($arr[$keys[6]]);
+            $this->setRegistrationDate($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setCompany($arr[$keys[7]]);
+            $this->setJob($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setBilltoAddress($arr[$keys[8]]);
+            $this->setCompany($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setBilltoZipcode($arr[$keys[9]]);
+            $this->setBilltoAddress($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setBilltoCity($arr[$keys[10]]);
+            $this->setBilltoZipcode($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setShiptoAddress($arr[$keys[11]]);
+            $this->setBilltoCity($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setShiptoZipcode($arr[$keys[12]]);
+            $this->setShiptoAddress($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setShiptoCity($arr[$keys[13]]);
+            $this->setShiptoZipcode($arr[$keys[13]]);
+        }
+        if (array_key_exists($keys[14], $arr)) {
+            $this->setShiptoCity($arr[$keys[14]]);
         }
     }
 
@@ -1599,6 +1674,9 @@ abstract class Customers implements ActiveRecordInterface
         }
         if ($this->isColumnModified(CustomersTableMap::COL_PASSWORD)) {
             $criteria->add(CustomersTableMap::COL_PASSWORD, $this->password);
+        }
+        if ($this->isColumnModified(CustomersTableMap::COL_REGISTRATION_DATE)) {
+            $criteria->add(CustomersTableMap::COL_REGISTRATION_DATE, $this->registration_date);
         }
         if ($this->isColumnModified(CustomersTableMap::COL_JOB)) {
             $criteria->add(CustomersTableMap::COL_JOB, $this->job);
@@ -1715,6 +1793,7 @@ abstract class Customers implements ActiveRecordInterface
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setPassword($this->getPassword());
+        $copyObj->setRegistrationDate($this->getRegistrationDate());
         $copyObj->setJob($this->getJob());
         $copyObj->setCompany($this->getCompany());
         $copyObj->setBilltoAddress($this->getBilltoAddress());
@@ -2070,6 +2149,7 @@ abstract class Customers implements ActiveRecordInterface
         $this->email = null;
         $this->phone = null;
         $this->password = null;
+        $this->registration_date = null;
         $this->job = null;
         $this->company = null;
         $this->billto_address = null;

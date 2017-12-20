@@ -1,7 +1,5 @@
 {% extends "backoffice/layout.html.twig" %}
 
-{#{% block title 'Tableau de bord' %}#}
-
 {% block title %}
 {% endblock %}
     
@@ -9,7 +7,7 @@
 
     <div class="w3-col l1 MarginColumn">Marge</div>
 
-    <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
+    <div class="w3-card w3-col l11 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
 
         <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
             <h2 class="w3-margin w3-teal">Afficher les détails d'un client</h2>
@@ -27,8 +25,8 @@
                 <th>Adresse de livraison</th>
                 <th>Code Postal</th>
                 <th>Ville</th>
+                <th>Date d'enregistrement</th>
             </tr>
-
 
             <tr>
                 <td>{{ customer.firstname }}</td>
@@ -43,6 +41,7 @@
                 <td>{{ customer.shiptoAddress }}</td>
                 <td>{{ customer.shiptoZipcode }}</td>
                 <td>{{ customer.shiptoCity }}</td>
+                <td>{{ customer.registrationDate | date('d/m/Y') }}</td>
             </tr>
 
            

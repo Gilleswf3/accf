@@ -28,10 +28,6 @@ main{
 
 #leftmenu{
     min-height: 800px;
-    /*position: fixed;*/
-    /*top:0px;*/
-    /*z-index:1;*/
-    /*overflow-x: hidden;*/
 }
 
 .accordion{
@@ -86,7 +82,7 @@ main{
 }
 
 .dashboardAlert{
-    min-height: 200px;
+    min-height: 330px;
 }
 
 .dashboardContent{
