@@ -59,7 +59,7 @@ class HotlineTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class HotlineTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the id_hotline field
@@ -92,6 +92,11 @@ class HotlineTableMap extends TableMap
     const COL_ID_EMPLOYEE = 'hotline.id_employee';
 
     /**
+     * the column name for the type_author field
+     */
+    const COL_TYPE_AUTHOR = 'hotline.type_author';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,11 +108,11 @@ class HotlineTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdHotline', 'HotlineMessage', 'IdCustomer', 'IdEmployee', ),
-        self::TYPE_CAMELNAME     => array('idHotline', 'hotlineMessage', 'idCustomer', 'idEmployee', ),
-        self::TYPE_COLNAME       => array(HotlineTableMap::COL_ID_HOTLINE, HotlineTableMap::COL_HOTLINE_MESSAGE, HotlineTableMap::COL_ID_CUSTOMER, HotlineTableMap::COL_ID_EMPLOYEE, ),
-        self::TYPE_FIELDNAME     => array('id_hotline', 'hotline_message', 'id_customer', 'id_employee', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('IdHotline', 'HotlineMessage', 'IdCustomer', 'IdEmployee', 'TypeAuthor', ),
+        self::TYPE_CAMELNAME     => array('idHotline', 'hotlineMessage', 'idCustomer', 'idEmployee', 'typeAuthor', ),
+        self::TYPE_COLNAME       => array(HotlineTableMap::COL_ID_HOTLINE, HotlineTableMap::COL_HOTLINE_MESSAGE, HotlineTableMap::COL_ID_CUSTOMER, HotlineTableMap::COL_ID_EMPLOYEE, HotlineTableMap::COL_TYPE_AUTHOR, ),
+        self::TYPE_FIELDNAME     => array('id_hotline', 'hotline_message', 'id_customer', 'id_employee', 'type_author', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -117,11 +122,11 @@ class HotlineTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdHotline' => 0, 'HotlineMessage' => 1, 'IdCustomer' => 2, 'IdEmployee' => 3, ),
-        self::TYPE_CAMELNAME     => array('idHotline' => 0, 'hotlineMessage' => 1, 'idCustomer' => 2, 'idEmployee' => 3, ),
-        self::TYPE_COLNAME       => array(HotlineTableMap::COL_ID_HOTLINE => 0, HotlineTableMap::COL_HOTLINE_MESSAGE => 1, HotlineTableMap::COL_ID_CUSTOMER => 2, HotlineTableMap::COL_ID_EMPLOYEE => 3, ),
-        self::TYPE_FIELDNAME     => array('id_hotline' => 0, 'hotline_message' => 1, 'id_customer' => 2, 'id_employee' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('IdHotline' => 0, 'HotlineMessage' => 1, 'IdCustomer' => 2, 'IdEmployee' => 3, 'TypeAuthor' => 4, ),
+        self::TYPE_CAMELNAME     => array('idHotline' => 0, 'hotlineMessage' => 1, 'idCustomer' => 2, 'idEmployee' => 3, 'typeAuthor' => 4, ),
+        self::TYPE_COLNAME       => array(HotlineTableMap::COL_ID_HOTLINE => 0, HotlineTableMap::COL_HOTLINE_MESSAGE => 1, HotlineTableMap::COL_ID_CUSTOMER => 2, HotlineTableMap::COL_ID_EMPLOYEE => 3, HotlineTableMap::COL_TYPE_AUTHOR => 4, ),
+        self::TYPE_FIELDNAME     => array('id_hotline' => 0, 'hotline_message' => 1, 'id_customer' => 2, 'id_employee' => 3, 'type_author' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -145,6 +150,7 @@ class HotlineTableMap extends TableMap
         $this->addColumn('hotline_message', 'HotlineMessage', 'LONGVARCHAR', true, null, null);
         $this->addForeignKey('id_customer', 'IdCustomer', 'INTEGER', 'customers', 'id_customer', true, null, null);
         $this->addForeignKey('id_employee', 'IdEmployee', 'INTEGER', 'employees', 'id_employee', true, null, null);
+        $this->addColumn('type_author', 'TypeAuthor', 'CHAR', true, null, null);
     } // initialize()
 
     /**
@@ -313,11 +319,13 @@ class HotlineTableMap extends TableMap
             $criteria->addSelectColumn(HotlineTableMap::COL_HOTLINE_MESSAGE);
             $criteria->addSelectColumn(HotlineTableMap::COL_ID_CUSTOMER);
             $criteria->addSelectColumn(HotlineTableMap::COL_ID_EMPLOYEE);
+            $criteria->addSelectColumn(HotlineTableMap::COL_TYPE_AUTHOR);
         } else {
             $criteria->addSelectColumn($alias . '.id_hotline');
             $criteria->addSelectColumn($alias . '.hotline_message');
             $criteria->addSelectColumn($alias . '.id_customer');
             $criteria->addSelectColumn($alias . '.id_employee');
+            $criteria->addSelectColumn($alias . '.type_author');
         }
     }
 

@@ -3,7 +3,6 @@
 use Model\Propel\Base\Customers;
 use Symfony\Component\HttpFoundation\Request;
 
-$publicGroup = $app['controllers_factory'];
 
 $publicGroup->match('/inscription', function(Request $request) use ($app) {
 
@@ -53,7 +52,6 @@ $publicGroup->match('/inscription', function(Request $request) use ($app) {
         ->method('GET|POST')
         ->bind('inscription');
 
-$app->mount('/frontoffice', $publicGroup);
 
 
 

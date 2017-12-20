@@ -1,8 +1,50 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Model\Propel\Base\Hotline;
 
+ 
 $backofficeGroup = $app['controllers_factory'];
+
+$backofficeGroup->match('/messages', function(Request $request) use ($app) {
+    
+    
+  if(($app['security.authorization_checker']->isGranted('ROLE_MEMBRE'))){
+      
+      $messages = Model\Propel\HotlineQuery::create()->filterByEmployees($app['user'])
+              ->find();
+       return $app->json($messages->toArray());     
+                
+  }
+  
+  return $app->abort(404, "Page does not exist.");
+ 
+  
+})
+->method('GET|POST')
+->bind('get_messages');
+
+
+
+$backofficeGroup ->match('insertMessage', function(Request $request) use ($app) {
+    
+    
+  if(($app['security.authorization_checker']->isGranted('ROLE_CLIENT'))){
+      $employee = \Model\Propel\Base\EmployeesQuery::create()->findOneByIdEmployee(1);
+      $message = new \Model\Propel\Hotline();
+      $message->setCustomers($app['user']);
+      $message->setEmployees($employee);
+      $message->setHotlineMessage($request->request->get('hotline_message'));
+      $message->setTypeAuthor('CUSTOMER');
+      $message->save();
+ 
+                
+  }
+  return $app['twig']->render('frontoffice/layout.html.twig');
+})
+->bind('insertMessage')
+->method('GET|POST');
+
 
 //ROUTE DU DASHBOARD BACKOFFICE
 $backofficeGroup->get('/dashboard', function() use ($app) {
@@ -12,39 +54,14 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
 
 //ROUTE DU DASHBOARD LOGIN
 
-$backofficeGroup->match('/login', function(Request $request) use ($app) {
-
-    $email = $request->request->get('_email');
-    $role = $request->request->get('_role');
-    
-    var_dump($email);
-    var_dump($role);
-
-    $employe1 = Model\Propel\Base\EmployeesQuery::create()->findOneByEmail($email);
-    $employe2 = Model\Propel\Base\EmployeesQuery::create()->findOneByRole($role);
-    
-//    var_dump($employe);
-
-    if(!empty($employe1) && !empty($employe2)) {
-//        var_dump($employe);
-        return $app->redirect($app["url_generator"]->generate("dashboard"));
-    }
-    else{
-        return $app['twig']->render('backoffice/login.html.twig');
-    }
-    
-
+$app->match('/login', function(Request $request) use ($app) {
+    return $app['twig']->render('backoffice/login.html.twig', array(
+                'error' => $app['security.last_error']($request),
+                'last_username' => $app['session']->get('_security.last_username'),
+    ));
 })->bind('login');
 
-////$backofficeGroup->match('/login', function(Request $request) use ($app) {
-//    $authorizedUsers = \Model\Propel\EmployeesQuery::create()->find();
-//    return $app['twig']->render('backoffice/login.html.twig', array(
-//                'authorizedUsers' => $authorizedUsers
-//    ));
-//})->bind('login');
 
-
-//ROUTE DE LA PAGE EDITION AGENCE
 $backofficeGroup->match('/editer_agence/{id}', function(Request $request, $id = null) use ($app) {
 
             if ($id) {
@@ -87,11 +104,11 @@ $backofficeGroup->get('/afficher_agence', function() use ($app) {
 
 //ROUTE DE LA PAGE SUPPRESSION AGENCE
 $backofficeGroup->match('/supprimer_agence/{id}', function($id = null) use ($app) {
-        $result = \Model\Propel\AgenciesQuery::create()->filterByIdAgency($id)->delete();
-        return $app->redirect($app["url_generator"]->generate("afficher_agence"));
-    })
-    ->value('id', null)
-    ->bind('supprimer_agence');
+            $result = \Model\Propel\AgenciesQuery::create()->filterByIdAgency($id)->delete();
+            return $app->redirect($app["url_generator"]->generate("afficher_agence"));
+        })
+        ->value('id', null)
+        ->bind('supprimer_agence');
 ;
 
 //ROUTE DE LA PAGE AFFICHAGE DETAILS CLIENT
@@ -99,7 +116,7 @@ $backofficeGroup->get('/afficher_client/{company}', function($company) use ($app
     $customer = \Model\Propel\CustomersQuery::create()
             ->findOneByCompany($company);
     return $app['twig']->render('backoffice/dashboard/customers/read_customer.html.twig', array(
-        'customer' => $customer
+                'customer' => $customer
     ));
 })->bind('afficher_client');
 
@@ -107,7 +124,7 @@ $backofficeGroup->get('/afficher_client/{company}', function($company) use ($app
 $backofficeGroup->get('/afficher_clients', function() use ($app) {
     $customers = \Model\Propel\CustomersQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/customers/read_customers.html.twig', array(
-        'customers' => $customers
+                'customers' => $customers
     ));
 })->bind('afficher_clients');
 
@@ -116,7 +133,7 @@ $backofficeGroup->get('/afficher_clients', function() use ($app) {
 $backofficeGroup->get('/afficher_commande', function() use ($app) {
     $orders = \Model\Propel\OrdersQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/orders/read_order.html.twig', array(
-        'orders' => $orders
+                'orders' => $orders
     ));
 })->bind('afficher_commande');
 
@@ -200,45 +217,45 @@ $backofficeGroup->get('/standards/afficher_publication', function() use ($app) {
 
 
 //ROUTE DE LA PAGE EDITION/MODIFICATION PRODUIT
-$backofficeGroup->match('/products/editer_produits/{id}', function(Request $request,  $id = null) use ($app) {
-    if($id) {
-        $product = Model\Propel\Base\ProductsQuery::create()->findOneByIdProduct($id);
-    } else {
-        $product = new Model\Propel\Products();
-    }
-    if($request->request->all()) {
-        $manufacturer = $request->request->get('_manufacturer');
-        $productMainCategory = $request->request->get('_productmaincategory');
-        $productSubCategory = $request->request->get('_productsubcategory');
-        $title = $request->request->get('_title');
-        $description = $request->request->get('_description');
-        $picture = $request->request->get('_picture');        
-        $priceVatExcluded = $request->request->get('_pricevatexcluded');
-        $priceVatIncluded = $request->request->get('_pricevatincluded');
+$backofficeGroup->match('/products/editer_produits/{id}', function(Request $request, $id = null) use ($app) {
+            if ($id) {
+                $product = Model\Propel\Base\ProductsQuery::create()->findOneByIdProduct($id);
+            } else {
+                $product = new Model\Propel\Products();
+            }
+            if ($request->request->all()) {
+                $manufacturer = $request->request->get('_manufacturer');
+                $productMainCategory = $request->request->get('_productmaincategory');
+                $productSubCategory = $request->request->get('_productsubcategory');
+                $title = $request->request->get('_title');
+                $description = $request->request->get('_description');
+                $picture = $request->request->get('_picture');
+                $priceVatExcluded = $request->request->get('_pricevatexcluded');
+                $priceVatIncluded = $request->request->get('_pricevatincluded');
 
-        
-        // si tout va bien sauvegarde de l'entité
-        $product->setManufacturer($manufacturer);
-        $product->setProductMainCategory($productMainCategory);
-        $product->setProductSubCategory($productSubCategory);
-        $product->setTitle($title);
-        $product->setDescription($description);
-        $product->setPicture($picture);
-        $product->setpriceVatExcluded($priceVatExcluded);
-        $product->setpriceVatIncluded($priceVatIncluded);
-        $product->save();
-    }
-    return $app['twig']->render('backoffice/dashboard/products/editer_products.html.twig', ['product' => $product]);
-})
-->value('id', null)
-->bind('editer_produits');
+
+                // si tout va bien sauvegarde de l'entité
+                $product->setManufacturer($manufacturer);
+                $product->setProductMainCategory($productMainCategory);
+                $product->setProductSubCategory($productSubCategory);
+                $product->setTitle($title);
+                $product->setDescription($description);
+                $product->setPicture($picture);
+                $product->setpriceVatExcluded($priceVatExcluded);
+                $product->setpriceVatIncluded($priceVatIncluded);
+                $product->save();
+            }
+            return $app['twig']->render('backoffice/dashboard/products/editer_products.html.twig', ['product' => $product]);
+        })
+        ->value('id', null)
+        ->bind('editer_produits');
 
 
 // ROUTE DE LA PAGE AFFICHAGE DES PRODUITS
 $backofficeGroup->get('/products/read_products', function() use ($app) {
     $product = \Model\Propel\ProductsQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/products/read_products.html.twig', array(
-        'products' => $product
+                'products' => $product
     ));
 })->bind('read_products');
 
@@ -247,65 +264,65 @@ $backofficeGroup->get('/products/read_products', function() use ($app) {
 $backofficeGroup->get('/products/read_selected_product/{id}', function($id) use ($app) {
     $product = \Model\Propel\ProductsQuery::create()->findOneByIdProduct($id);
     return $app['twig']->render('backoffice/dashboard/products/read_selected_product.html.twig', array(
-        'product' => $product
+                'product' => $product
     ));
 })->bind('read_selected_product');
 
 
 //ROUTE DE LA PAGE SUPPRESSION PRODUITS
 $backofficeGroup->match('/read_products/{id}', function($id = null) use ($app) {
-        $result = \Model\Propel\ProductsQuery::create()->filterByIdProduct($id)->delete();
-        return $app->redirect($app["url_generator"]->generate("read_products"));
-    })
-    ->value('id', null)
-    ->bind('suppress_products');
+            $result = \Model\Propel\ProductsQuery::create()->filterByIdProduct($id)->delete();
+            return $app->redirect($app["url_generator"]->generate("read_products"));
+        })
+        ->value('id', null)
+        ->bind('suppress_products');
 
 
 
 
 //ROUTE DE LA PAGE EDITION/MODIFICATION SERVICES
-$backofficeGroup->match('/services/editer_services/{id}', function(Request $request,  $id = null) use ($app) {
-    if($id) {
-        $service = Model\Propel\Base\ServicesQuery::create()->findOneByIdService($id);
-    } else {
-        $service = new Model\Propel\Services();
-    }
-    if($request->request->all()) {
-        $title = $request->request->get('_title');
-        $description = $request->request->get('_description');
-        $priceVatExcluded = $request->request->get('_priceVatExcluded');
-        $priceVatIncluded = $request->request->get('_priceVatIncluded');
-               
-        // si tout va bien sauvegarde de l'entité
-        $service->setTitle($title);
-        $service->setDescription($description);
-        $service->setPriceVatExcluded($priceVatExcluded);
-        $service->setPriceVatIncluded( $priceVatIncluded);
-       
-        $product->save();
-    }
-    return $app['twig']->render('backoffice/dashboard/services/editer_services.html.twig', ['service' => $service]);
-})
-->value('id', null)
-->bind('editer_services');
+$backofficeGroup->match('/services/editer_services/{id}', function(Request $request, $id = null) use ($app) {
+            if ($id) {
+                $service = Model\Propel\Base\ServicesQuery::create()->findOneByIdService($id);
+            } else {
+                $service = new Model\Propel\Services();
+            }
+            if ($request->request->all()) {
+                $title = $request->request->get('_title');
+                $description = $request->request->get('_description');
+                $priceVatExcluded = $request->request->get('_priceVatExcluded');
+                $priceVatIncluded = $request->request->get('_priceVatIncluded');
+
+                // si tout va bien sauvegarde de l'entité
+                $service->setTitle($title);
+                $service->setDescription($description);
+                $service->setPriceVatExcluded($priceVatExcluded);
+                $service->setPriceVatIncluded($priceVatIncluded);
+
+                $product->save();
+            }
+            return $app['twig']->render('backoffice/dashboard/services/editer_services.html.twig', ['service' => $service]);
+        })
+        ->value('id', null)
+        ->bind('editer_services');
 
 
 // ROUTE DE LA PAGE AFFICHAGE DES SERVICES
 $backofficeGroup->get('/services/read_services', function() use ($app) {
     $service = \Model\Propel\ServicesQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/services/read_services.html.twig', array(
-        'services' => $service
+                'services' => $service
     ));
 })->bind('read_services');
 
 
 //ROUTE DE LA PAGE SUPPRESSION SERVICES
 $backofficeGroup->match('/read_services/{id}', function($id = null) use ($app) {
-        $result = \Model\Propel\ServicesQuery::create()->filterByIdService($id)->delete();
-        return $app->redirect($app["url_generator"]->generate("read_services"));
-    })
-    ->value('id', null)
-    ->bind('suppress_services');
+            $result = \Model\Propel\ServicesQuery::create()->filterByIdService($id)->delete();
+            return $app->redirect($app["url_generator"]->generate("read_services"));
+        })
+        ->value('id', null)
+        ->bind('suppress_services');
 
 
 $app->mount('/backoffice', $backofficeGroup);

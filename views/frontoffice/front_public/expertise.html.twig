@@ -4,10 +4,13 @@
     
 
     {% for content in contents %}
-        <img src="{{asset('images/'~products.picture)}}"/>
+        <img src="{{asset('images/'~content.pictureContent)}}"/>
         <h4>{{ content.contentTitle }}</h4>
         <p>{{ content.contentText }}</p>
     {% endfor %}
+    
+    
+  {% endblock %}  
     
     
     

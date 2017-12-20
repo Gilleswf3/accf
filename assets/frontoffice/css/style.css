@@ -1,12 +1,11 @@
 body{
 	font-family: 'Old Standard TT', serif;
+        max-width: 100%;
+      
 }
 header {
-	min-height: 90px;
-}
-
-main{
-	
+	min-height: 100px;
+        background: lightgray;
 }
 
 #menu ul li a {
@@ -29,9 +28,15 @@ main{
   	height: auto;
   	margin: 0;
 }
+main{
+    width: 100%;
+    min-height: 700px;
+}
 footer {
 	border-top: 1px solid black;
-	min-height: 90px;
+	
+        
+        
 }
 
 footer h5 {
@@ -39,5 +44,55 @@ footer h5 {
 	font-weight: bold;
 	float: right;
 }
+@media only screen and (max-width: 767px) {
+	.header-section .logo {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	.header-section .menu-list {
+		display: none;
+		float: none;
+		clear: both;
+		border-top: 1px solid #ddd;
+	}
+	.header-section .menu-list li {
+		display: inline;
+	}
+	.header-section .menu-list li a {
+		display: block;
+		padding: 10px;
+		margin-right: 0;
+	}
+	.header-section .menu-list li a:after {
+		left: 0%;
+	}
+	.header-section .menu-list li a:hover:after {
+		width: 10px;
+		margin-left: 10px;
+	}
+	.header-section .menu-list .current a:after {
+		margin-left: 10px;
+	}
+	.responsive {
+		display: block;
+		color: #333;
+		font-size: 34px;
+		position: absolute;
+		right: 30px;
+		padding-top: 10px;
+	}
+	.owl-carousel .owl-nav .owl-prev,
+	.owl-carousel .owl-nav .owl-next {
+		width: 50px;
+	}
+	.hero-content img {
+		max-width: 280px;
+	}
+	.test-overlay {
+		display: none;
+	}
 
 
+        .container-fluid{
+            position: relative;
+        }

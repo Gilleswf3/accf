@@ -24,11 +24,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildHotlineQuery orderByHotlineMessage($order = Criteria::ASC) Order by the hotline_message column
  * @method     ChildHotlineQuery orderByIdCustomer($order = Criteria::ASC) Order by the id_customer column
  * @method     ChildHotlineQuery orderByIdEmployee($order = Criteria::ASC) Order by the id_employee column
+ * @method     ChildHotlineQuery orderByTypeAuthor($order = Criteria::ASC) Order by the type_author column
  *
  * @method     ChildHotlineQuery groupByIdHotline() Group by the id_hotline column
  * @method     ChildHotlineQuery groupByHotlineMessage() Group by the hotline_message column
  * @method     ChildHotlineQuery groupByIdCustomer() Group by the id_customer column
  * @method     ChildHotlineQuery groupByIdEmployee() Group by the id_employee column
+ * @method     ChildHotlineQuery groupByTypeAuthor() Group by the type_author column
  *
  * @method     ChildHotlineQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildHotlineQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -66,7 +68,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildHotline findOneByIdHotline(int $id_hotline) Return the first ChildHotline filtered by the id_hotline column
  * @method     ChildHotline findOneByHotlineMessage(string $hotline_message) Return the first ChildHotline filtered by the hotline_message column
  * @method     ChildHotline findOneByIdCustomer(int $id_customer) Return the first ChildHotline filtered by the id_customer column
- * @method     ChildHotline findOneByIdEmployee(int $id_employee) Return the first ChildHotline filtered by the id_employee column *
+ * @method     ChildHotline findOneByIdEmployee(int $id_employee) Return the first ChildHotline filtered by the id_employee column
+ * @method     ChildHotline findOneByTypeAuthor(string $type_author) Return the first ChildHotline filtered by the type_author column *
 
  * @method     ChildHotline requirePk($key, ConnectionInterface $con = null) Return the ChildHotline by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildHotline requireOne(ConnectionInterface $con = null) Return the first ChildHotline matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -75,12 +78,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildHotline requireOneByHotlineMessage(string $hotline_message) Return the first ChildHotline filtered by the hotline_message column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildHotline requireOneByIdCustomer(int $id_customer) Return the first ChildHotline filtered by the id_customer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildHotline requireOneByIdEmployee(int $id_employee) Return the first ChildHotline filtered by the id_employee column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildHotline requireOneByTypeAuthor(string $type_author) Return the first ChildHotline filtered by the type_author column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildHotline[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildHotline objects based on current ModelCriteria
  * @method     ChildHotline[]|ObjectCollection findByIdHotline(int $id_hotline) Return ChildHotline objects filtered by the id_hotline column
  * @method     ChildHotline[]|ObjectCollection findByHotlineMessage(string $hotline_message) Return ChildHotline objects filtered by the hotline_message column
  * @method     ChildHotline[]|ObjectCollection findByIdCustomer(int $id_customer) Return ChildHotline objects filtered by the id_customer column
  * @method     ChildHotline[]|ObjectCollection findByIdEmployee(int $id_employee) Return ChildHotline objects filtered by the id_employee column
+ * @method     ChildHotline[]|ObjectCollection findByTypeAuthor(string $type_author) Return ChildHotline objects filtered by the type_author column
  * @method     ChildHotline[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -179,7 +184,7 @@ abstract class HotlineQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_hotline, hotline_message, id_customer, id_employee FROM hotline WHERE id_hotline = :p0';
+        $sql = 'SELECT id_hotline, hotline_message, id_customer, id_employee, type_author FROM hotline WHERE id_hotline = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -419,6 +424,31 @@ abstract class HotlineQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(HotlineTableMap::COL_ID_EMPLOYEE, $idEmployee, $comparison);
+    }
+
+    /**
+     * Filter the query on the type_author column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTypeAuthor('fooValue');   // WHERE type_author = 'fooValue'
+     * $query->filterByTypeAuthor('%fooValue%', Criteria::LIKE); // WHERE type_author LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $typeAuthor The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildHotlineQuery The current query, for fluid interface
+     */
+    public function filterByTypeAuthor($typeAuthor = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($typeAuthor)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(HotlineTableMap::COL_TYPE_AUTHOR, $typeAuthor, $comparison);
     }
 
     /**

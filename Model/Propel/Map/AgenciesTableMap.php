@@ -150,7 +150,7 @@ class AgenciesTableMap extends TableMap
         $this->addColumn('address', 'Address', 'VARCHAR', true, 255, null);
         $this->addColumn('zipcode', 'Zipcode', 'VARCHAR', true, 255, null);
         $this->addColumn('city', 'City', 'VARCHAR', true, 255, null);
-        $this->addColumn('area', 'Area', 'CHAR', true, null, null);
+        $this->addColumn('area', 'Area', 'INTEGER', true, 2, null);
     } // initialize()
 
     /**

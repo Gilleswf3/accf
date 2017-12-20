@@ -1,6 +1,5 @@
 <?php
 
-$publicGroup = $app['controllers_factory'];
 
 $publicGroup->get('/contact', function() use ($app){
     $employeess = Model\Propel\EmployeesQuery::create()->find();
@@ -9,4 +8,3 @@ $publicGroup->get('/contact', function() use ($app){
     ));
 } )->bind('contact');
 
-$app->mount('/frontoffice', $publicGroup);

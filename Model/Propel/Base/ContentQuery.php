@@ -23,11 +23,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildContentQuery orderByPictureContent($order = Criteria::ASC) Order by the picture_content column
  * @method     ChildContentQuery orderByContentTitle($order = Criteria::ASC) Order by the content_title column
  * @method     ChildContentQuery orderByContentText($order = Criteria::ASC) Order by the content_text column
+ * @method     ChildContentQuery orderByIdEmployee($order = Criteria::ASC) Order by the id_employee column
+ * @method     ChildContentQuery orderBySubtitle($order = Criteria::ASC) Order by the subtitle column
  *
  * @method     ChildContentQuery groupByIdContent() Group by the id_content column
  * @method     ChildContentQuery groupByPictureContent() Group by the picture_content column
  * @method     ChildContentQuery groupByContentTitle() Group by the content_title column
  * @method     ChildContentQuery groupByContentText() Group by the content_text column
+ * @method     ChildContentQuery groupByIdEmployee() Group by the id_employee column
+ * @method     ChildContentQuery groupBySubtitle() Group by the subtitle column
  *
  * @method     ChildContentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildContentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -43,7 +47,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildContent findOneByIdContent(int $id_content) Return the first ChildContent filtered by the id_content column
  * @method     ChildContent findOneByPictureContent(string $picture_content) Return the first ChildContent filtered by the picture_content column
  * @method     ChildContent findOneByContentTitle(string $content_title) Return the first ChildContent filtered by the content_title column
- * @method     ChildContent findOneByContentText(string $content_text) Return the first ChildContent filtered by the content_text column *
+ * @method     ChildContent findOneByContentText(string $content_text) Return the first ChildContent filtered by the content_text column
+ * @method     ChildContent findOneByIdEmployee(int $id_employee) Return the first ChildContent filtered by the id_employee column
+ * @method     ChildContent findOneBySubtitle(string $subtitle) Return the first ChildContent filtered by the subtitle column *
 
  * @method     ChildContent requirePk($key, ConnectionInterface $con = null) Return the ChildContent by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContent requireOne(ConnectionInterface $con = null) Return the first ChildContent matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -52,12 +58,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildContent requireOneByPictureContent(string $picture_content) Return the first ChildContent filtered by the picture_content column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContent requireOneByContentTitle(string $content_title) Return the first ChildContent filtered by the content_title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContent requireOneByContentText(string $content_text) Return the first ChildContent filtered by the content_text column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildContent requireOneByIdEmployee(int $id_employee) Return the first ChildContent filtered by the id_employee column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildContent requireOneBySubtitle(string $subtitle) Return the first ChildContent filtered by the subtitle column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildContent[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildContent objects based on current ModelCriteria
  * @method     ChildContent[]|ObjectCollection findByIdContent(int $id_content) Return ChildContent objects filtered by the id_content column
  * @method     ChildContent[]|ObjectCollection findByPictureContent(string $picture_content) Return ChildContent objects filtered by the picture_content column
  * @method     ChildContent[]|ObjectCollection findByContentTitle(string $content_title) Return ChildContent objects filtered by the content_title column
  * @method     ChildContent[]|ObjectCollection findByContentText(string $content_text) Return ChildContent objects filtered by the content_text column
+ * @method     ChildContent[]|ObjectCollection findByIdEmployee(int $id_employee) Return ChildContent objects filtered by the id_employee column
+ * @method     ChildContent[]|ObjectCollection findBySubtitle(string $subtitle) Return ChildContent objects filtered by the subtitle column
  * @method     ChildContent[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -156,7 +166,7 @@ abstract class ContentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_content, picture_content, content_title, content_text FROM content WHERE id_content = :p0';
+        $sql = 'SELECT id_content, picture_content, content_title, content_text, id_employee, subtitle FROM content WHERE id_content = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -360,6 +370,72 @@ abstract class ContentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentTableMap::COL_CONTENT_TEXT, $contentText, $comparison);
+    }
+
+    /**
+     * Filter the query on the id_employee column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdEmployee(1234); // WHERE id_employee = 1234
+     * $query->filterByIdEmployee(array(12, 34)); // WHERE id_employee IN (12, 34)
+     * $query->filterByIdEmployee(array('min' => 12)); // WHERE id_employee > 12
+     * </code>
+     *
+     * @param     mixed $idEmployee The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildContentQuery The current query, for fluid interface
+     */
+    public function filterByIdEmployee($idEmployee = null, $comparison = null)
+    {
+        if (is_array($idEmployee)) {
+            $useMinMax = false;
+            if (isset($idEmployee['min'])) {
+                $this->addUsingAlias(ContentTableMap::COL_ID_EMPLOYEE, $idEmployee['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idEmployee['max'])) {
+                $this->addUsingAlias(ContentTableMap::COL_ID_EMPLOYEE, $idEmployee['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentTableMap::COL_ID_EMPLOYEE, $idEmployee, $comparison);
+    }
+
+    /**
+     * Filter the query on the subtitle column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySubtitle('fooValue');   // WHERE subtitle = 'fooValue'
+     * $query->filterBySubtitle('%fooValue%', Criteria::LIKE); // WHERE subtitle LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $subtitle The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildContentQuery The current query, for fluid interface
+     */
+    public function filterBySubtitle($subtitle = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($subtitle)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentTableMap::COL_SUBTITLE, $subtitle, $comparison);
     }
 
     /**

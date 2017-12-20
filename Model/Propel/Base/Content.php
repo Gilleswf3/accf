@@ -88,6 +88,20 @@ abstract class Content implements ActiveRecordInterface
     protected $content_text;
 
     /**
+     * The value for the id_employee field.
+     *
+     * @var        int
+     */
+    protected $id_employee;
+
+    /**
+     * The value for the subtitle field.
+     *
+     * @var        string
+     */
+    protected $subtitle;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -361,6 +375,26 @@ abstract class Content implements ActiveRecordInterface
     }
 
     /**
+     * Get the [id_employee] column value.
+     *
+     * @return int
+     */
+    public function getIdEmployee()
+    {
+        return $this->id_employee;
+    }
+
+    /**
+     * Get the [subtitle] column value.
+     *
+     * @return string
+     */
+    public function getSubtitle()
+    {
+        return $this->subtitle;
+    }
+
+    /**
      * Set the value of [id_content] column.
      *
      * @param int $v new value
@@ -441,6 +475,46 @@ abstract class Content implements ActiveRecordInterface
     } // setContentText()
 
     /**
+     * Set the value of [id_employee] column.
+     *
+     * @param int $v new value
+     * @return $this|\Model\Propel\Content The current object (for fluent API support)
+     */
+    public function setIdEmployee($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_employee !== $v) {
+            $this->id_employee = $v;
+            $this->modifiedColumns[ContentTableMap::COL_ID_EMPLOYEE] = true;
+        }
+
+        return $this;
+    } // setIdEmployee()
+
+    /**
+     * Set the value of [subtitle] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Content The current object (for fluent API support)
+     */
+    public function setSubtitle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->subtitle !== $v) {
+            $this->subtitle = $v;
+            $this->modifiedColumns[ContentTableMap::COL_SUBTITLE] = true;
+        }
+
+        return $this;
+    } // setSubtitle()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -487,6 +561,12 @@ abstract class Content implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ContentTableMap::translateFieldName('ContentText', TableMap::TYPE_PHPNAME, $indexType)];
             $this->content_text = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ContentTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_employee = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ContentTableMap::translateFieldName('Subtitle', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->subtitle = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -495,7 +575,7 @@ abstract class Content implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = ContentTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = ContentTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Content'), 0, $e);
@@ -708,6 +788,12 @@ abstract class Content implements ActiveRecordInterface
         if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TEXT)) {
             $modifiedColumns[':p' . $index++]  = 'content_text';
         }
+        if ($this->isColumnModified(ContentTableMap::COL_ID_EMPLOYEE)) {
+            $modifiedColumns[':p' . $index++]  = 'id_employee';
+        }
+        if ($this->isColumnModified(ContentTableMap::COL_SUBTITLE)) {
+            $modifiedColumns[':p' . $index++]  = 'subtitle';
+        }
 
         $sql = sprintf(
             'INSERT INTO content (%s) VALUES (%s)',
@@ -730,6 +816,12 @@ abstract class Content implements ActiveRecordInterface
                         break;
                     case 'content_text':
                         $stmt->bindValue($identifier, $this->content_text, PDO::PARAM_STR);
+                        break;
+                    case 'id_employee':
+                        $stmt->bindValue($identifier, $this->id_employee, PDO::PARAM_INT);
+                        break;
+                    case 'subtitle':
+                        $stmt->bindValue($identifier, $this->subtitle, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -805,6 +897,12 @@ abstract class Content implements ActiveRecordInterface
             case 3:
                 return $this->getContentText();
                 break;
+            case 4:
+                return $this->getIdEmployee();
+                break;
+            case 5:
+                return $this->getSubtitle();
+                break;
             default:
                 return null;
                 break;
@@ -838,6 +936,8 @@ abstract class Content implements ActiveRecordInterface
             $keys[1] => $this->getPictureContent(),
             $keys[2] => $this->getContentTitle(),
             $keys[3] => $this->getContentText(),
+            $keys[4] => $this->getIdEmployee(),
+            $keys[5] => $this->getSubtitle(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -889,6 +989,12 @@ abstract class Content implements ActiveRecordInterface
             case 3:
                 $this->setContentText($value);
                 break;
+            case 4:
+                $this->setIdEmployee($value);
+                break;
+            case 5:
+                $this->setSubtitle($value);
+                break;
         } // switch()
 
         return $this;
@@ -926,6 +1032,12 @@ abstract class Content implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setContentText($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setIdEmployee($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setSubtitle($arr[$keys[5]]);
         }
     }
 
@@ -979,6 +1091,12 @@ abstract class Content implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TEXT)) {
             $criteria->add(ContentTableMap::COL_CONTENT_TEXT, $this->content_text);
+        }
+        if ($this->isColumnModified(ContentTableMap::COL_ID_EMPLOYEE)) {
+            $criteria->add(ContentTableMap::COL_ID_EMPLOYEE, $this->id_employee);
+        }
+        if ($this->isColumnModified(ContentTableMap::COL_SUBTITLE)) {
+            $criteria->add(ContentTableMap::COL_SUBTITLE, $this->subtitle);
         }
 
         return $criteria;
@@ -1069,6 +1187,8 @@ abstract class Content implements ActiveRecordInterface
         $copyObj->setPictureContent($this->getPictureContent());
         $copyObj->setContentTitle($this->getContentTitle());
         $copyObj->setContentText($this->getContentText());
+        $copyObj->setIdEmployee($this->getIdEmployee());
+        $copyObj->setSubtitle($this->getSubtitle());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdContent(NULL); // this is a auto-increment column, so set to default value
@@ -1108,6 +1228,8 @@ abstract class Content implements ActiveRecordInterface
         $this->picture_content = null;
         $this->content_title = null;
         $this->content_text = null;
+        $this->id_employee = null;
+        $this->subtitle = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

@@ -59,7 +59,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAgencies findOneByAddress(string $address) Return the first ChildAgencies filtered by the address column
  * @method     ChildAgencies findOneByZipcode(string $zipcode) Return the first ChildAgencies filtered by the zipcode column
  * @method     ChildAgencies findOneByCity(string $city) Return the first ChildAgencies filtered by the city column
- * @method     ChildAgencies findOneByArea(string $area) Return the first ChildAgencies filtered by the area column *
+ * @method     ChildAgencies findOneByArea(int $area) Return the first ChildAgencies filtered by the area column *
 
  * @method     ChildAgencies requirePk($key, ConnectionInterface $con = null) Return the ChildAgencies by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAgencies requireOne(ConnectionInterface $con = null) Return the first ChildAgencies matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -68,14 +68,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAgencies requireOneByAddress(string $address) Return the first ChildAgencies filtered by the address column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAgencies requireOneByZipcode(string $zipcode) Return the first ChildAgencies filtered by the zipcode column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAgencies requireOneByCity(string $city) Return the first ChildAgencies filtered by the city column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAgencies requireOneByArea(string $area) Return the first ChildAgencies filtered by the area column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAgencies requireOneByArea(int $area) Return the first ChildAgencies filtered by the area column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAgencies[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAgencies objects based on current ModelCriteria
  * @method     ChildAgencies[]|ObjectCollection findByIdAgency(int $id_agency) Return ChildAgencies objects filtered by the id_agency column
  * @method     ChildAgencies[]|ObjectCollection findByAddress(string $address) Return ChildAgencies objects filtered by the address column
  * @method     ChildAgencies[]|ObjectCollection findByZipcode(string $zipcode) Return ChildAgencies objects filtered by the zipcode column
  * @method     ChildAgencies[]|ObjectCollection findByCity(string $city) Return ChildAgencies objects filtered by the city column
- * @method     ChildAgencies[]|ObjectCollection findByArea(string $area) Return ChildAgencies objects filtered by the area column
+ * @method     ChildAgencies[]|ObjectCollection findByArea(int $area) Return ChildAgencies objects filtered by the area column
  * @method     ChildAgencies[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -385,19 +385,35 @@ abstract class AgenciesQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByArea('fooValue');   // WHERE area = 'fooValue'
-     * $query->filterByArea('%fooValue%', Criteria::LIKE); // WHERE area LIKE '%fooValue%'
+     * $query->filterByArea(1234); // WHERE area = 1234
+     * $query->filterByArea(array(12, 34)); // WHERE area IN (12, 34)
+     * $query->filterByArea(array('min' => 12)); // WHERE area > 12
      * </code>
      *
-     * @param     string $area The value to use as filter.
+     * @param     mixed $area The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildAgenciesQuery The current query, for fluid interface
      */
     public function filterByArea($area = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($area)) {
+        if (is_array($area)) {
+            $useMinMax = false;
+            if (isset($area['min'])) {
+                $this->addUsingAlias(AgenciesTableMap::COL_AREA, $area['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($area['max'])) {
+                $this->addUsingAlias(AgenciesTableMap::COL_AREA, $area['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
         }

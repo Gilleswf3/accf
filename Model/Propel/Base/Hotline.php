@@ -92,6 +92,13 @@ abstract class Hotline implements ActiveRecordInterface
     protected $id_employee;
 
     /**
+     * The value for the type_author field.
+     *
+     * @var        string
+     */
+    protected $type_author;
+
+    /**
      * @var        ChildCustomers
      */
     protected $aCustomers;
@@ -375,6 +382,16 @@ abstract class Hotline implements ActiveRecordInterface
     }
 
     /**
+     * Get the [type_author] column value.
+     *
+     * @return string
+     */
+    public function getTypeAuthor()
+    {
+        return $this->type_author;
+    }
+
+    /**
      * Set the value of [id_hotline] column.
      *
      * @param int $v new value
@@ -463,6 +480,26 @@ abstract class Hotline implements ActiveRecordInterface
     } // setIdEmployee()
 
     /**
+     * Set the value of [type_author] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
+     */
+    public function setTypeAuthor($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->type_author !== $v) {
+            $this->type_author = $v;
+            $this->modifiedColumns[HotlineTableMap::COL_TYPE_AUTHOR] = true;
+        }
+
+        return $this;
+    } // setTypeAuthor()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -509,6 +546,9 @@ abstract class Hotline implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : HotlineTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_employee = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : HotlineTableMap::translateFieldName('TypeAuthor', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->type_author = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -517,7 +557,7 @@ abstract class Hotline implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = HotlineTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = HotlineTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Hotline'), 0, $e);
@@ -757,6 +797,9 @@ abstract class Hotline implements ActiveRecordInterface
         if ($this->isColumnModified(HotlineTableMap::COL_ID_EMPLOYEE)) {
             $modifiedColumns[':p' . $index++]  = 'id_employee';
         }
+        if ($this->isColumnModified(HotlineTableMap::COL_TYPE_AUTHOR)) {
+            $modifiedColumns[':p' . $index++]  = 'type_author';
+        }
 
         $sql = sprintf(
             'INSERT INTO hotline (%s) VALUES (%s)',
@@ -779,6 +822,9 @@ abstract class Hotline implements ActiveRecordInterface
                         break;
                     case 'id_employee':
                         $stmt->bindValue($identifier, $this->id_employee, PDO::PARAM_INT);
+                        break;
+                    case 'type_author':
+                        $stmt->bindValue($identifier, $this->type_author, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -854,6 +900,9 @@ abstract class Hotline implements ActiveRecordInterface
             case 3:
                 return $this->getIdEmployee();
                 break;
+            case 4:
+                return $this->getTypeAuthor();
+                break;
             default:
                 return null;
                 break;
@@ -888,6 +937,7 @@ abstract class Hotline implements ActiveRecordInterface
             $keys[1] => $this->getHotlineMessage(),
             $keys[2] => $this->getIdCustomer(),
             $keys[3] => $this->getIdEmployee(),
+            $keys[4] => $this->getTypeAuthor(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -971,6 +1021,9 @@ abstract class Hotline implements ActiveRecordInterface
             case 3:
                 $this->setIdEmployee($value);
                 break;
+            case 4:
+                $this->setTypeAuthor($value);
+                break;
         } // switch()
 
         return $this;
@@ -1008,6 +1061,9 @@ abstract class Hotline implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setIdEmployee($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setTypeAuthor($arr[$keys[4]]);
         }
     }
 
@@ -1061,6 +1117,9 @@ abstract class Hotline implements ActiveRecordInterface
         }
         if ($this->isColumnModified(HotlineTableMap::COL_ID_EMPLOYEE)) {
             $criteria->add(HotlineTableMap::COL_ID_EMPLOYEE, $this->id_employee);
+        }
+        if ($this->isColumnModified(HotlineTableMap::COL_TYPE_AUTHOR)) {
+            $criteria->add(HotlineTableMap::COL_TYPE_AUTHOR, $this->type_author);
         }
 
         return $criteria;
@@ -1151,6 +1210,7 @@ abstract class Hotline implements ActiveRecordInterface
         $copyObj->setHotlineMessage($this->getHotlineMessage());
         $copyObj->setIdCustomer($this->getIdCustomer());
         $copyObj->setIdEmployee($this->getIdEmployee());
+        $copyObj->setTypeAuthor($this->getTypeAuthor());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdHotline(NULL); // this is a auto-increment column, so set to default value
@@ -1298,6 +1358,7 @@ abstract class Hotline implements ActiveRecordInterface
         $this->hotline_message = null;
         $this->id_customer = null;
         $this->id_employee = null;
+        $this->type_author = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

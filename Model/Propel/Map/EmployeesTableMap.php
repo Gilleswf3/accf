@@ -59,7 +59,7 @@ class EmployeesTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class EmployeesTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /**
      * the column name for the id_employee field
@@ -95,6 +95,11 @@ class EmployeesTableMap extends TableMap
      * the column name for the phone field
      */
     const COL_PHONE = 'employees.phone';
+
+    /**
+     * the column name for the password field
+     */
+    const COL_PASSWORD = 'employees.password';
 
     /**
      * the column name for the job field
@@ -128,11 +133,11 @@ class EmployeesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdEmployee', 'Firstname', 'Lastname', 'Email', 'Phone', 'Job', 'Picture', 'Role', 'IdAgency', ),
-        self::TYPE_CAMELNAME     => array('idEmployee', 'firstname', 'lastname', 'email', 'phone', 'job', 'picture', 'role', 'idAgency', ),
-        self::TYPE_COLNAME       => array(EmployeesTableMap::COL_ID_EMPLOYEE, EmployeesTableMap::COL_FIRSTNAME, EmployeesTableMap::COL_LASTNAME, EmployeesTableMap::COL_EMAIL, EmployeesTableMap::COL_PHONE, EmployeesTableMap::COL_JOB, EmployeesTableMap::COL_PICTURE, EmployeesTableMap::COL_ROLE, EmployeesTableMap::COL_ID_AGENCY, ),
-        self::TYPE_FIELDNAME     => array('id_employee', 'firstname', 'lastname', 'email', 'phone', 'job', 'picture', 'role', 'id_agency', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('IdEmployee', 'Firstname', 'Lastname', 'Email', 'Phone', 'Password', 'Job', 'Picture', 'Role', 'IdAgency', ),
+        self::TYPE_CAMELNAME     => array('idEmployee', 'firstname', 'lastname', 'email', 'phone', 'password', 'job', 'picture', 'role', 'idAgency', ),
+        self::TYPE_COLNAME       => array(EmployeesTableMap::COL_ID_EMPLOYEE, EmployeesTableMap::COL_FIRSTNAME, EmployeesTableMap::COL_LASTNAME, EmployeesTableMap::COL_EMAIL, EmployeesTableMap::COL_PHONE, EmployeesTableMap::COL_PASSWORD, EmployeesTableMap::COL_JOB, EmployeesTableMap::COL_PICTURE, EmployeesTableMap::COL_ROLE, EmployeesTableMap::COL_ID_AGENCY, ),
+        self::TYPE_FIELDNAME     => array('id_employee', 'firstname', 'lastname', 'email', 'phone', 'password', 'job', 'picture', 'role', 'id_agency', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -142,11 +147,11 @@ class EmployeesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdEmployee' => 0, 'Firstname' => 1, 'Lastname' => 2, 'Email' => 3, 'Phone' => 4, 'Job' => 5, 'Picture' => 6, 'Role' => 7, 'IdAgency' => 8, ),
-        self::TYPE_CAMELNAME     => array('idEmployee' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'job' => 5, 'picture' => 6, 'role' => 7, 'idAgency' => 8, ),
-        self::TYPE_COLNAME       => array(EmployeesTableMap::COL_ID_EMPLOYEE => 0, EmployeesTableMap::COL_FIRSTNAME => 1, EmployeesTableMap::COL_LASTNAME => 2, EmployeesTableMap::COL_EMAIL => 3, EmployeesTableMap::COL_PHONE => 4, EmployeesTableMap::COL_JOB => 5, EmployeesTableMap::COL_PICTURE => 6, EmployeesTableMap::COL_ROLE => 7, EmployeesTableMap::COL_ID_AGENCY => 8, ),
-        self::TYPE_FIELDNAME     => array('id_employee' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'job' => 5, 'picture' => 6, 'role' => 7, 'id_agency' => 8, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('IdEmployee' => 0, 'Firstname' => 1, 'Lastname' => 2, 'Email' => 3, 'Phone' => 4, 'Password' => 5, 'Job' => 6, 'Picture' => 7, 'Role' => 8, 'IdAgency' => 9, ),
+        self::TYPE_CAMELNAME     => array('idEmployee' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'password' => 5, 'job' => 6, 'picture' => 7, 'role' => 8, 'idAgency' => 9, ),
+        self::TYPE_COLNAME       => array(EmployeesTableMap::COL_ID_EMPLOYEE => 0, EmployeesTableMap::COL_FIRSTNAME => 1, EmployeesTableMap::COL_LASTNAME => 2, EmployeesTableMap::COL_EMAIL => 3, EmployeesTableMap::COL_PHONE => 4, EmployeesTableMap::COL_PASSWORD => 5, EmployeesTableMap::COL_JOB => 6, EmployeesTableMap::COL_PICTURE => 7, EmployeesTableMap::COL_ROLE => 8, EmployeesTableMap::COL_ID_AGENCY => 9, ),
+        self::TYPE_FIELDNAME     => array('id_employee' => 0, 'firstname' => 1, 'lastname' => 2, 'email' => 3, 'phone' => 4, 'password' => 5, 'job' => 6, 'picture' => 7, 'role' => 8, 'id_agency' => 9, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -171,6 +176,7 @@ class EmployeesTableMap extends TableMap
         $this->addColumn('lastname', 'Lastname', 'VARCHAR', true, 255, null);
         $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('phone', 'Phone', 'VARCHAR', true, 255, null);
+        $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
         $this->addColumn('job', 'Job', 'VARCHAR', true, 255, null);
         $this->addColumn('picture', 'Picture', 'VARCHAR', true, 255, null);
         $this->addColumn('role', 'Role', 'VARCHAR', true, 255, null);
@@ -189,13 +195,13 @@ class EmployeesTableMap extends TableMap
     1 => ':id_agency',
   ),
 ), null, null, null, false);
-        $this->addRelation('Standards', '\\Model\\Propel\\Standards', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Hotline', '\\Model\\Propel\\Hotline', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':id_employee',
     1 => ':id_employee',
   ),
-), null, null, 'Standardss', false);
+), null, null, 'Hotlines', false);
     } // buildRelations()
 
     /**
@@ -344,6 +350,7 @@ class EmployeesTableMap extends TableMap
             $criteria->addSelectColumn(EmployeesTableMap::COL_LASTNAME);
             $criteria->addSelectColumn(EmployeesTableMap::COL_EMAIL);
             $criteria->addSelectColumn(EmployeesTableMap::COL_PHONE);
+            $criteria->addSelectColumn(EmployeesTableMap::COL_PASSWORD);
             $criteria->addSelectColumn(EmployeesTableMap::COL_JOB);
             $criteria->addSelectColumn(EmployeesTableMap::COL_PICTURE);
             $criteria->addSelectColumn(EmployeesTableMap::COL_ROLE);
@@ -354,6 +361,7 @@ class EmployeesTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.lastname');
             $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.phone');
+            $criteria->addSelectColumn($alias . '.password');
             $criteria->addSelectColumn($alias . '.job');
             $criteria->addSelectColumn($alias . '.picture');
             $criteria->addSelectColumn($alias . '.role');

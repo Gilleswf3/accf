@@ -8,10 +8,10 @@ use Model\Propel\Agencies as ChildAgencies;
 use Model\Propel\AgenciesQuery as ChildAgenciesQuery;
 use Model\Propel\Employees as ChildEmployees;
 use Model\Propel\EmployeesQuery as ChildEmployeesQuery;
-use Model\Propel\Standards as ChildStandards;
-use Model\Propel\StandardsQuery as ChildStandardsQuery;
+use Model\Propel\Hotline as ChildHotline;
+use Model\Propel\HotlineQuery as ChildHotlineQuery;
 use Model\Propel\Map\EmployeesTableMap;
-use Model\Propel\Map\StandardsTableMap;
+use Model\Propel\Map\HotlineTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -102,6 +102,13 @@ abstract class Employees implements ActiveRecordInterface
     protected $phone;
 
     /**
+     * The value for the password field.
+     *
+     * @var        string
+     */
+    protected $password;
+
+    /**
      * The value for the job field.
      *
      * @var        string
@@ -135,10 +142,10 @@ abstract class Employees implements ActiveRecordInterface
     protected $aAgencies;
 
     /**
-     * @var        ObjectCollection|ChildStandards[] Collection to store aggregation of ChildStandards objects.
+     * @var        ObjectCollection|ChildHotline[] Collection to store aggregation of ChildHotline objects.
      */
-    protected $collStandardss;
-    protected $collStandardssPartial;
+    protected $collHotlines;
+    protected $collHotlinesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -150,9 +157,9 @@ abstract class Employees implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildStandards[]
+     * @var ObjectCollection|ChildHotline[]
      */
-    protected $standardssScheduledForDeletion = null;
+    protected $hotlinesScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Model\Propel\Base\Employees object.
@@ -430,6 +437,16 @@ abstract class Employees implements ActiveRecordInterface
     }
 
     /**
+     * Get the [password] column value.
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
      * Get the [job] column value.
      *
      * @return string
@@ -570,6 +587,26 @@ abstract class Employees implements ActiveRecordInterface
     } // setPhone()
 
     /**
+     * Set the value of [password] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Employees The current object (for fluent API support)
+     */
+    public function setPassword($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->password !== $v) {
+            $this->password = $v;
+            $this->modifiedColumns[EmployeesTableMap::COL_PASSWORD] = true;
+        }
+
+        return $this;
+    } // setPassword()
+
+    /**
      * Set the value of [job] column.
      *
      * @param string $v new value
@@ -704,16 +741,19 @@ abstract class Employees implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : EmployeesTableMap::translateFieldName('Phone', TableMap::TYPE_PHPNAME, $indexType)];
             $this->phone = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : EmployeesTableMap::translateFieldName('Job', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : EmployeesTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->password = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : EmployeesTableMap::translateFieldName('Job', TableMap::TYPE_PHPNAME, $indexType)];
             $this->job = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : EmployeesTableMap::translateFieldName('Picture', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : EmployeesTableMap::translateFieldName('Picture', TableMap::TYPE_PHPNAME, $indexType)];
             $this->picture = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : EmployeesTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : EmployeesTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
             $this->role = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : EmployeesTableMap::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : EmployeesTableMap::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_agency = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -723,7 +763,7 @@ abstract class Employees implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = EmployeesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = EmployeesTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Employees'), 0, $e);
@@ -788,7 +828,7 @@ abstract class Employees implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aAgencies = null;
-            $this->collStandardss = null;
+            $this->collHotlines = null;
 
         } // if (deep)
     }
@@ -916,17 +956,17 @@ abstract class Employees implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->standardssScheduledForDeletion !== null) {
-                if (!$this->standardssScheduledForDeletion->isEmpty()) {
-                    \Model\Propel\StandardsQuery::create()
-                        ->filterByPrimaryKeys($this->standardssScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->hotlinesScheduledForDeletion !== null) {
+                if (!$this->hotlinesScheduledForDeletion->isEmpty()) {
+                    \Model\Propel\HotlineQuery::create()
+                        ->filterByPrimaryKeys($this->hotlinesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->standardssScheduledForDeletion = null;
+                    $this->hotlinesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collStandardss !== null) {
-                foreach ($this->collStandardss as $referrerFK) {
+            if ($this->collHotlines !== null) {
+                foreach ($this->collHotlines as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -974,6 +1014,9 @@ abstract class Employees implements ActiveRecordInterface
         if ($this->isColumnModified(EmployeesTableMap::COL_PHONE)) {
             $modifiedColumns[':p' . $index++]  = 'phone';
         }
+        if ($this->isColumnModified(EmployeesTableMap::COL_PASSWORD)) {
+            $modifiedColumns[':p' . $index++]  = 'password';
+        }
         if ($this->isColumnModified(EmployeesTableMap::COL_JOB)) {
             $modifiedColumns[':p' . $index++]  = 'job';
         }
@@ -1011,6 +1054,9 @@ abstract class Employees implements ActiveRecordInterface
                         break;
                     case 'phone':
                         $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
+                        break;
+                    case 'password':
+                        $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
                         break;
                     case 'job':
                         $stmt->bindValue($identifier, $this->job, PDO::PARAM_STR);
@@ -1102,15 +1148,18 @@ abstract class Employees implements ActiveRecordInterface
                 return $this->getPhone();
                 break;
             case 5:
-                return $this->getJob();
+                return $this->getPassword();
                 break;
             case 6:
-                return $this->getPicture();
+                return $this->getJob();
                 break;
             case 7:
-                return $this->getRole();
+                return $this->getPicture();
                 break;
             case 8:
+                return $this->getRole();
+                break;
+            case 9:
                 return $this->getIdAgency();
                 break;
             default:
@@ -1148,10 +1197,11 @@ abstract class Employees implements ActiveRecordInterface
             $keys[2] => $this->getLastname(),
             $keys[3] => $this->getEmail(),
             $keys[4] => $this->getPhone(),
-            $keys[5] => $this->getJob(),
-            $keys[6] => $this->getPicture(),
-            $keys[7] => $this->getRole(),
-            $keys[8] => $this->getIdAgency(),
+            $keys[5] => $this->getPassword(),
+            $keys[6] => $this->getJob(),
+            $keys[7] => $this->getPicture(),
+            $keys[8] => $this->getRole(),
+            $keys[9] => $this->getIdAgency(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1174,20 +1224,20 @@ abstract class Employees implements ActiveRecordInterface
 
                 $result[$key] = $this->aAgencies->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collStandardss) {
+            if (null !== $this->collHotlines) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'standardss';
+                        $key = 'hotlines';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'standardss';
+                        $key = 'hotlines';
                         break;
                     default:
-                        $key = 'Standardss';
+                        $key = 'Hotlines';
                 }
 
-                $result[$key] = $this->collStandardss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collHotlines->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1239,15 +1289,18 @@ abstract class Employees implements ActiveRecordInterface
                 $this->setPhone($value);
                 break;
             case 5:
-                $this->setJob($value);
+                $this->setPassword($value);
                 break;
             case 6:
-                $this->setPicture($value);
+                $this->setJob($value);
                 break;
             case 7:
-                $this->setRole($value);
+                $this->setPicture($value);
                 break;
             case 8:
+                $this->setRole($value);
+                break;
+            case 9:
                 $this->setIdAgency($value);
                 break;
         } // switch()
@@ -1292,16 +1345,19 @@ abstract class Employees implements ActiveRecordInterface
             $this->setPhone($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setJob($arr[$keys[5]]);
+            $this->setPassword($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setPicture($arr[$keys[6]]);
+            $this->setJob($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setRole($arr[$keys[7]]);
+            $this->setPicture($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setIdAgency($arr[$keys[8]]);
+            $this->setRole($arr[$keys[8]]);
+        }
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setIdAgency($arr[$keys[9]]);
         }
     }
 
@@ -1358,6 +1414,9 @@ abstract class Employees implements ActiveRecordInterface
         }
         if ($this->isColumnModified(EmployeesTableMap::COL_PHONE)) {
             $criteria->add(EmployeesTableMap::COL_PHONE, $this->phone);
+        }
+        if ($this->isColumnModified(EmployeesTableMap::COL_PASSWORD)) {
+            $criteria->add(EmployeesTableMap::COL_PASSWORD, $this->password);
         }
         if ($this->isColumnModified(EmployeesTableMap::COL_JOB)) {
             $criteria->add(EmployeesTableMap::COL_JOB, $this->job);
@@ -1461,6 +1520,7 @@ abstract class Employees implements ActiveRecordInterface
         $copyObj->setLastname($this->getLastname());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPhone($this->getPhone());
+        $copyObj->setPassword($this->getPassword());
         $copyObj->setJob($this->getJob());
         $copyObj->setPicture($this->getPicture());
         $copyObj->setRole($this->getRole());
@@ -1471,9 +1531,9 @@ abstract class Employees implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getStandardss() as $relObj) {
+            foreach ($this->getHotlines() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addStandards($relObj->copy($deepCopy));
+                    $copyObj->addHotline($relObj->copy($deepCopy));
                 }
             }
 
@@ -1569,38 +1629,38 @@ abstract class Employees implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('Standards' == $relationName) {
-            $this->initStandardss();
+        if ('Hotline' == $relationName) {
+            $this->initHotlines();
             return;
         }
     }
 
     /**
-     * Clears out the collStandardss collection
+     * Clears out the collHotlines collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addStandardss()
+     * @see        addHotlines()
      */
-    public function clearStandardss()
+    public function clearHotlines()
     {
-        $this->collStandardss = null; // important to set this to NULL since that means it is uninitialized
+        $this->collHotlines = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collStandardss collection loaded partially.
+     * Reset is the collHotlines collection loaded partially.
      */
-    public function resetPartialStandardss($v = true)
+    public function resetPartialHotlines($v = true)
     {
-        $this->collStandardssPartial = $v;
+        $this->collHotlinesPartial = $v;
     }
 
     /**
-     * Initializes the collStandardss collection.
+     * Initializes the collHotlines collection.
      *
-     * By default this just sets the collStandardss collection to an empty array (like clearcollStandardss());
+     * By default this just sets the collHotlines collection to an empty array (like clearcollHotlines());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1609,20 +1669,20 @@ abstract class Employees implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initStandardss($overrideExisting = true)
+    public function initHotlines($overrideExisting = true)
     {
-        if (null !== $this->collStandardss && !$overrideExisting) {
+        if (null !== $this->collHotlines && !$overrideExisting) {
             return;
         }
 
-        $collectionClassName = StandardsTableMap::getTableMap()->getCollectionClassName();
+        $collectionClassName = HotlineTableMap::getTableMap()->getCollectionClassName();
 
-        $this->collStandardss = new $collectionClassName;
-        $this->collStandardss->setModel('\Model\Propel\Standards');
+        $this->collHotlines = new $collectionClassName;
+        $this->collHotlines->setModel('\Model\Propel\Hotline');
     }
 
     /**
-     * Gets an array of ChildStandards objects which contain a foreign key that references this object.
+     * Gets an array of ChildHotline objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1632,108 +1692,108 @@ abstract class Employees implements ActiveRecordInterface
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildStandards[] List of ChildStandards objects
+     * @return ObjectCollection|ChildHotline[] List of ChildHotline objects
      * @throws PropelException
      */
-    public function getStandardss(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getHotlines(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collStandardssPartial && !$this->isNew();
-        if (null === $this->collStandardss || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collStandardss) {
+        $partial = $this->collHotlinesPartial && !$this->isNew();
+        if (null === $this->collHotlines || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collHotlines) {
                 // return empty collection
-                $this->initStandardss();
+                $this->initHotlines();
             } else {
-                $collStandardss = ChildStandardsQuery::create(null, $criteria)
+                $collHotlines = ChildHotlineQuery::create(null, $criteria)
                     ->filterByEmployees($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collStandardssPartial && count($collStandardss)) {
-                        $this->initStandardss(false);
+                    if (false !== $this->collHotlinesPartial && count($collHotlines)) {
+                        $this->initHotlines(false);
 
-                        foreach ($collStandardss as $obj) {
-                            if (false == $this->collStandardss->contains($obj)) {
-                                $this->collStandardss->append($obj);
+                        foreach ($collHotlines as $obj) {
+                            if (false == $this->collHotlines->contains($obj)) {
+                                $this->collHotlines->append($obj);
                             }
                         }
 
-                        $this->collStandardssPartial = true;
+                        $this->collHotlinesPartial = true;
                     }
 
-                    return $collStandardss;
+                    return $collHotlines;
                 }
 
-                if ($partial && $this->collStandardss) {
-                    foreach ($this->collStandardss as $obj) {
+                if ($partial && $this->collHotlines) {
+                    foreach ($this->collHotlines as $obj) {
                         if ($obj->isNew()) {
-                            $collStandardss[] = $obj;
+                            $collHotlines[] = $obj;
                         }
                     }
                 }
 
-                $this->collStandardss = $collStandardss;
-                $this->collStandardssPartial = false;
+                $this->collHotlines = $collHotlines;
+                $this->collHotlinesPartial = false;
             }
         }
 
-        return $this->collStandardss;
+        return $this->collHotlines;
     }
 
     /**
-     * Sets a collection of ChildStandards objects related by a one-to-many relationship
+     * Sets a collection of ChildHotline objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $standardss A Propel collection.
+     * @param      Collection $hotlines A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildEmployees The current object (for fluent API support)
      */
-    public function setStandardss(Collection $standardss, ConnectionInterface $con = null)
+    public function setHotlines(Collection $hotlines, ConnectionInterface $con = null)
     {
-        /** @var ChildStandards[] $standardssToDelete */
-        $standardssToDelete = $this->getStandardss(new Criteria(), $con)->diff($standardss);
+        /** @var ChildHotline[] $hotlinesToDelete */
+        $hotlinesToDelete = $this->getHotlines(new Criteria(), $con)->diff($hotlines);
 
 
-        $this->standardssScheduledForDeletion = $standardssToDelete;
+        $this->hotlinesScheduledForDeletion = $hotlinesToDelete;
 
-        foreach ($standardssToDelete as $standardsRemoved) {
-            $standardsRemoved->setEmployees(null);
+        foreach ($hotlinesToDelete as $hotlineRemoved) {
+            $hotlineRemoved->setEmployees(null);
         }
 
-        $this->collStandardss = null;
-        foreach ($standardss as $standards) {
-            $this->addStandards($standards);
+        $this->collHotlines = null;
+        foreach ($hotlines as $hotline) {
+            $this->addHotline($hotline);
         }
 
-        $this->collStandardss = $standardss;
-        $this->collStandardssPartial = false;
+        $this->collHotlines = $hotlines;
+        $this->collHotlinesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Standards objects.
+     * Returns the number of related Hotline objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related Standards objects.
+     * @return int             Count of related Hotline objects.
      * @throws PropelException
      */
-    public function countStandardss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countHotlines(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collStandardssPartial && !$this->isNew();
-        if (null === $this->collStandardss || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collStandardss) {
+        $partial = $this->collHotlinesPartial && !$this->isNew();
+        if (null === $this->collHotlines || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collHotlines) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getStandardss());
+                return count($this->getHotlines());
             }
 
-            $query = ChildStandardsQuery::create(null, $criteria);
+            $query = ChildHotlineQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -1743,28 +1803,28 @@ abstract class Employees implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collStandardss);
+        return count($this->collHotlines);
     }
 
     /**
-     * Method called to associate a ChildStandards object to this object
-     * through the ChildStandards foreign key attribute.
+     * Method called to associate a ChildHotline object to this object
+     * through the ChildHotline foreign key attribute.
      *
-     * @param  ChildStandards $l ChildStandards
+     * @param  ChildHotline $l ChildHotline
      * @return $this|\Model\Propel\Employees The current object (for fluent API support)
      */
-    public function addStandards(ChildStandards $l)
+    public function addHotline(ChildHotline $l)
     {
-        if ($this->collStandardss === null) {
-            $this->initStandardss();
-            $this->collStandardssPartial = true;
+        if ($this->collHotlines === null) {
+            $this->initHotlines();
+            $this->collHotlinesPartial = true;
         }
 
-        if (!$this->collStandardss->contains($l)) {
-            $this->doAddStandards($l);
+        if (!$this->collHotlines->contains($l)) {
+            $this->doAddHotline($l);
 
-            if ($this->standardssScheduledForDeletion and $this->standardssScheduledForDeletion->contains($l)) {
-                $this->standardssScheduledForDeletion->remove($this->standardssScheduledForDeletion->search($l));
+            if ($this->hotlinesScheduledForDeletion and $this->hotlinesScheduledForDeletion->contains($l)) {
+                $this->hotlinesScheduledForDeletion->remove($this->hotlinesScheduledForDeletion->search($l));
             }
         }
 
@@ -1772,32 +1832,57 @@ abstract class Employees implements ActiveRecordInterface
     }
 
     /**
-     * @param ChildStandards $standards The ChildStandards object to add.
+     * @param ChildHotline $hotline The ChildHotline object to add.
      */
-    protected function doAddStandards(ChildStandards $standards)
+    protected function doAddHotline(ChildHotline $hotline)
     {
-        $this->collStandardss[]= $standards;
-        $standards->setEmployees($this);
+        $this->collHotlines[]= $hotline;
+        $hotline->setEmployees($this);
     }
 
     /**
-     * @param  ChildStandards $standards The ChildStandards object to remove.
+     * @param  ChildHotline $hotline The ChildHotline object to remove.
      * @return $this|ChildEmployees The current object (for fluent API support)
      */
-    public function removeStandards(ChildStandards $standards)
+    public function removeHotline(ChildHotline $hotline)
     {
-        if ($this->getStandardss()->contains($standards)) {
-            $pos = $this->collStandardss->search($standards);
-            $this->collStandardss->remove($pos);
-            if (null === $this->standardssScheduledForDeletion) {
-                $this->standardssScheduledForDeletion = clone $this->collStandardss;
-                $this->standardssScheduledForDeletion->clear();
+        if ($this->getHotlines()->contains($hotline)) {
+            $pos = $this->collHotlines->search($hotline);
+            $this->collHotlines->remove($pos);
+            if (null === $this->hotlinesScheduledForDeletion) {
+                $this->hotlinesScheduledForDeletion = clone $this->collHotlines;
+                $this->hotlinesScheduledForDeletion->clear();
             }
-            $this->standardssScheduledForDeletion[]= clone $standards;
-            $standards->setEmployees(null);
+            $this->hotlinesScheduledForDeletion[]= clone $hotline;
+            $hotline->setEmployees(null);
         }
 
         return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Employees is new, it will return
+     * an empty collection; or if this Employees has previously
+     * been saved, it will retrieve related Hotlines from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Employees.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildHotline[] List of ChildHotline objects
+     */
+    public function getHotlinesJoinCustomers(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildHotlineQuery::create(null, $criteria);
+        $query->joinWith('Customers', $joinBehavior);
+
+        return $this->getHotlines($query, $con);
     }
 
     /**
@@ -1815,6 +1900,7 @@ abstract class Employees implements ActiveRecordInterface
         $this->lastname = null;
         $this->email = null;
         $this->phone = null;
+        $this->password = null;
         $this->job = null;
         $this->picture = null;
         $this->role = null;
@@ -1837,14 +1923,14 @@ abstract class Employees implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collStandardss) {
-                foreach ($this->collStandardss as $o) {
+            if ($this->collHotlines) {
+                foreach ($this->collHotlines as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collStandardss = null;
+        $this->collHotlines = null;
         $this->aAgencies = null;
     }
 

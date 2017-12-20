@@ -15,7 +15,7 @@ CREATE TABLE `agencies`
     `address` VARCHAR(255) NOT NULL,
     `zipcode` VARCHAR(255) NOT NULL,
     `city` VARCHAR(255) NOT NULL,
-    `area` enum('92','69') NOT NULL,
+    `area` INTEGER(2) NOT NULL,
     PRIMARY KEY (`id_agency`)
 ) ENGINE=InnoDB;
 
@@ -31,6 +31,8 @@ CREATE TABLE `content`
     `picture_content` VARCHAR(255) NOT NULL,
     `content_title` VARCHAR(255) NOT NULL,
     `content_text` TEXT NOT NULL,
+    `id_employee` INTEGER NOT NULL,
+    `subtitle` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id_content`)
 ) ENGINE=InnoDB;
 
@@ -81,6 +83,29 @@ CREATE TABLE `employees`
     CONSTRAINT `employees_ibfk_1`
         FOREIGN KEY (`id_agency`)
         REFERENCES `agencies` (`id_agency`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- hotline
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `hotline`;
+
+CREATE TABLE `hotline`
+(
+    `id_hotline` INTEGER NOT NULL AUTO_INCREMENT,
+    `hotline_message` TEXT NOT NULL,
+    `id_customer` INTEGER NOT NULL,
+    `id_employee` INTEGER NOT NULL,
+    PRIMARY KEY (`id_hotline`),
+    INDEX `id_customer` (`id_customer`),
+    INDEX `id_employee` (`id_employee`),
+    CONSTRAINT `hotline_ibfk_1`
+        FOREIGN KEY (`id_customer`)
+        REFERENCES `customers` (`id_customer`),
+    CONSTRAINT `hotline_ibfk_2`
+        FOREIGN KEY (`id_employee`)
+        REFERENCES `employees` (`id_employee`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -145,26 +170,6 @@ CREATE TABLE `services`
     `price_vat_excluded` FLOAT NOT NULL,
     `price_vat_included` FLOAT NOT NULL,
     PRIMARY KEY (`id_service`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- standards
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `standards`;
-
-CREATE TABLE `standards`
-(
-    `id_standard` INTEGER(8) NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NOT NULL,
-    `subtitle` VARCHAR(255) NOT NULL,
-    `description` TEXT NOT NULL,
-    `id_employee` INTEGER(8) NOT NULL,
-    PRIMARY KEY (`id_standard`),
-    INDEX `id_employee` (`id_employee`),
-    CONSTRAINT `standards_ibfk_1`
-        FOREIGN KEY (`id_employee`)
-        REFERENCES `employees` (`id_employee`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

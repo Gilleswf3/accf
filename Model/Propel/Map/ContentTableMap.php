@@ -59,7 +59,7 @@ class ContentTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class ContentTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the id_content field
@@ -92,6 +92,16 @@ class ContentTableMap extends TableMap
     const COL_CONTENT_TEXT = 'content.content_text';
 
     /**
+     * the column name for the id_employee field
+     */
+    const COL_ID_EMPLOYEE = 'content.id_employee';
+
+    /**
+     * the column name for the subtitle field
+     */
+    const COL_SUBTITLE = 'content.subtitle';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -103,11 +113,11 @@ class ContentTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdContent', 'PictureContent', 'ContentTitle', 'ContentText', ),
-        self::TYPE_CAMELNAME     => array('idContent', 'pictureContent', 'contentTitle', 'contentText', ),
-        self::TYPE_COLNAME       => array(ContentTableMap::COL_ID_CONTENT, ContentTableMap::COL_PICTURE_CONTENT, ContentTableMap::COL_CONTENT_TITLE, ContentTableMap::COL_CONTENT_TEXT, ),
-        self::TYPE_FIELDNAME     => array('id_content', 'picture_content', 'content_title', 'content_text', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('IdContent', 'PictureContent', 'ContentTitle', 'ContentText', 'IdEmployee', 'Subtitle', ),
+        self::TYPE_CAMELNAME     => array('idContent', 'pictureContent', 'contentTitle', 'contentText', 'idEmployee', 'subtitle', ),
+        self::TYPE_COLNAME       => array(ContentTableMap::COL_ID_CONTENT, ContentTableMap::COL_PICTURE_CONTENT, ContentTableMap::COL_CONTENT_TITLE, ContentTableMap::COL_CONTENT_TEXT, ContentTableMap::COL_ID_EMPLOYEE, ContentTableMap::COL_SUBTITLE, ),
+        self::TYPE_FIELDNAME     => array('id_content', 'picture_content', 'content_title', 'content_text', 'id_employee', 'subtitle', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -117,11 +127,11 @@ class ContentTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdContent' => 0, 'PictureContent' => 1, 'ContentTitle' => 2, 'ContentText' => 3, ),
-        self::TYPE_CAMELNAME     => array('idContent' => 0, 'pictureContent' => 1, 'contentTitle' => 2, 'contentText' => 3, ),
-        self::TYPE_COLNAME       => array(ContentTableMap::COL_ID_CONTENT => 0, ContentTableMap::COL_PICTURE_CONTENT => 1, ContentTableMap::COL_CONTENT_TITLE => 2, ContentTableMap::COL_CONTENT_TEXT => 3, ),
-        self::TYPE_FIELDNAME     => array('id_content' => 0, 'picture_content' => 1, 'content_title' => 2, 'content_text' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('IdContent' => 0, 'PictureContent' => 1, 'ContentTitle' => 2, 'ContentText' => 3, 'IdEmployee' => 4, 'Subtitle' => 5, ),
+        self::TYPE_CAMELNAME     => array('idContent' => 0, 'pictureContent' => 1, 'contentTitle' => 2, 'contentText' => 3, 'idEmployee' => 4, 'subtitle' => 5, ),
+        self::TYPE_COLNAME       => array(ContentTableMap::COL_ID_CONTENT => 0, ContentTableMap::COL_PICTURE_CONTENT => 1, ContentTableMap::COL_CONTENT_TITLE => 2, ContentTableMap::COL_CONTENT_TEXT => 3, ContentTableMap::COL_ID_EMPLOYEE => 4, ContentTableMap::COL_SUBTITLE => 5, ),
+        self::TYPE_FIELDNAME     => array('id_content' => 0, 'picture_content' => 1, 'content_title' => 2, 'content_text' => 3, 'id_employee' => 4, 'subtitle' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -145,6 +155,8 @@ class ContentTableMap extends TableMap
         $this->addColumn('picture_content', 'PictureContent', 'VARCHAR', true, 255, null);
         $this->addColumn('content_title', 'ContentTitle', 'VARCHAR', true, 255, null);
         $this->addColumn('content_text', 'ContentText', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('id_employee', 'IdEmployee', 'INTEGER', true, null, null);
+        $this->addColumn('subtitle', 'Subtitle', 'VARCHAR', true, 255, null);
     } // initialize()
 
     /**
@@ -299,11 +311,15 @@ class ContentTableMap extends TableMap
             $criteria->addSelectColumn(ContentTableMap::COL_PICTURE_CONTENT);
             $criteria->addSelectColumn(ContentTableMap::COL_CONTENT_TITLE);
             $criteria->addSelectColumn(ContentTableMap::COL_CONTENT_TEXT);
+            $criteria->addSelectColumn(ContentTableMap::COL_ID_EMPLOYEE);
+            $criteria->addSelectColumn(ContentTableMap::COL_SUBTITLE);
         } else {
             $criteria->addSelectColumn($alias . '.id_content');
             $criteria->addSelectColumn($alias . '.picture_content');
             $criteria->addSelectColumn($alias . '.content_title');
             $criteria->addSelectColumn($alias . '.content_text');
+            $criteria->addSelectColumn($alias . '.id_employee');
+            $criteria->addSelectColumn($alias . '.subtitle');
         }
     }
 

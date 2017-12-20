@@ -1,19 +1,28 @@
 {% extends "frontoffice/layout.html.twig" %}
 
 {% block content %}
-    <h2>Profil de : </h2>
-    
-    <div> 
-        <ul>
-            <li>Prenom : </li>
-            <li>Nom : </li>
-            <li>Email</li>   
-        </ul>
+     <div class="section section-full-screen section-signup">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="card card-signup">
+                        <form action="{{ path('frontoffice_profile_check')}}" method="post" >
+                            <label name="nom">Nom :</label><br> 
+                            <input type="text" value="{{ last_username }}" name="_username" class="form-control"/><br>
+                            <label name="password">Mot de passe :</label><br> 
+                            <input type="password" value="" name="_password" class="form-control"/><br>
+                            <input type="submit" value="valider" class="btn btn-primary"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    
-    {% endblock %}
-           
-        
-       
-    
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+{% endblock %}
+
+
+

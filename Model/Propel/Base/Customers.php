@@ -6,9 +6,12 @@ use \Exception;
 use \PDO;
 use Model\Propel\Customers as ChildCustomers;
 use Model\Propel\CustomersQuery as ChildCustomersQuery;
+use Model\Propel\Hotline as ChildHotline;
+use Model\Propel\HotlineQuery as ChildHotlineQuery;
 use Model\Propel\Orders as ChildOrders;
 use Model\Propel\OrdersQuery as ChildOrdersQuery;
 use Model\Propel\Map\CustomersTableMap;
+use Model\Propel\Map\HotlineTableMap;
 use Model\Propel\Map\OrdersTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -163,6 +166,19 @@ abstract class Customers implements ActiveRecordInterface
     protected $shipto_city;
 
     /**
+     * The value for the role field.
+     *
+     * @var        string
+     */
+    protected $role;
+
+    /**
+     * @var        ObjectCollection|ChildHotline[] Collection to store aggregation of ChildHotline objects.
+     */
+    protected $collHotlines;
+    protected $collHotlinesPartial;
+
+    /**
      * @var        ObjectCollection|ChildOrders[] Collection to store aggregation of ChildOrders objects.
      */
     protected $collOrderss;
@@ -175,6 +191,12 @@ abstract class Customers implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildHotline[]
+     */
+    protected $hotlinesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -548,6 +570,16 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
+     * Get the [role] column value.
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
      * Set the value of [id_customer] column.
      *
      * @param int $v new value
@@ -828,6 +860,26 @@ abstract class Customers implements ActiveRecordInterface
     } // setShiptoCity()
 
     /**
+     * Set the value of [role] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
+     */
+    public function setRole($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->role !== $v) {
+            $this->role = $v;
+            $this->modifiedColumns[CustomersTableMap::COL_ROLE] = true;
+        }
+
+        return $this;
+    } // setRole()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -904,6 +956,9 @@ abstract class Customers implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CustomersTableMap::translateFieldName('ShiptoCity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_city = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CustomersTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->role = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -912,7 +967,7 @@ abstract class Customers implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 14; // 14 = CustomersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 15; // 15 = CustomersTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Customers'), 0, $e);
@@ -972,6 +1027,8 @@ abstract class Customers implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collHotlines = null;
 
             $this->collOrderss = null;
 
@@ -1089,6 +1146,23 @@ abstract class Customers implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->hotlinesScheduledForDeletion !== null) {
+                if (!$this->hotlinesScheduledForDeletion->isEmpty()) {
+                    \Model\Propel\HotlineQuery::create()
+                        ->filterByPrimaryKeys($this->hotlinesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->hotlinesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collHotlines !== null) {
+                foreach ($this->collHotlines as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->orderssScheduledForDeletion !== null) {
                 if (!$this->orderssScheduledForDeletion->isEmpty()) {
                     \Model\Propel\OrdersQuery::create()
@@ -1174,6 +1248,9 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_SHIPTO_CITY)) {
             $modifiedColumns[':p' . $index++]  = 'shipto_city';
         }
+        if ($this->isColumnModified(CustomersTableMap::COL_ROLE)) {
+            $modifiedColumns[':p' . $index++]  = 'role';
+        }
 
         $sql = sprintf(
             'INSERT INTO customers (%s) VALUES (%s)',
@@ -1226,6 +1303,9 @@ abstract class Customers implements ActiveRecordInterface
                         break;
                     case 'shipto_city':
                         $stmt->bindValue($identifier, $this->shipto_city, PDO::PARAM_STR);
+                        break;
+                    case 'role':
+                        $stmt->bindValue($identifier, $this->role, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1331,6 +1411,9 @@ abstract class Customers implements ActiveRecordInterface
             case 13:
                 return $this->getShiptoCity();
                 break;
+            case 14:
+                return $this->getRole();
+                break;
             default:
                 return null;
                 break;
@@ -1375,6 +1458,7 @@ abstract class Customers implements ActiveRecordInterface
             $keys[11] => $this->getShiptoAddress(),
             $keys[12] => $this->getShiptoZipcode(),
             $keys[13] => $this->getShiptoCity(),
+            $keys[14] => $this->getRole(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1382,6 +1466,21 @@ abstract class Customers implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collHotlines) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'hotlines';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'hotlines';
+                        break;
+                    default:
+                        $key = 'Hotlines';
+                }
+
+                $result[$key] = $this->collHotlines->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collOrderss) {
 
                 switch ($keyType) {
@@ -1473,6 +1572,9 @@ abstract class Customers implements ActiveRecordInterface
             case 13:
                 $this->setShiptoCity($value);
                 break;
+            case 14:
+                $this->setRole($value);
+                break;
         } // switch()
 
         return $this;
@@ -1540,6 +1642,9 @@ abstract class Customers implements ActiveRecordInterface
         }
         if (array_key_exists($keys[13], $arr)) {
             $this->setShiptoCity($arr[$keys[13]]);
+        }
+        if (array_key_exists($keys[14], $arr)) {
+            $this->setRole($arr[$keys[14]]);
         }
     }
 
@@ -1623,6 +1728,9 @@ abstract class Customers implements ActiveRecordInterface
         }
         if ($this->isColumnModified(CustomersTableMap::COL_SHIPTO_CITY)) {
             $criteria->add(CustomersTableMap::COL_SHIPTO_CITY, $this->shipto_city);
+        }
+        if ($this->isColumnModified(CustomersTableMap::COL_ROLE)) {
+            $criteria->add(CustomersTableMap::COL_ROLE, $this->role);
         }
 
         return $criteria;
@@ -1723,11 +1831,18 @@ abstract class Customers implements ActiveRecordInterface
         $copyObj->setShiptoAddress($this->getShiptoAddress());
         $copyObj->setShiptoZipcode($this->getShiptoZipcode());
         $copyObj->setShiptoCity($this->getShiptoCity());
+        $copyObj->setRole($this->getRole());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
+
+            foreach ($this->getHotlines() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addHotline($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getOrderss() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1776,10 +1891,264 @@ abstract class Customers implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Hotline' == $relationName) {
+            $this->initHotlines();
+            return;
+        }
         if ('Orders' == $relationName) {
             $this->initOrderss();
             return;
         }
+    }
+
+    /**
+     * Clears out the collHotlines collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addHotlines()
+     */
+    public function clearHotlines()
+    {
+        $this->collHotlines = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collHotlines collection loaded partially.
+     */
+    public function resetPartialHotlines($v = true)
+    {
+        $this->collHotlinesPartial = $v;
+    }
+
+    /**
+     * Initializes the collHotlines collection.
+     *
+     * By default this just sets the collHotlines collection to an empty array (like clearcollHotlines());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initHotlines($overrideExisting = true)
+    {
+        if (null !== $this->collHotlines && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = HotlineTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collHotlines = new $collectionClassName;
+        $this->collHotlines->setModel('\Model\Propel\Hotline');
+    }
+
+    /**
+     * Gets an array of ChildHotline objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCustomers is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildHotline[] List of ChildHotline objects
+     * @throws PropelException
+     */
+    public function getHotlines(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collHotlinesPartial && !$this->isNew();
+        if (null === $this->collHotlines || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collHotlines) {
+                // return empty collection
+                $this->initHotlines();
+            } else {
+                $collHotlines = ChildHotlineQuery::create(null, $criteria)
+                    ->filterByCustomers($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collHotlinesPartial && count($collHotlines)) {
+                        $this->initHotlines(false);
+
+                        foreach ($collHotlines as $obj) {
+                            if (false == $this->collHotlines->contains($obj)) {
+                                $this->collHotlines->append($obj);
+                            }
+                        }
+
+                        $this->collHotlinesPartial = true;
+                    }
+
+                    return $collHotlines;
+                }
+
+                if ($partial && $this->collHotlines) {
+                    foreach ($this->collHotlines as $obj) {
+                        if ($obj->isNew()) {
+                            $collHotlines[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collHotlines = $collHotlines;
+                $this->collHotlinesPartial = false;
+            }
+        }
+
+        return $this->collHotlines;
+    }
+
+    /**
+     * Sets a collection of ChildHotline objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $hotlines A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildCustomers The current object (for fluent API support)
+     */
+    public function setHotlines(Collection $hotlines, ConnectionInterface $con = null)
+    {
+        /** @var ChildHotline[] $hotlinesToDelete */
+        $hotlinesToDelete = $this->getHotlines(new Criteria(), $con)->diff($hotlines);
+
+
+        $this->hotlinesScheduledForDeletion = $hotlinesToDelete;
+
+        foreach ($hotlinesToDelete as $hotlineRemoved) {
+            $hotlineRemoved->setCustomers(null);
+        }
+
+        $this->collHotlines = null;
+        foreach ($hotlines as $hotline) {
+            $this->addHotline($hotline);
+        }
+
+        $this->collHotlines = $hotlines;
+        $this->collHotlinesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Hotline objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Hotline objects.
+     * @throws PropelException
+     */
+    public function countHotlines(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collHotlinesPartial && !$this->isNew();
+        if (null === $this->collHotlines || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collHotlines) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getHotlines());
+            }
+
+            $query = ChildHotlineQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCustomers($this)
+                ->count($con);
+        }
+
+        return count($this->collHotlines);
+    }
+
+    /**
+     * Method called to associate a ChildHotline object to this object
+     * through the ChildHotline foreign key attribute.
+     *
+     * @param  ChildHotline $l ChildHotline
+     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
+     */
+    public function addHotline(ChildHotline $l)
+    {
+        if ($this->collHotlines === null) {
+            $this->initHotlines();
+            $this->collHotlinesPartial = true;
+        }
+
+        if (!$this->collHotlines->contains($l)) {
+            $this->doAddHotline($l);
+
+            if ($this->hotlinesScheduledForDeletion and $this->hotlinesScheduledForDeletion->contains($l)) {
+                $this->hotlinesScheduledForDeletion->remove($this->hotlinesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildHotline $hotline The ChildHotline object to add.
+     */
+    protected function doAddHotline(ChildHotline $hotline)
+    {
+        $this->collHotlines[]= $hotline;
+        $hotline->setCustomers($this);
+    }
+
+    /**
+     * @param  ChildHotline $hotline The ChildHotline object to remove.
+     * @return $this|ChildCustomers The current object (for fluent API support)
+     */
+    public function removeHotline(ChildHotline $hotline)
+    {
+        if ($this->getHotlines()->contains($hotline)) {
+            $pos = $this->collHotlines->search($hotline);
+            $this->collHotlines->remove($pos);
+            if (null === $this->hotlinesScheduledForDeletion) {
+                $this->hotlinesScheduledForDeletion = clone $this->collHotlines;
+                $this->hotlinesScheduledForDeletion->clear();
+            }
+            $this->hotlinesScheduledForDeletion[]= clone $hotline;
+            $hotline->setCustomers(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Customers is new, it will return
+     * an empty collection; or if this Customers has previously
+     * been saved, it will retrieve related Hotlines from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Customers.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildHotline[] List of ChildHotline objects
+     */
+    public function getHotlinesJoinEmployees(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildHotlineQuery::create(null, $criteria);
+        $query->joinWith('Employees', $joinBehavior);
+
+        return $this->getHotlines($query, $con);
     }
 
     /**
@@ -2078,6 +2447,7 @@ abstract class Customers implements ActiveRecordInterface
         $this->shipto_address = null;
         $this->shipto_zipcode = null;
         $this->shipto_city = null;
+        $this->role = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -2096,6 +2466,11 @@ abstract class Customers implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collHotlines) {
+                foreach ($this->collHotlines as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrderss) {
                 foreach ($this->collOrderss as $o) {
                     $o->clearAllReferences($deep);
@@ -2103,6 +2478,7 @@ abstract class Customers implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collHotlines = null;
         $this->collOrderss = null;
     }
 

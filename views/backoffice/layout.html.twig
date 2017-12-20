@@ -11,6 +11,7 @@
 
         <meta charset = "utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>ACCF - Interface d'administration</title>
     </head>
 
@@ -19,7 +20,7 @@
             <div class="w3-col s12 m6 l2" id="headerLeft">
                 <a href="{{ path('dashboard') }}">
                     <img class="w3-padding-16" src="{{ asset('backoffice/logo_accf.png') }}">                    
-{#                    <img class="w3-padding-16" src="/var/www/html/accf/backoffice/Assets/logo_accf.png">#}
+                    {#                    <img class="w3-padding-16" src="/var/www/html/accf/backoffice/Assets/logo_accf.png">#}
                 </a>
             </div>
 
@@ -40,18 +41,18 @@
             <nav class="w3-col s12 m3 l2 w3-grey" id="leftmenu">
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des agences</button>
-                    <div class="accordionContent">
-                        <a href="{{ path('editer_agence') }}" class="w3-block w3-button w3-small">Ajouter ou modifier une agence</a>
-                        <a href="{{ path('afficher_agence') }}" class="w3-block w3-button w3-small">Afficher les agences</a>
-{#                        <a href="{{ path('supprimer_agence') }}" class="w3-block w3-button w3-small">Supprimer une agence</a>#}
-                    </div>
+                <div class="accordionContent">
+                    <a href="{{ path('editer_agence') }}" class="w3-block w3-button w3-small">Ajouter ou modifier une agence</a>
+                    <a href="{{ path('afficher_agence') }}" class="w3-block w3-button w3-small">Afficher les agences</a>
+                    {#                        <a href="{{ path('supprimer_agence') }}" class="w3-block w3-button w3-small">Supprimer une agence</a>#}
+                </div>
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-hover-silver w3-hover-text-black w3-text-white accordion">Gestion des clients</button>
                 <div class="accordionContent">
-{#                    <a href="{{ path('afficher_client') }}" class="w3-block w3-button w3-small">Afficher les détails d'un client</a>#}
+                    {#                    <a href="{{ path('afficher_client') }}" class="w3-block w3-button w3-small">Afficher les détails d'un client</a>#}
                     <a href="{{ path('afficher_clients') }}" class="w3-block w3-button w3-small">Afficher les clients</a>
                 </div>
-                  
+
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-hover-silver w3-hover-text-black w3-text-white accordion">Gestion des commandes</button>
                 <div class="accordionContent">
                     <a href="{{ path('afficher_commande') }}" class="w3-block w3-button w3-small">Afficher les détails d'une commande</a>
@@ -59,48 +60,86 @@
                 </div>
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des employés</button>
-                    <div class="accordionContent">
-                        <a href="{{ path('editer_employe') }}" class="w3-block w3-button w3-small">Ajouter ou modifier un employé</a>
-                        <a href="{{ path('afficher_employe') }}" class="w3-block w3-button w3-small">Afficher les employés</a>
-                        <a href="{{ path('supprimer_employe') }}" class="w3-block w3-button w3-small">Supprimer un employé</a>
-                    </div>
+                <div class="accordionContent">
+                    <a href="{{ path('editer_employe') }}" class="w3-block w3-button w3-small">Ajouter ou modifier un employé</a>
+                    <a href="{{ path('afficher_employe') }}" class="w3-block w3-button w3-small">Afficher les employés</a>
+                    <a href="{{ path('supprimer_employe') }}" class="w3-block w3-button w3-small">Supprimer un employé</a>
+                </div>
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des produits</button>
                 <div class="accordionContent">
                     <a href="{{ path('editer_produits') }}" class="w3-block w3-button w3-small">Ajouter ou modifier un produit</a>
                     <a href="{{ path('read_products') }}" class="w3-block w3-button w3-small">Afficher les produits</a>
-{#                   <a href="{{ path('delete_products') }}" class="w3-block w3-button w3-small">Supprimer un produit</a>#}
+                    {#                   <a href="{{ path('delete_products') }}" class="w3-block w3-button w3-small">Supprimer un produit</a>#}
                 </div>
 
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des publications</button>
-                    <div class="accordionContent">
-                        <a href="{{ path('editer_publication') }}" class="w3-block w3-button w3-small">Ajouter ou modifier une publication</a>
-                        <a href="{{ path('afficher_publication') }}" class="w3-block w3-button w3-small">Afficher une publication</a>
-                        <a href="{{ path('supprimer_publication') }}" class="w3-block w3-button w3-small">Supprimer une publication</a>
-                    </div>
-               
+                <div class="accordionContent">
+                    <a href="{{ path('editer_publication') }}" class="w3-block w3-button w3-small">Ajouter ou modifier une publication</a>
+                    <a href="{{ path('afficher_publication') }}" class="w3-block w3-button w3-small">Afficher une publication</a>
+                    <a href="{{ path('supprimer_publication') }}" class="w3-block w3-button w3-small">Supprimer une publication</a>
+                </div>
+
                 <button class="w3-block w3-border-bottom w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des services</button>
                 <div class="accordionContent">
                     <a href="{{ path('editer_services') }}" class="w3-block w3-button w3-small">Ajouter ou modifier un service</a>
-                     <a href="{{ path('read_services') }}" class="w3-block w3-button w3-small">Afficher un service</a>
-{#                    <a href="{{ path('delete_services') }}" class="w3-block w3-button w3-small">Supprimer un service</a>#}
+                    <a href="{{ path('read_services') }}" class="w3-block w3-button w3-small">Afficher un service</a>
+                    {#                    <a href="{{ path('delete_services') }}" class="w3-block w3-button w3-small">Supprimer un service</a>#}
                 </div>
+                {% if is_granted('ROLE_MEMBRE') %}
+                    <div id="chat">
+                        <div id="conversation">
+                            <div id="messages">
+
+                            </div>
+                            <form method="post" action="" id="sendMsg">
+
+                                <textarea placeholder="Votre message" style="resize:none" name="hotline_message"></textarea><br>
+                                <input type="submit" value="envoyer">
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
             </nav>
-            
+
             <div class="w3-center w3-col s12 m9 l9" id="displayContainer">
-                {% block title %}{% endblock %}
-                {% block content %}{% endblock %}
-            </div>
+            {% block title %}{% endblock %}
+        {% block content %}{% endblock %}
 
-        </main>
+    </div>
 
-        <footer class="w3-bottom w3-center w3-container w3-grey w3-row">
-            <span class="w3-text-white">Copyright - LG / GL / KN / BR - 2017</span>             
-        </footer>
+</main>
 
-    <script src="{{ asset('backoffice/script.js') }}"></script>
+<footer class="w3-bottom w3-center w3-container w3-grey w3-row">
+    <span class="w3-text-white">Copyright - LG / GL / KN / BR - 2017</span>             
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{{ asset('backoffice/script.js') }}"></script>
 {#    <script src="/var/www/html/accf/backoffice/Assets/script.js"></script>#}
+{% if is_granted('ROLE_MEMBRE') %}
+    <script type="text/javascript">
+        function getMessages() {
+            $.getJSON('{{ path('get_messages') }}', function (messages) {
+                $('#messages').empty();
+                for (message of messages) {
+                    $('<div class="mesages">' + message.HotlineMessage + '</div>').appendTo('#messages');
+                }
+            });
+        }
 
-    </body>
+        $(function () {
+            $('#sendMsg').submit(function (e) {
+                e.preventDefault();
+
+                $.post('{{ path('insertMessage') }}', $(this).serialize(), function () {
+                    $('textarea[name="hotline_message"]').val('');
+                    getMessages();
+                });
+            });
+        });
+        setInterval(getMessages, 1000);
+    </script>
+{% endif %}
+</body>
 
 </html>

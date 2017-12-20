@@ -5,7 +5,7 @@
     <column name="address" phpName="Address" type="VARCHAR" size="255" required="true"/>
     <column name="zipcode" phpName="Zipcode" type="VARCHAR" size="255" required="true"/>
     <column name="city" phpName="City" type="VARCHAR" size="255" required="true"/>
-    <column name="area" phpName="Area" type="CHAR" sqlType="enum('92','69')" required="true"/>
+    <column name="area" phpName="Area" type="INTEGER" size="2" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -15,6 +15,8 @@
     <column name="picture_content" phpName="PictureContent" type="VARCHAR" size="255" required="true"/>
     <column name="content_title" phpName="ContentTitle" type="VARCHAR" size="255" required="true"/>
     <column name="content_text" phpName="ContentText" type="LONGVARCHAR" required="true"/>
+    <column name="id_employee" phpName="IdEmployee" type="INTEGER" required="true"/>
+    <column name="subtitle" phpName="Subtitle" type="VARCHAR" size="255" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -34,6 +36,7 @@
     <column name="shipto_address" phpName="ShiptoAddress" type="VARCHAR" size="255" required="true"/>
     <column name="shipto_zipcode" phpName="ShiptoZipcode" type="VARCHAR" size="255" required="true"/>
     <column name="shipto_city" phpName="ShiptoCity" type="VARCHAR" size="255" required="true"/>
+    <column name="role" phpName="Role" type="VARCHAR" size="255" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -44,6 +47,7 @@
     <column name="lastname" phpName="Lastname" type="VARCHAR" size="255" required="true"/>
     <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
     <column name="phone" phpName="Phone" type="VARCHAR" size="255" required="true"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
     <column name="job" phpName="Job" type="VARCHAR" size="255" required="true"/>
     <column name="picture" phpName="Picture" type="VARCHAR" size="255" required="true"/>
     <column name="role" phpName="Role" type="VARCHAR" size="255" required="true"/>
@@ -53,6 +57,28 @@
     </foreign-key>
     <index name="agency">
       <index-column name="id_agency"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="hotline" idMethod="native" phpName="Hotline" namespace="\Model\Propel">
+    <column name="id_hotline" phpName="IdHotline" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="hotline_message" phpName="HotlineMessage" type="LONGVARCHAR" required="true"/>
+    <column name="id_customer" phpName="IdCustomer" type="INTEGER" required="true"/>
+    <column name="id_employee" phpName="IdEmployee" type="INTEGER" required="true"/>
+    <column name="type_author" phpName="TypeAuthor" type="CHAR" sqlType="enum('EMPLOYEE','CUSTOMER')" required="true"/>
+    <foreign-key foreignTable="customers" name="hotline_ibfk_1">
+      <reference local="id_customer" foreign="id_customer"/>
+    </foreign-key>
+    <foreign-key foreignTable="employees" name="hotline_ibfk_2">
+      <reference local="id_employee" foreign="id_employee"/>
+    </foreign-key>
+    <index name="id_customer">
+      <index-column name="id_customer"/>
+    </index>
+    <index name="id_employee">
+      <index-column name="id_employee"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -106,22 +132,6 @@
     <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
     <column name="price_vat_excluded" phpName="PriceVatExcluded" type="FLOAT" required="true"/>
     <column name="price_vat_included" phpName="PriceVatIncluded" type="FLOAT" required="true"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="standards" idMethod="native" phpName="Standards" namespace="\Model\Propel">
-    <column name="id_standard" phpName="IdStandard" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="title" phpName="Title" type="VARCHAR" size="255" required="true"/>
-    <column name="subtitle" phpName="Subtitle" type="VARCHAR" size="255" required="true"/>
-    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
-    <column name="id_employee" phpName="IdEmployee" type="INTEGER" size="8" required="true"/>
-    <foreign-key foreignTable="employees" name="standards_ibfk_1">
-      <reference local="id_employee" foreign="id_employee"/>
-    </foreign-key>
-    <index name="id_employee">
-      <index-column name="id_employee"/>
-    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

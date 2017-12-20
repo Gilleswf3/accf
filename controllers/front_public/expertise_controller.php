@@ -1,6 +1,5 @@
 <?php
 
-$publicGroup = $app['controllers_factory'];
 
 $publicGroup->get('/expertise', function() use ($app){
     $contents = \Model\Propel\ContentQuery::create()->find();
@@ -10,5 +9,4 @@ $publicGroup->get('/expertise', function() use ($app){
     ));
 } )->bind('expertise');
 
-$app->mount('/frontoffice', $publicGroup);
 
