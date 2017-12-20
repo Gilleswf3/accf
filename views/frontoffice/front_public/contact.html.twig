@@ -1,0 +1,50 @@
+{% extends "frontoffice/layout.html.twig" %}
+
+
+{% block content %}
+    <div class="row">
+    <div class="col-md-8">
+        
+    {% for employees in employeess %}
+        <div class="card " id='carte' style="width: 30rem ; margin: 20px; box-shadow: 5px 6px 4px 2px; border:1px solid black;">
+            <a href="#">
+                <img class="card-img-top" src="{{asset('images/'~employees.picture)}}" style='width:100px; ' alt="Card image cap">
+            </a>
+            <div class="card-body">
+                <h4 class="card-title">{{ employees.job }}</h4>
+
+            </div>
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">{{ employees.phone }}</li>
+                <li class="list-group-item">{{ employees.email }}</li>
+
+                <li class="list-group-item">{{ employees.lastname }}</li>
+                <li class="list-group-item">{{ employees.firstname }}</li>
+
+            </ul>
+
+        </div>
+    {% endfor %}
+    </div>
+    <div class="col-md-4">
+    
+        <div class="card " id='carte' style="width: 25rem ; margin: 20px">
+            {% for agencies in agencies  %}
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item">{{ agencies.address }}</li>
+                <li class="list-group-item">{{ agencies.zipcode }}</li>
+
+                <li class="list-group-item">{{ agencies.city }}</li>
+                 {% endfor %}
+                <li class="list-group-item"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2786.123162063729!2d4.908405814957709!3d45.70856597910456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4c3cbef46283f%3A0x30ff114a81875410!2s44+Rue+Jean+Zay%2C+69800+Saint-Priest!5e0!3m2!1sfr!2sfr!4v1513708630384" width="200" height="200" frameborder="0" style="border:0" allowfullscreen></iframe></li>
+
+            </ul>
+        </div>   
+   
+    </div>
+{% endblock %}
+
+
+

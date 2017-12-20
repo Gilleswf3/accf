@@ -1,0 +1,64 @@
+{% extends "backoffice/layout.html.twig" %}
+
+    
+{% block content %}
+
+<div class="w3-col l1 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+        <table class="w3-centered w3-col l12 w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Afficher les produits</h2>
+        
+            <tr>
+                <th>id </th>
+                <th>Titre</th>
+                <th>Fabricant</th>
+                {#<th>Catégorie</th>#}
+                <th>Sous catégorie</th>             
+                <th>Description</th>
+                <th>Photos</th>
+                <th>Prix HT</th>
+                <th>Prix TTC</th>
+                <th> Suppression </th>
+                <th> Modification </th>
+            </tr>
+
+            {% for product in products %}
+                               
+            <tr>
+                              
+                <td><p>plus d'infos</p>
+                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('read_selected_product', { id: product.idProduct }) }}" role="button" > {{ product.idProduct }}</a>
+                </td> 
+            
+                   <td>{{ product.title}}</td>
+          
+                <td>{{ product.manufacturer }}</td>
+                {#<td>{{ product.productMainCategory }}</td>#}
+                <td>{{ product.productSubCategory }}</td>
+                
+                <td>{{ product.description|truncate(40, true, "...")}}</td>
+                
+                <td>
+              <img src="{{asset('images/produits/'~product.picture)}}" width="100" height="100"/>
+                </td>
+                <td>{{ product.priceVatExcluded }}</td>
+                <td>{{ product.priceVatIncluded }}</td>
+                <td>
+                    <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('suppress_products', { id: product.idProduct }) }}" role="button" >  Supprimer </a>
+                   
+                <td>
+                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('editer_produits', { id: product.idProduct }) }}" role="button" >  Modifier </a>
+                </td>
+              
+            </tr>
+
+            {% endfor %}
+           
+        </table>
+          
+                
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,61 @@
+{# empty Twig template #}
+{#
+{% extends "backoffice/layout.html.twig" %}
+
+
+    
+    {% block content %}
+       
+
+    
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top w3-padding" id="displayAccfArea">
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+
+            <h2 class="w3-margin w3-teal">Supprimer un produit</h2>
+        
+            <tr>
+                <th>Fabriquant</th>
+                <th>Catégorie</th>
+                <th>Sous catégorie</th>
+                <th>Titre</th>
+              
+                <th>Photos</th>
+                <th>Prix HT</th>
+                <th>Prix TTC</th>
+                
+            </tr>
+
+          {% for product in products %}
+
+            <tr>
+                <td>{{ product.manufacturer }}</td>
+                <td>{{ product.productMainCategory }}</td>
+                <td>{{ product.productSubCategory }}</td>
+                <td>{{ product.title }}</td>
+              
+               
+                
+
+ 
+        
+                <td>
+              <img src="{{asset('images/produits/'~product.picture)}}" width="100" height="100"/>
+                </td>
+                <td>{{ product.priceVatExcluded }}</td>
+                <td>{{ product.priceVatIncluded }}</td>
+                
+       
+                 <td><button>Supprimer</button></td>
+            </tr>
+
+            {% endfor %}
+           
+        </table>
+                
+    </div>
+        
+{% endblock %}
+
+#}

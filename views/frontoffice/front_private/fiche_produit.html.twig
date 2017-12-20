@@ -1,0 +1,54 @@
+{% extends "frontoffice/layout.html.twig" %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div clas="col-md-6"
+             <div class="card " id='carte' style="width: 50rem ; margin: 20px">
+
+                <img class="card-img-top" src="{{asset('images/'~product.picture)}}" style='width:100px; ' alt="Card image cap">
+
+                <div class="card-body">
+                    <h4 class="card-title">{{ product.title}}</h4>
+                    <p class="card-text" >{{ product.description[:109]}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">{{ product.productMainCategory }}</li>
+                    <li class="list-group-item">{{ product.productSubCategory}}</li>
+                    <li class="list-group-item">{{ product.manufacturer }}</li>
+                    <li class="list-group-item">{{ product.priceVatExcluded}}</li>
+                    <li class="list-group-item">{{ product.priceVatIncluded}}</li>
+
+                </ul>
+
+            </div>
+                    
+                    
+                    
+                    
+                    
+                    
+            <div class="col-md-6">
+                <iframe name="hss_iframe" width="570px" height="540px"></iframe>
+WEBSITECODE=<form
+action="https://securepayments.paypal.com/webapps/HostedSoleSolutionApp/web
+flow/sparta/hostedSoleSolutionProcess" method="post">
+<input type="hidden" name="hosted_button_id" value="HSSSGDrPDzuW-ADwkFDMjQmpUK1gTDdR.tv5alaGS6l.XWVVB1MTMQEnGNoLakufQb89zTjf6">
+<input type="image" src="https://www.paypal.com/i/btn/btn_paynow_LG.gif"
+border="0" name="submit" alt="PayPal - The safer, easier way to pay
+online.">
+<img alt="" border="0" src="https://www.paypal.com/i/scr/pixel.gif"
+width="1" height="1">
+</form>
+<script type="text/javascript">
+ document.form_iframe.submit();
+</script> 
+
+            </div>
+
+
+        </div>
+    {% endblock %}
+

@@ -1,0 +1,29 @@
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+    
+{% block content %}
+
+    <div class="w3-col l3 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l6 w3-margin-top" id="displayAccfArea">
+        <form class="w3-container" id="employeeForm">
+
+            <h2 class="w3-teal">Modifier une agence</h2>
+
+            <label>Agence</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Adresse</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Code Postal</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+            <label>Ville</label>
+            <input class="w3-border w3-input w3-light-grey" type="text">
+
+            <button class="w3-button w3-grey w3-margin">Modifier</button>
+              
+        </form>
+    </div>
+        
+{% endblock %}

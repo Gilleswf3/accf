@@ -1,0 +1,15 @@
+{% extends "frontoffice/layout.html.twig" %}
+
+{% block content %}
+    
+
+    {% for content in contents %}
+        <img src="{{asset('images/'~content.pictureContent)}}"/>
+        <h4>{{ content.contentTitle }}</h4>
+        <p>{{ content.contentText }}</p>
+    {% endfor %}
+    
+    
+    
+    
+{% endblock %}

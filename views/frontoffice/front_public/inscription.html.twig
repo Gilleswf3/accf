@@ -1,0 +1,38 @@
+{% extends "frontoffice/layout.html.twig" %}
+
+
+{% block content %}
+       
+  
+
+    <div >
+        <form class="w3-container" id="employeeForm">
+
+            <h2 class="w3-teal">S'inscrire</h2>
+
+            <label>Prénom</label><br/>
+            <input  type="text" required><br/>
+            <label>Nom</label><br/>
+            <input type="text" required><br/>
+            <label>Email</label><br/>
+            <input  type="text"><br/>
+            <label>Mot de passe</label><br/>
+            <input type="password"/><br/>
+            <label>Téléphone</label><br/>
+            <label>Confirmation mot de passe</label><br/>
+            <input type="password"/><br/>
+            <label>Téléphone</label><br/>
+            <input type="text"><br/>
+            <label>Fonction</label><br/>
+            <input  type="text"><br/>
+            <label>Entreprise</label><br/>
+            <input  type="text"><br/>
+            <label>Adresse</label><br/>
+            <input  type="area">
+           
+
+            <button class="w3-button w3-grey w3-margin">Ajouter</button>
+              
+        </form>
+    </div>
+{% endblock %}

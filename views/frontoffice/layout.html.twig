@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ACCFFrance</title>
+        <link href="{{ asset('frontoffice/css/bootstrap.css')}}" rel="stylesheet">
+        <link href="{{asset('frontoffice/css/style.css')}}" rel="stylesheet">
+
+        <!--[if lt IE 9]>-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <!--[endif]-->
+        <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
+    </head>
+    <body>
+        <header class="container-fluid">
+            <div class="row">
+                <div id="logo" class="col-md-7 col-xs-12">
+                    <img src="{{asset('images/accf_logo.gif')}}">
+                </div>
+                <div id="menu" class="col-md-5 col-xs-12">
+                    <ul>
+                        <li><a href="{{path('accueil')}}">Accueil</a></li>
+                        <li><a href="{{path('expertise')}}">Notre Expertise</a></li>
+                        <li><a href="{{path('contact')}}">Contact</a></li>
+                        <li><a href="{{path('produits')}}">Nos Produits</a></li>
+                        <li><a href="{{path('profile')}}">Mon Compte Pro</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main>
+          {% block content %}{% endblock %}
+
+        </main>
+        <footer class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h5><a href="{{path('contact')}}">Contact</a></h5>
+                    <h5><a href="{{path('mentions')}}">Mentions légales</a></h5>
+                    <h5>Copyright® GL|BR|KN|LG</h5>
+                </div>
+            </div>
+        </footer>
+              
+        <script src="{{asset('https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')}}"></script>
+        <script src="{{asset('frontoffice/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('frontoffice/js/affichage.js')}}"></script>
+        
+    </body>
+</html>   

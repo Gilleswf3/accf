@@ -1,0 +1,96 @@
+<!doctype html>
+
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+        <link rel="stylesheet" href="Assets/style.css">        
+        <link rel="stylesheet" href="/var/www/html/accf/backoffice/Assets/style.css">
+
+        <meta charset = "utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ACCF - Interface d'administration</title>
+    </head>
+
+    <body>
+        <header class="w3-container w3-grey w3-row">
+            <div class="w3-col s12 m6 l2">
+                <a href="">
+                    <img class="w3-padding-16" src="Assets/logo_accf.png">                    
+                    <img class="w3-padding-16" src="/var/www/html/accf/backoffice/Assets/logo_accf.png">
+                </a>
+            </div>
+
+            <div class="w3-center w3-col l8">
+                <a href="">
+                    <span class="w3-xlarge w3-text-white">Bienvenue sur votre interface d'administration ACCF</span>
+                </a>
+            </div>
+
+            <div class="w3-center w3-col m6 l2">
+                <a href="">
+                    <span class="w3-right w3-text-white">Déconnexion</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="w3-row">
+            <nav class="w3-col s6 m1 l2 w3-grey" id="leftmenu">
+
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-hover-silver w3-hover-text-black w3-text-white accordion">Gestion des commandes</button>
+                <div class="accordionContent">
+                    <button class="w3-block w3-button w3-padding-small w3-small">Afficher les détails d'une commande</button>
+                    <button class="w3-button w3-block w3-button w3-small">Afficher toutes les commandes</button>
+                </div>
+
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des employés</button>
+                    <div class="accordionContent">
+                        <button class="w3-block w3-button w3-small">Ajouter un employé</button>
+                        <button class="w3-block w3-button w3-small">Afficher les détails d'un employé</button>
+                        <button class="w3-block w3-button w3-small">Mettre à jour un employé</button>
+                        <button class="w3-block w3-button w3-small">Supprimer un employé</button>
+                    </div>
+
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des publications</button>
+                    <div class="accordionContent">
+                        <button class="w3-block w3-button w3-small">Ajouter un article</button>
+                        <button class="w3-block w3-button w3-small">Afficher les détails d'un article</button>
+                        <button class="w3-block w3-button w3-small">Mettre à jour un article</button>
+                        <button class="w3-block w3-button w3-small">Supprimer un article</button>
+                    </div>
+
+                <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des produits</button>
+                <div class="accordionContent">
+                    <button class="w3-block w3-button w3-small">Ajouter un produit</button>
+                    <button class="w3-block w3-button w3-small">Afficher les détails d'un produit</button>
+                    <button class="w3-block w3-button w3-small">Mettre à jour un produit</button>
+                    <button class="w3-block w3-button w3-small">Supprimer un produit</button>
+                </div>
+
+                <button class="w3-block w3-border-bottom w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des services</button>
+                <div class="accordionContent">
+                    <button class="w3-block w3-button w3-small">Ajouter un service</button>
+                    <button class="w3-block w3-button w3-small">Afficher les détails d'un service</button>
+                    <button class="w3-block w3-button w3-small">Mettre à jour un service</button>
+                    <button class="w3-block w3-button w3-small">Supprimer un service</button>
+                </div>
+            </nav>
+            
+            <div class="w3-center w3-col s6 m11 l10" id="affichage">
+                <h1>Zone d'affichage dynamique</h1>
+            </div>
+
+        </main>
+
+        <footer class="w3-bottom w3-center w3-container w3-grey w3-row">
+            <span class="w3-text-white">Copyright - LG / GL / KN / BR - 2017</span>             
+        </footer>
+
+    <script src="Assets/script.js"></script>
+    <script src="/var/www/html/accf/backoffice/Assets/script.js"></script>
+
+    </body>
+
+</html>

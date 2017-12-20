@@ -1,0 +1,42 @@
+{% extends "backoffice/layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+    <div class="w3-col l1 MarginColumn">Marge</div>
+
+    <div class="w3-card w3-col l10 w3-margin-top w3-padding w3-responsive" id="displayAccfArea">    
+
+        <table class="w3-centered w3-col l12 w3-hoverable w3-table-all">
+            <h2 class="w3-margin w3-teal">Afficher toutes les commandes</h2>
+            
+            <tr>
+                <th>Numéro de commande</th>
+                <th>Numéro de client</th>
+                <th>Référence produit</th>
+                <th>Référence service</th>
+                <th>Date de commande</th>
+            </tr>
+
+            {% for order in orders %}
+
+            <tr>
+                <td>{{ order.idOrder }}</td>
+                <td>{{ order.idCustomer }}</td>
+                <td>{{ order.idProduct }}</td>
+                <td>{{ order.idService }}</td>
+                <td>{{ order.orderDate | date('d/m/Y') }}</td>
+            </tr>
+
+{#TRAITEMENT PHP EVENTUEL            #}
+{#          $datetime = Datetime::createFromFormat('d/m/Y');
+            $dateBdd = $datetime->toFormat('Y-m-d');
+#}
+            {% endfor %}
+           
+        </table>
+            
+    </div>
+    
+{% endblock %}

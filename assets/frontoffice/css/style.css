@@ -1,0 +1,72 @@
+body{
+	font-family: 'Old Standard TT', serif;
+}
+header {
+	min-height: 90px;
+}
+
+main{
+	
+}
+
+#menu ul li a {
+	color: black;
+	margin-right: 10px;
+	position: relative;
+	top: 40px;
+	font-size: 18px;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+#menu ul li a:hover{
+	color: red;
+}
+.carousel-inner img {
+	display: block;
+  	max-width: 100%;
+	/*margin-left: 3%;*/
+  	height: auto;
+  	margin: 0;
+}
+footer {
+	border-top: 1px solid black;
+	min-height: 90px;
+}
+
+footer h5 {
+	display: inline-block;
+	font-weight: bold;
+	float: right;
+}
+
+div#carte.card{
+    display:inline-block;
+}
+
+#menu2 ul {
+ margin:0;
+ padding:2px;
+ list-style-type:none;
+ text-align:center;
+ }
+#menu2 li {
+ float:left;
+ margin:auto;
+ padding:0;
+
+ }
+#menu2 li a {
+/* display:block;*/
+ width:100px;
+ color:white;
+ text-decoration:none;
+ padding:5px;
+ }
+#menu2 li a:hover {
+ color:#FFD700;
+ }
+ 
+#menu2 ul li ul li a {
+ display: none;
+ }

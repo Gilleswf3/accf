@@ -1,0 +1,64 @@
+<!doctype html>
+
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+        <link rel="stylesheet" href="{{ asset('backoffice/style.css') }}">
+        <link rel="stylesheet" href="/var/www/html/accf/backoffice/Assets/style.css">
+
+        <meta charset = "utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ACCF - Connexion à l'interface d'administration</title>
+    </head>
+
+
+{% block title %}
+{% endblock %}
+        
+{% block content %}
+    <header class="w3-container w3-grey w3-row">
+
+        <div class="w3-col l4 MarginColumn">Marge</div>
+
+        <div class="w3-center w3-col l4">
+            <a href="{{ path('dashboard') }}">
+                <img class="w3-padding-16" src="{{ asset('backoffice/logo_accf.png') }}">                    
+            </a>
+        </div>
+
+    </header>
+
+    <body>
+        
+        <div class="w3-container w3-row">
+
+            <div class="w3-col l4 MarginColumn">Marge</div>
+            
+            <div class="w3-card w3-center w3-col l4" id="loginForm">
+                <form class="w3-container" action="{{ path('login') }}" method="POST">
+
+{#                <form class="w3-container">#}
+                    <h2 class="w3-teal">Bienvenue</h2>
+
+                    <label class="w3-col l12">Votre adresse email</label>
+{#                    <input class="w3-border w3-col l12 w3-input w3-light-grey" name="_username" value="{{ last_username }}" placeholder="adresse@mail.fr" type="text">#}
+                    <input class="w3-border w3-col l12 w3-input w3-light-grey" name="_email" placeholder="adresse@mail.fr" type="text">
+
+                    <label class="w3-col l21">Votre mot de passe</label>
+                    <input class="w3-border w3-col l12 w3-input w3-light-grey" name="_role" value="" type="text">
+
+                    <div class="w3-red">
+{#                        {% if error %}
+                            <div class="w3-panel w3-red">
+                                {{ error | trans }} {# <?php echo trans($error) ?>
+                            </div>
+                        {% endif %}
+#}                        <button class="w3-button w3-col l12 w3-margin-top w3-margin-bottom w3-teal">Connexion</button>
+                    </div>
+                    
+            </div>
+        </div>
+    </body>
+{% endblock %}

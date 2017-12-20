@@ -1,0 +1,27 @@
+{% extends "frontoffice/layout.html.twig" %}
+
+{% block content %}
+{% for product in products %}
+
+    <div class="row">
+        <div clas="col-md-6"
+             <div class="card " id='carte' style="width: 50rem ; margin: 20px">
+
+                <img class="card-img-top" src="{{asset('images/'~product.picture)}}" style='width:100px; ' alt="Card image cap">
+
+                <div class="card-body">
+                    <h4 class="card-title">{{ product.title}}</h4>
+                    <p class="card-text" >{{ product.description[:109]}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">{{ product.productMainCategory }}</li>
+                    <li class="list-group-item">{{ product.productSubCategory}}</li>
+                    <li class="list-group-item">{{ product.manufacturer }}</li>
+                    <li class="list-group-item">{{ product.priceVatExcluded}}</li>
+                    <li class="list-group-item">{{ product.priceVatIncluded}}</li>
+
+                </ul>
+                    {% endfor %}
+            </div>
+   {%endblock %}                 

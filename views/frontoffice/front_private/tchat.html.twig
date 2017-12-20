@@ -1,0 +1,23 @@
+{% extends "frontoffice/layout.html.twig" %}
+
+{% block content %}
+    <h2>Profil de : </h2>
+    <div>
+        <span class="date">23:22</span>
+        <span class="autor">Julien:</span>
+        <span class="content">hhgfvggfvvsgvfgvgsgf</span>
+        
+    </div>
+    
+    <form method="POST" action="{{path('tchat')}}">
+        <label>Message : </label>
+        <textarea name="message" id="message" placeholder="Ecrivez votre message"></textarea><br />
+        <input type="submit" name="submit" value="Envoyez votre message !"  />
+    </form>
+    
+    
+    {% endblock %}
+           
+        
+       
+    

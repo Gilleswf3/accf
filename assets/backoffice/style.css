@@ -1,0 +1,74 @@
+*{
+    font-family: "Ubuntu", sans-serif;
+}
+
+header a{
+    text-decoration: none;
+}
+
+header span{
+    line-height: 85px;
+}
+
+#leftmenu{
+    /* min-height:calc (100% - 150px); */
+    min-height: 800px;
+}
+
+.accordion{
+    cursor: pointer;
+    line-height: 50px;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.accordion.active{
+    background-color:teal;
+}
+
+.accordionContent{
+    display: none;
+}
+
+.accordionContent a{
+    text-align: left;
+}
+
+/* .accordion:after{
+    color: #f30000;
+    content: '\02795';
+    font-size: 12px;
+    float: right;
+} */
+
+/* .accordion.active:after {
+    content: "\2796";
+} */
+
+
+#displayContainer{
+    margin: 0 auto;
+    min-height: 700px;
+}
+
+#displayAccfArea{
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    
+    /*min-height: 600px;*/
+}
+
+
+.dashboardContent{
+    min-height: 100px;
+}
+
+footer{
+    min-height: 85px;
+}
+
+footer span{
+    line-height: 85px;
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" namespace="\Model\Propel" defaultPhpNamingMethod="underscore">
+  <table name="agencies" idMethod="native" phpName="Agencies" namespace="\Model\Propel">
+    <column name="id_agency" phpName="IdAgency" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="address" phpName="Address" type="VARCHAR" size="255" required="true"/>
+    <column name="zipcode" phpName="Zipcode" type="VARCHAR" size="255" required="true"/>
+    <column name="city" phpName="City" type="VARCHAR" size="255" required="true"/>
+    <column name="area" phpName="Area" type="CHAR" sqlType="enum('92','69')" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="content" idMethod="native" phpName="Content" namespace="\Model\Propel">
+    <column name="id_content" phpName="IdContent" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="picture_content" phpName="PictureContent" type="VARCHAR" size="255" required="true"/>
+    <column name="content_title" phpName="ContentTitle" type="VARCHAR" size="255" required="true"/>
+    <column name="content_text" phpName="ContentText" type="LONGVARCHAR" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="customers" idMethod="native" phpName="Customers" namespace="\Model\Propel">
+    <column name="id_customer" phpName="IdCustomer" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="firstname" phpName="Firstname" type="VARCHAR" size="255" required="true"/>
+    <column name="lastname" phpName="Lastname" type="VARCHAR" size="255" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="255" required="true"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+    <column name="job" phpName="Job" type="VARCHAR" size="255" required="true"/>
+    <column name="company" phpName="Company" type="VARCHAR" size="255" required="true"/>
+    <column name="billto_address" phpName="BilltoAddress" type="VARCHAR" size="255" required="true"/>
+    <column name="billto_zipcode" phpName="BilltoZipcode" type="VARCHAR" size="255" required="true"/>
+    <column name="billto_city" phpName="BilltoCity" type="VARCHAR" size="255" required="true"/>
+    <column name="shipto_address" phpName="ShiptoAddress" type="VARCHAR" size="255" required="true"/>
+    <column name="shipto_zipcode" phpName="ShiptoZipcode" type="VARCHAR" size="255" required="true"/>
+    <column name="shipto_city" phpName="ShiptoCity" type="VARCHAR" size="255" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="employees" idMethod="native" phpName="Employees" namespace="\Model\Propel">
+    <column name="id_employee" phpName="IdEmployee" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="firstname" phpName="Firstname" type="VARCHAR" size="255" required="true"/>
+    <column name="lastname" phpName="Lastname" type="VARCHAR" size="255" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="255" required="true"/>
+    <column name="job" phpName="Job" type="VARCHAR" size="255" required="true"/>
+    <column name="picture" phpName="Picture" type="VARCHAR" size="255" required="true"/>
+    <column name="role" phpName="Role" type="VARCHAR" size="255" required="true"/>
+    <column name="id_agency" phpName="IdAgency" type="INTEGER" size="8" required="true"/>
+    <foreign-key foreignTable="agencies" name="employees_ibfk_1">
+      <reference local="id_agency" foreign="id_agency"/>
+    </foreign-key>
+    <index name="agency">
+      <index-column name="id_agency"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="orders" idMethod="native" phpName="Orders" namespace="\Model\Propel">
+    <column name="id_order" phpName="IdOrder" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_customer" phpName="IdCustomer" type="INTEGER" size="8" required="true"/>
+    <column name="id_product" phpName="IdProduct" type="INTEGER" size="8"/>
+    <column name="id_service" phpName="IdService" type="INTEGER" size="8"/>
+    <column name="order_date" phpName="OrderDate" type="DATE" required="true"/>
+    <foreign-key foreignTable="customers" name="orders_ibfk_1">
+      <reference local="id_customer" foreign="id_customer"/>
+    </foreign-key>
+    <foreign-key foreignTable="products" name="orders_ibfk_2">
+      <reference local="id_product" foreign="id_product"/>
+    </foreign-key>
+    <foreign-key foreignTable="services" name="orders_ibfk_3">
+      <reference local="id_service" foreign="id_service"/>
+    </foreign-key>
+    <index name="id_customer">
+      <index-column name="id_customer"/>
+    </index>
+    <index name="id_product">
+      <index-column name="id_product"/>
+    </index>
+    <index name="id_service">
+      <index-column name="id_service"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="products" idMethod="native" phpName="Products" namespace="\Model\Propel">
+    <column name="id_product" phpName="IdProduct" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="manufacturer" phpName="Manufacturer" type="VARCHAR" size="255" required="true"/>
+    <column name="product_main_category" phpName="ProductMainCategory" type="CHAR" sqlType="enum('Dispositifs anti-intrusion','Dispositifs anti-incendie','Dispositifs de prevention medicale')" required="true"/>
+    <column name="product_sub_category" phpName="ProductSubCategory" type="CHAR" sqlType="enum('Alarmes','Appel Malade','Controle d''acces','Desenfumage','Detection des chutes','Detection incendie','Eclairage de securite','Video-surveillance')" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="255" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="picture" phpName="Picture" type="VARCHAR" size="255" required="true"/>
+    <column name="price_vat_excluded" phpName="PriceVatExcluded" type="FLOAT" required="true"/>
+    <column name="price_vat_included" phpName="PriceVatIncluded" type="FLOAT" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="services" idMethod="native" phpName="Services" namespace="\Model\Propel">
+    <column name="id_service" phpName="IdService" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="CHAR" sqlType="enum('Contrat de maintenance','Etude technique','Formation','Mise en service')" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="price_vat_excluded" phpName="PriceVatExcluded" type="FLOAT" required="true"/>
+    <column name="price_vat_included" phpName="PriceVatIncluded" type="FLOAT" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="standards" idMethod="native" phpName="Standards" namespace="\Model\Propel">
+    <column name="id_standard" phpName="IdStandard" type="INTEGER" size="8" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="255" required="true"/>
+    <column name="subtitle" phpName="Subtitle" type="VARCHAR" size="255" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="id_employee" phpName="IdEmployee" type="INTEGER" size="8" required="true"/>
+    <foreign-key foreignTable="employees" name="standards_ibfk_1">
+      <reference local="id_employee" foreign="id_employee"/>
+    </foreign-key>
+    <index name="id_employee">
+      <index-column name="id_employee"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tchat" idMethod="native" phpName="Tchat" namespace="\Model\Propel">
+    <column name="id_tchat" phpName="IdTchat" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="message" phpName="Message" type="LONGVARCHAR" required="true"/>
+    <column name="id_customer" phpName="IdCustomer" type="INTEGER" required="true"/>
+    <column name="id_employee" phpName="IdEmployee" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="employees" name="tchat_ibfk_1">
+      <reference local="id_employee" foreign="id_employee"/>
+    </foreign-key>
+    <foreign-key foreignTable="customers" name="tchat_ibfk_2">
+      <reference local="id_customer" foreign="id_customer"/>
+    </foreign-key>
+    <index name="tchat_ibfk_1">
+      <index-column name="id_employee"/>
+    </index>
+    <index name="id_customer">
+      <index-column name="id_customer"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>

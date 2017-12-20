@@ -1,0 +1,301 @@
+
+
+{% extends "frontoffice/layout.html.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10">
+            {% for product in products %}
+
+
+
+                <div class="card " id='carte' style="width: 50rem ; margin: 20px; box-shadow: 5px 6px 4px 2px; border:1px solid black; border-radius: 2px;">
+                    <a href="{{path('fiche_produit', {id:product.idProduct})}}">
+                        <img class="card-img-top" src="{{asset('images/'~product.picture)}}" style='width:100px; ' alt="Card image cap">
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ product.title}}</h4>
+                        <p class="card-text" >{{ product.description[:109]}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">{{ product.productMainCategory }}</li>
+                        <li class="list-group-item">{{ product.productSubCategory}}</li>
+                        <li class="list-group-item">{{ product.manufacturer }}</li>
+                        <li class="list-group-item">{{ product.priceVatExcluded}}</li>
+                        <li class="list-group-item">{{ product.priceVatIncluded}}</li>
+
+                    </ul>
+                    <div class="card-body">
+                        <a href="{{path('fiche_produit', {id:product.idProduct})}}" class="card-link">Voir plus</a>
+
+                    </div>
+                </div>
+            {% endfor %}
+         
+        </div>
+    </div>
+
+
+
+
+    <div class="row "  style=" margin: 20px 0 20px 20px; ">   
+        <nav class="nav nav-pills col-md-2" >
+            <div id="menu2">
+            
+            <ul>
+                <li>Dispositif anti-intrusion
+                    <ul>
+                        {% for securite in securite %}
+                    {#        <li><a href="{{path('categorie', {id:product.productSubCategory})}}">{{ securite.productSubCategory }}</a></li>#}
+                        </ul>
+                    {% endfor %}
+                </li>     
+                <li>Dispositif anti-incendie
+                    <ul>
+                        {% for incendie in incendie %}
+                            <li><a href="">{{ incendie.productSubCategory }}</a></li>
+                            {% endfor %}    
+                    </ul>
+                </li>
+
+                <li>Dispositif médicale
+                    <ul>
+                        {% for medicale in medicale %}
+                            <li> <a href=""> {{ medicale.productSubCategory }}</a></li>
+
+                        {% endfor %} 
+                    </ul>
+                </li>  
+            </ul>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{#<a href="{{path('categorie', {id:product.idProduct})}}" class="card-link">Voir plus</a>#}
+   {#{% extends "frontoffice/layout.html.twig" %}
+
+{% block content %}
+
+
+<div id="myBtnContainer">
+    <button onclick="filterSelection('detection_des_chutes')">Détection des chutes</button>
+    <button onclick="filterSelection('desenfumage')">Désenfumage</button>
+    <button onclick="filterSelection('eclairage_de_securite')">eclairage de securite</button>
+    <button onclick="filterSelection('detection_incendie')">detection incendie</button>
+    <button onclick="filterSelection('alarmes')">alarmes</button>
+    <button  onclick="filterSelection('video_surveillance')">video surveillance</button>
+    <button onclick="filterSelection('controle_acce')">controle acces</button>
+    <button  onclick="filterSelection('appel_malade')">appel malade</button>
+  
+</div>
+  
+
+    {% for desenfumage in desenfumages %}
+<div> {{ desenfumage.manufacturer }}
+
+
+ {{ desenfumage.title }}
+
+
+ {{ desenfumage.description }}
+
+ {{ asset('images/produits/'~desenfumage.picture )}}
+
+
+ {{ desenfumage.priceVatExcluded }}
+
+ {{ desenfumage.priceVatIncluded }}
+</div>
+
+
+{% endfor %}
+
+
+{% for detectionChute  in detectionChutes %}
+
+
+<div class="w3-border w3-border-red filterDiv detection_des_chutes"> {{ detectionChute.manufacturer }}
+
+ {{ detectionChute.title }}
+
+
+ {{ detectionChute.description }}
+
+
+ {{ asset('images/produits/'~detectionChute.picture )}}
+
+
+{{ detectionChute.priceVatExcluded }}
+
+
+{{ detectionChute.priceVatIncluded }}
+</div>
+
+
+{% endfor %}
+
+
+
+
+{% for alarme  in alarmes %}
+
+
+<div class="w3-border w3-border-red filterDiv alarmes"> {{ alarme.manufacturer }}
+
+ {{ alarme.title }}
+
+
+ {{ alarme.description }}
+
+
+ {{ asset('images/produits/'~alarme.picture )}}
+
+
+{{ alarme.priceVatExcluded }}
+
+
+{{ alarme.priceVatIncluded }}
+</div>
+
+
+{% endfor %}
+
+
+{% for appelMalade  in appelMalades %}
+
+
+<div class="w3-border w3-border-red filterDiv appel_malade"> {{ appelMalade.manufacturer }}
+
+ {{ appelMalade.title }}
+
+
+ {{ appelMalade.description }}
+
+
+ {{ asset('images/produits/'~appelMalade.picture )}}
+
+
+{{ appelMalade.priceVatExcluded }}
+
+
+{{ appelMalade.priceVatIncluded }}
+</div>
+
+
+{% endfor %}
+
+{% for controleAcce  in controleAcces %}
+
+
+<div class="w3-border w3-border-red filterDiv controle_acces"> {{ controleAcce.manufacturer }}
+
+ {{ controleAcce.title }}
+
+
+ {{ controleAcce.description }}
+
+
+ {{ asset('images/produits/'~controleAcce.picture )}}
+
+
+{{ controleAcce.priceVatExcluded }}
+
+
+{{ controleAcce.priceVatIncluded }}
+
+</div>
+
+
+{% endfor %}
+
+
+
+
+
+{% for videoSurveillance  in videoSurveillances %}
+
+
+<div class="w3-border w3-border-red filterDiv video_surveillance"> {{ videoSurveillance.manufacturer }}
+
+ {{ videoSurveillance.title }}
+
+
+ {{ videoSurveillance.description }}
+
+
+ {{ asset('images/produits/'~videoSurveillance.picture )}}
+
+
+{{ videoSurveillance.priceVatExcluded }}
+
+
+{{ videoSurveillance.priceVatIncluded }}
+
+</div>
+
+
+
+
+{% endfor %}
+
+
+{% for detectionIncendie  in detectionIncendies %}
+
+
+<div class="w3-border w3-border-red filterDiv detection_incendie"> {{ detectionIncendie.manufacturer }}
+
+ {{ detectionIncendie.title }}
+
+
+ {{ detectionIncendie.description }}
+
+
+ {{ asset('images/produits/'~detectionIncendie.picture )}}
+
+
+{{ detectionIncendie.priceVatExcluded }}
+
+
+{{ detectionIncendie.priceVatIncluded }}
+
+</div>
+
+
+{% endfor %}
+
+{% for eclairageSecurite  in eclairageSecurites %}
+
+
+<div class="w3-border w3-border-red filterDiv eclairage_de_securite"> {{ eclairageSecurite.manufacturer }}
+
+ {{ eclairageSecurite.title }}
+
+
+ {{ eclairageSecurite.description }}
+
+
+ {{ asset('images/produits/'~eclairageSecurite.picture )}}
+
+
+{{ eclairageSecurite.priceVatExcluded }}
+
+
+{{ eclairageSecurite.priceVatIncluded }}
+
+</div>
+
+
+{% endfor %}
+
+{% endblock %}
+
+
+
+#}
