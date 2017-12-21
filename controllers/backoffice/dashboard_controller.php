@@ -286,7 +286,13 @@ $backofficeGroup->match('/supprimer_agence/{id}', function($id = null) use ($app
 //ROUTE DE LA PAGE AFFICHAGE DETAILS CLIENT
 $backofficeGroup->get('/afficher_client/{company}', function($company) use ($app) {
     $customer = \Model\Propel\CustomersQuery::create()
-            ->findOneByCompany($company);
+        ->findOneByCompany($company);
+//        ->find();
+
+//    //    echo"<pre>";
+//    print_r($customer);
+//    echo"<pre>";
+    
     return $app['twig']->render('backoffice/dashboard/customers/read_customer.html.twig', array(
         'customer' => $customer
     ));
@@ -294,7 +300,9 @@ $backofficeGroup->get('/afficher_client/{company}', function($company) use ($app
 
 //ROUTE DE LA PAGE AFFICHAGE CLIENTS
 $backofficeGroup->get('/afficher_clients', function() use ($app) {
-    $customers = \Model\Propel\CustomersQuery::create()->find();
+    $customers = \Model\Propel\CustomersQuery::create()
+        ->groupByCompany()
+        ->find();   
     return $app['twig']->render('backoffice/dashboard/customers/read_customers.html.twig', array(
         'customers' => $customers
     ));
