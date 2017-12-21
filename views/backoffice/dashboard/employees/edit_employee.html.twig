@@ -21,13 +21,16 @@
             <input class="w3-border w3-input w3-light-grey" name="_phone" type="text" value="{{ employe.phone }}">
             <label>Fonction</label>
             <input class="w3-border w3-input w3-light-grey" name="_job" type="text" value="{{ employe.job }}">
+            <label>Mot de passe</label>
+            <input class="w3-border w3-input w3-light-grey" name="_password" type="text" value="">
+
             <label>Photo</label>
             <input class="w3-border w3-input w3-light-grey" name="_picture" type="file" value="">
 
             <label>Niveau d'accès</label>  
             <select class="w3-border w3-select" name="_role">
-                <option value="administrateur">Administrateur</option>
-                <option value="membre">Membre</option>
+                <option value="ROLE_ADMINISTRATEUR">Administrateur</option>
+                <option value="ROLE_MEMBRE">Membre</option>
             </select>
 
 {#            <input class="w3-border w3-input w3-light-grey" type="text">#}

@@ -13,9 +13,17 @@
             <h2 class="w3-teal">Ajouter un service</h2>
 
             <label>Titre</label>
-            <input class="w3-border w3-input w3-light-grey" type="text" name="_title" value="{{ service.title }}">
+{#            <select class="w3-border w3-input w3-light-grey" type="text" name="_title" value="{{ service.title }}"></select>#}
+
+            <select class="w3-border w3-select" name="_title">
+                <option value="Contrat de maintenance">Contrat de maintenance</option>
+                <option value="Etude technique">Etude technique</option>
+                <option value="Formation">Formation</option>
+                <option value="Mise en service">Mise en service</option>
+            </select>
+
             <label>Description</label>
-            <input class="w3-border w3-input w3-light-grey" type="text" name="_desciption" value="{{ service.description }}">
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_description" value="{{ service.description }}">
             <label>Prix HT</label>
             <input class="w3-border w3-input w3-light-grey" type="text" name="_priceVatExcluded" value="{{  service.priceVatExcluded }}">
             <label>Prix TVA</label>

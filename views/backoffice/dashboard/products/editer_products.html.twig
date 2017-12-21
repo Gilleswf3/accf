@@ -14,14 +14,31 @@
 
             <label>Fabricant</label>
             <input class="w3-border w3-input w3-light-grey" type="text" name="_manufacturer" value="{{ product.manufacturer }}">
+
             <label>Catégorie</label>
-            <input class="w3-border w3-input w3-light-grey" type="text" name="_productMainCategory" value="{{ product.productMainCategory }}">
+            <select class="w3-border w3-select" name="_productMainCategory">
+                <option value="Dispositifs anti-incendie">Dispositifs anti-incendie</option>
+                <option value="Dispositifs anti-intrusion">Dispositifs anti-intrusion</option>
+                <option value="Dispositifs de prévention médicale">Dispositifs de prévention médicale</option>
+            </select>
+            
             <label>Sous-catégorie</label>
-            <input class="w3-border w3-input w3-light-grey" type="text" name="_productSubCategory" value="{{  product.productSubCategory }}">
+            <select class="w3-border w3-select" name="_productSubCategory">
+                <option value="Alarmes">Alarmes</option>
+                <option value="Appel Malade">Appel Malade</option>
+                <option value="Contrôle d'accès">Contrôle d'Accès</option>
+                <option value="Désenfumage">Désenfumage</option>
+                <option value="Détection des chutes">Détection des chutes</option>
+                <option value="Détection incendie">Détection incendie</option>
+                <option value="Eclairage de sécurité">Eclairage de sécurité</option>
+                <option value="Vidéo-surveillance">Vidéo-surveillance</option>
+            </select>
+
+{#            <input class="w3-border w3-input w3-light-grey" type="text" name="_productSubCategory" value="{{ product.productSubCategory }}">#}
             <label>Titre</label>
-            <input class="w3-border w3-input w3-light-grey" type="text" name="_title" value="{{  product.title }}">
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_title" value="{{ product.title }}">
             <label>Description</label>
-            <input class="w3-border w3-input w3-light-grey" type="text" name="_description" value="{{  product.description }}">
+            <input class="w3-border w3-input w3-light-grey" type="text" name="_description" value="{{ product.description }}">
             <label>Photo</label>
             <input class="w3-border w3-input w3-light-grey" type="file" name="_picture" value="{{ product.picture }}">
             <label>Prix HT</label>

@@ -12,6 +12,9 @@ $backofficeGroup = $app['controllers_factory'];
 
 $backofficeGroup->get('/dashboard', function() use ($app) {
     $agencies = \Model\Propel\AgenciesQuery::create()->find();
+    $contents = \Model\Propel\ContentsQuery::create()
+            ->limit(2)            
+            ->find();
     $employees = \Model\Propel\EmployeesQuery::create()
             ->limit(2)
             ->find();
@@ -41,11 +44,11 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
         ->count();
 
     $lastWeekOrders = Model\Propel\OrdersQuery::create()
-        ->filterByOrderDate(array('min' => time() - 7 * 24 * 60 * 60))
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 7 * 24 * 60 * 60)))
         ->count();
 
     $lastMonthOrders = Model\Propel\OrdersQuery::create()
-        ->filterByOrderDate(array('min' => time() - 30 * 24 * 60 * 60))
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 30 * 24 * 60 * 60)))
         ->count();
 
     
@@ -161,6 +164,7 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
     
     return $app['twig']->render('backoffice/dashboard/index.html.twig', array(
         'agencies' => $agencies,
+        'contents' => $contents,
         'employees' => $employees,
         'products' => $products,
         'services' => $services,
@@ -277,7 +281,7 @@ $backofficeGroup->match('/supprimer_agence/{id}', function($id = null) use ($app
     })
     ->value('id', null)
     ->bind('supprimer_agence');
-;
+
 
 //ROUTE DE LA PAGE AFFICHAGE DETAILS CLIENT
 $backofficeGroup->get('/afficher_client/{company}', function($company) use ($app) {
@@ -296,6 +300,13 @@ $backofficeGroup->get('/afficher_clients', function() use ($app) {
     ));
 })->bind('afficher_clients');
 
+//ROUTE DE LA PAGE SUPPRESSION CLIENT
+$backofficeGroup->match('/supprimer_client/{id}', function($id = null) use ($app) {
+        $result = \Model\Propel\CustomersQuery::create()->filterByIdCustomer($id)->delete();
+        return $app->redirect($app["url_generator"]->generate("afficher_clients"));
+    })
+    ->value('id', null)
+    ->bind('supprimer_client');
 
 //ROUTE DE LA PAGE AFFICHAGE DETAILS COMMANDE
 $backofficeGroup->get('/afficher_commande/{idOrder}', function($idOrder) use ($app) {
@@ -350,6 +361,7 @@ $backofficeGroup->match('/employes/editer_employe/{id}', function(Request $reque
                 $email = $request->request->get('_email');
                 $phone = $request->request->get('_phone');
                 $job = $request->request->get('_job');
+                $password = $request->request->get('_password');
                 $picture = $request->request->get('_picture');
                 $role = $request->request->get('_role');
                 $agency = $request->request->get('_agency');
@@ -360,6 +372,7 @@ $backofficeGroup->match('/employes/editer_employe/{id}', function(Request $reque
                 $employe->setEmail($email);
                 $employe->setPhone($phone);
                 $employe->setJob($job);
+                $employe->setPassword($password);
                 $employe->setPicture($picture);
                 $employe->setRole($role);
                 $employe->setIdAgency($agency);
@@ -380,12 +393,12 @@ $backofficeGroup->get('/employes/afficher_employe', function() use ($app) {
 })->bind('afficher_employe');
 
 //ROUTE DE LA PAGE SUPPRESSION EMPLOYE
-$backofficeGroup->get('/employees/supprimer_employe', function() use ($app) {
-    $employees = \Model\Propel\EmployeesQuery::create()->find();
-    return $app['twig']->render('backoffice/dashboard/employees/delete_employee.html.twig', array(
-                'employees' => $employees
-    ));
-})->bind('supprimer_employe');
+$backofficeGroup->match('/supprimer_employe/{id}', function($id = null) use ($app) {
+    $result = \Model\Propel\EmployeesQuery::create()->filterByIdEmployee($id)->delete();
+        return $app->redirect($app["url_generator"]->generate("afficher_employe"));
+})
+->value('id',null)
+->bind('supprimer_employe');
 
 
 //ROUTE DE LA PAGE EDITION/MODIFICATION PUBLICATIONS
@@ -437,27 +450,8 @@ $backofficeGroup->match('/read_publication/{id}', function($id = null) use ($app
     ->bind('supprimer_publication');
 
 
-
-//ROUTE DE LA PAGE EDITER PUBLICATION
-//$backofficeGroup->get('/standards/editer_publication', function() use ($app) {
-//    return $app['twig']->render('backoffice/dashboard/standards/edit_standard.html.twig');
-//})->bind('editer_publication');
-
-//ROUTE DE LA PAGE SUPPRIMER PUBLICATION
-//$backofficeGroup->get('/standards/supprimer_publication', function() use ($app) {
-//    return $app['twig']->render('backoffice/dashboard/standards/delete_standard.html.twig');
-//})->bind('supprimer_publication');
-
-//ROUTE DE LA PAGE AFFICHER PUBLICATION
-//$backofficeGroup->get('/standards/afficher_publication', function() use ($app) {
-//    return $app['twig']->render('backoffice/dashboard/standards/read_standard.html.twig');
-//})->bind('afficher_publication');
-
-
-
-
 //ROUTE DE LA PAGE EDITION/MODIFICATION PRODUIT
-$backofficeGroup->match('/products/editer_produits/{id}', function(Request $request,  $id = null) use ($app) {
+$backofficeGroup->match('/editer_produits/{id}', function(Request $request,  $id = null) use ($app) {
     if($id) {
         $product = Model\Propel\Base\ProductsQuery::create()->findOneByIdProduct($id);
     } else {
@@ -465,13 +459,13 @@ $backofficeGroup->match('/products/editer_produits/{id}', function(Request $requ
     }
     if($request->request->all()) {
         $manufacturer = $request->request->get('_manufacturer');
-        $productMainCategory = $request->request->get('_productmaincategory');
-        $productSubCategory = $request->request->get('_productsubcategory');
+        $productMainCategory = $request->request->get('_productMainCategory');
+        $productSubCategory = $request->request->get('_productSubCategory');
         $title = $request->request->get('_title');
         $description = $request->request->get('_description');
         $picture = $request->request->get('_picture');        
-        $priceVatExcluded = $request->request->get('_pricevatexcluded');
-        $priceVatIncluded = $request->request->get('_pricevatincluded');
+        $priceVatExcluded = $request->request->get('_priceVatExcluded');
+        $priceVatIncluded = $request->request->get('_priceVatIncluded');
 
         
         // si tout va bien sauvegarde de l'entité
@@ -497,7 +491,7 @@ $backofficeGroup->get('/products/read_products', function() use ($app) {
     return $app['twig']->render('backoffice/dashboard/products/read_products.html.twig', array(
         'products' => $products
     ));
-})->bind('read_products');
+})->bind('afficher_produits');
 
 
 // ROUTE DE LA PAGE AFFICHAGE DU PRODUIT SELECTIONNE
@@ -509,13 +503,22 @@ $backofficeGroup->get('/products/read_selected_product/{id}', function($id) use 
 })->bind('read_selected_product');
 
 
-//ROUTE DE LA PAGE SUPPRESSION PRODUITS
-$backofficeGroup->match('/read_products/{id}', function($id = null) use ($app) {
-        $result = \Model\Propel\ProductsQuery::create()->filterByIdProduct($id)->delete();
-        return $app->redirect($app["url_generator"]->generate("read_products"));
+//ROUTE DE LA PAGE SUPPRESSION AGENCE
+$backofficeGroup->match('/supprimer_agence/{id}', function($id = null) use ($app) {
+        $result = \Model\Propel\AgenciesQuery::create()->filterByIdAgency($id)->delete();
+        return $app->redirect($app["url_generator"]->generate("afficher_agence"));
     })
     ->value('id', null)
-    ->bind('suppress_products');
+    ->bind('supprimer_agence');
+
+
+//ROUTE DE LA PAGE SUPPRESSION PRODUITS
+$backofficeGroup->match('/supprimer_produits/{id}', function($id = null) use ($app) {
+        $result = \Model\Propel\ProductsQuery::create()->filterByIdProduct($id)->delete();
+        return $app->redirect($app["url_generator"]->generate("afficher_produits"));
+    })
+    ->value('id', null)
+    ->bind('supprimer_produits');
 
     
 //ROUTE DU FILTRE DES PRODUITS
@@ -587,7 +590,7 @@ $backofficeGroup->match('/services/editer_services/{id}', function(Request $requ
         $service->setPriceVatExcluded($priceVatExcluded);
         $service->setPriceVatIncluded( $priceVatIncluded);
        
-        $product->save();
+        $service->save();
     }
     return $app['twig']->render('backoffice/dashboard/services/editer_services.html.twig', ['service' => $service]);
 })

@@ -4,7 +4,7 @@
 
 <div class="w3-col l1 MarginColumn">Marge</div>
 
-    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+    <div class="w3-card w3-col l11 w3-margin-top w3-padding" id="displayAccfArea">    
         <table class="w3-centered w3-col l12 w3-table-all">
 
             <h2 class="w3-margin w3-teal">Afficher les produits</h2>
@@ -13,7 +13,8 @@
                 <th>Référence</th>
                 <th>Titre</th>
                 <th>Fabricant</th>
-                <th>Sous catégorie</th>             
+                <th>Catégorie</th>
+                <th>Sous-catégorie</th>             
                 <th>Description</th>
                 <th>Photo</th>
                 <th>Prix HT</th>
@@ -29,8 +30,9 @@
                 <td>
                     <a href="{{ path('read_selected_product', { id: product.idProduct }) }}" > {{ product.idProduct }}</a>
                 </td>
-                   <td>{{ product.title}}</td>        
+                <td>{{ product.title}}</td>        
                 <td>{{ product.manufacturer }}</td>
+                <td>{{ product.productMainCategory }}</td>                
                 <td>{{ product.productSubCategory }}</td>                
                 <td>{{ product.description|truncate(40, true, "...")}}</td>
                 <td>
@@ -39,7 +41,7 @@
                 <td>{{ product.priceVatExcluded|number_format(2, ',', ' ') }}</td>
                 <td>{{ product.priceVatIncluded|number_format(2, ',', ' ') }}</td>
                 <td>
-                    <a href="{{ path('suppress_products', { id: product.idProduct }) }}">Supprimer</a>                   
+                    <a href="{{ path('supprimer_produits', { id: product.idProduct }) }}">Supprimer</a>                   
                 </td>
                 <td>
                     <a href="{{ path('editer_produits', { id: product.idProduct }) }}">Modifier</a>

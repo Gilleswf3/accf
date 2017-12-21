@@ -19,26 +19,27 @@
                 <th>Adresse de livraison</th>
                 <th>Code Postal</th>
                 <th>Ville</th>
+                <th>Suppression</th>
             </tr>
 
             {% for customer in customers %}
 
-            <tr>
-                <td>
-                    <a href="{{ path('afficher_client', { company: customer.company }) }}">{{ customer.company }}</a>
-                </td>
-                <td>{{ customer.billtoAddress }}</td>
-                <td>{{ customer.billtoZipcode }}</td>
-                <td>{{ customer.billtoCity }}</td>
-                <td>{{ customer.shiptoAddress }}</td>
-                <td>{{ customer.shiptoZipcode }}</td>
-                <td>{{ customer.shiptoCity }}</td>
-            </tr>
+                <tr>
+                    <td>
+                        <a href="{{ path('afficher_client', { company: customer.company }) }}">{{ customer.company }}</a>
+                    </td>
+                    <td>{{ customer.billtoAddress }}</td>
+                    <td>{{ customer.billtoZipcode }}</td>
+                    <td>{{ customer.billtoCity }}</td>
+                    <td>{{ customer.shiptoAddress }}</td>
+                    <td>{{ customer.shiptoZipcode }}</td>
+                    <td>{{ customer.shiptoCity }}</td>
+                    <td>
+                        <a href="{{ path('supprimer_client', { id: customer.idCustomer }) }}">Supprimer</a>
+                    </td>
 
-            {% endfor %}
-           
-        </table>
-            
-    </div>
-            
+                </tr>
+            {% endfor %}           
+        </table>            
+    </div>           
 {% endblock %}

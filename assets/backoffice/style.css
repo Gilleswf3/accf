@@ -73,12 +73,9 @@ main{
    margin-top: 260px;
 }
 
-.displayAccfArea{
-/*    margin-top: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0px;*/
-    /*min-height: 600px;*/
+#displayAccfArea{
+    margin-top: 32px;
+    margin-bottom: 32px;
 }
 
 .dashboardAlert{
@@ -97,6 +94,11 @@ main{
 
 #dashboardLastContent{
     margin-bottom: 200px;
+}
+
+.backlink{
+    margin-top: 1px;
+    text-decoration: none;
 }
 
 footer{
