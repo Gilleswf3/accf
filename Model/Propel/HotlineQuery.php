@@ -2,10 +2,10 @@
 
 namespace Model\Propel;
 
-use Model\Propel\Base\ContentQuery as BaseContentQuery;
+use Model\Propel\Base\HotlineQuery as BaseHotlineQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'content' table.
+ * Skeleton subclass for performing query and update operations on the 'hotline' table.
  *
  *
  *
@@ -14,7 +14,7 @@ use Model\Propel\Base\ContentQuery as BaseContentQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class ContentQuery extends BaseContentQuery
+class HotlineQuery extends BaseHotlineQuery
 {
 
 }

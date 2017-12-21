@@ -2,10 +2,10 @@
 
 namespace Model\Propel;
 
-use Model\Propel\Base\StandardsQuery as BaseStandardsQuery;
+use Model\Propel\Base\Orderdetails as BaseOrderdetails;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'standards' table.
+ * Skeleton subclass for representing a row from the 'orderdetails' table.
  *
  *
  *
@@ -14,7 +14,7 @@ use Model\Propel\Base\StandardsQuery as BaseStandardsQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class StandardsQuery extends BaseStandardsQuery
+class Orderdetails extends BaseOrderdetails
 {
 
 }

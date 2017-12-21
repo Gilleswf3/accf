@@ -12,9 +12,15 @@ $backofficeGroup = $app['controllers_factory'];
 
 $backofficeGroup->get('/dashboard', function() use ($app) {
     $agencies = \Model\Propel\AgenciesQuery::create()->find();
-    $employees = \Model\Propel\EmployeesQuery::create()->find();
-    $products = \Model\Propel\ProductsQuery::create()->find();
-    $services = \Model\Propel\ServicesQuery::create()->find();
+    $employees = \Model\Propel\EmployeesQuery::create()
+            ->limit(2)
+            ->find();
+    $products = \Model\Propel\ProductsQuery::create()
+            ->limit(2)
+            ->find();
+    $services = \Model\Propel\ServicesQuery::create()
+            ->limit(2)
+            ->find();
 
     //CUSTOMER STATS
     $dailyCustomersCount = Model\Propel\CustomersQuery::create()
@@ -31,7 +37,7 @@ $backofficeGroup->get('/dashboard', function() use ($app) {
     
     //ORDER STATS
     $lastDayOrders = Model\Propel\OrdersQuery::create()
-        ->filterByOrderDate(array('min' => time() - 1 * 24 * 60 * 60))
+        ->filterByOrderDate(array('min' => date('Y-m-d h:i:s', time() - 1 * 24 * 60 * 60)))
         ->count();
 
     $lastWeekOrders = Model\Propel\OrdersQuery::create()
@@ -197,8 +203,8 @@ $backofficeGroup->match('/login', function(Request $request) use ($app) {
     $email = $request->request->get('_email');
     $role = $request->request->get('_role');
     
-    var_dump($email);
-    var_dump($role);
+//    var_dump($email);
+//    var_dump($role);
 
     $employe1 = Model\Propel\Base\EmployeesQuery::create()->findOneByEmail($email);
     $employe2 = Model\Propel\Base\EmployeesQuery::create()->findOneByRole($role);
@@ -295,10 +301,13 @@ $backofficeGroup->get('/afficher_clients', function() use ($app) {
 $backofficeGroup->get('/afficher_commande/{idOrder}', function($idOrder) use ($app) {
     $order = \Model\Propel\OrdersQuery::create()
         ->joinWithCustomers()
+        ->joinOrderdetails()
         ->joinWithProducts()
         ->joinWithServices()
         ->withColumn('(Customers.Company)', 'customerName')
         ->withColumn('(Customers.Email)', 'customerEmail')
+        ->withColumn('(Orderdetails.ProductQuantity)', 'orderProductQuantity')
+        ->withColumn('(Orderdetails.ServiceQuantity)', 'orderServiceQuantity')
         ->withColumn('(Products.ProductMainCategory)', 'productCategory')
         ->withColumn('(Products.PriceVatExcluded)', 'productAmount')
         ->withColumn('(Services.Title)', 'serviceTitle')
@@ -345,7 +354,6 @@ $backofficeGroup->match('/employes/editer_employe/{id}', function(Request $reque
                 $role = $request->request->get('_role');
                 $agency = $request->request->get('_agency');
 
-
                 // si tout va bien sauvegarde de l'entité
                 $employe->setFirstname($firstName);
                 $employe->setLastname($lastName);
@@ -383,23 +391,23 @@ $backofficeGroup->get('/employees/supprimer_employe', function() use ($app) {
 //ROUTE DE LA PAGE EDITION/MODIFICATION PUBLICATIONS
 $backofficeGroup->match('/editer_contents/{id}', function(Request $request,  $id = null) use ($app) {
     if($id) {
-        $content = Model\Propel\Base\ContentQuery::create()->findOneByIdContent($id);
+        $content = Model\Propel\Base\ContentsQuery::create()->findOneByIdContent($id);
     } else {
-        $content = new Model\Propel\Content();
+        $content = new Model\Propel\Contents();
     }
     if($request->request->all()) {
-        $pictureContent = $request->request->get('_pictureContent');
-        $contentTitle = $request->request->get('_contentTitle');
-        $contentText = $request->request->get('_contentText');
-        $subTitle = $request->request->get('_subtitle');
+        $picture = $request->request->get('_picture');
+        $title = $request->request->get('_title');
+        $text = $request->request->get('_text');
+        $subtitle = $request->request->get('_subtitle');
        
 
         
         // si tout va bien sauvegarde de l'entité
-        $content->setPictureContent($pictureContent);
-        $content->setContentTitle($contentTitle);
-        $content->setContentText($contentText);
-        $content->setSubTitle($subTitle);
+        $content->setPicture($picture);
+        $content->setTitle($title);
+        $content->setText($text);
+        $content->setSubtitle($subtitle);
        
         $content->save();
     }
@@ -411,7 +419,7 @@ $backofficeGroup->match('/editer_contents/{id}', function(Request $request,  $id
 
 // ROUTE DE LA PAGE AFFICHAGE DES PUBLICATIONS
 $backofficeGroup->get('/contents/read_publication', function() use ($app) {
-    $content = \Model\Propel\ContentQuery::create()->find();
+    $content = \Model\Propel\ContentsQuery::create()->find();
     return $app['twig']->render('backoffice/dashboard/contents/read_contents.html.twig', array(
         'contents' => $content
     ));

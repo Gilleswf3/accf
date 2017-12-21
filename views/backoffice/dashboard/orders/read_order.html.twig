@@ -17,9 +17,12 @@
                 <th>Nom du client</th>
                 <th>Acheteur</th>
                 <th>Référence produit</th>
+                <th>Quantité produit</th>
                 <th>Montant produits</th>
                 <th>Référence service</th>
+                <th>Quantité service</th>
                 <th>Montant services</th>
+                <th>Montant global</th>
                 <th>Date de commande</th>
             </tr>
 
@@ -28,9 +31,12 @@
                 <td>{{ order.virtualColumns.customerName }}</td>
                 <td>{{ order.virtualColumns.customerEmail }}</td>
                 <td>{{ order.virtualColumns.productCategory }}</td>
-                <td>{{ order.virtualColumns.productAmount|number_format(2, ',', ' ') }}</td>
+                <td>{{ order.virtualColumns.orderProductQuantity }}</td>
+                <td>{{ (order.virtualColumns.orderProductQuantity * order.virtualColumns.productAmount)|number_format(2, ',', ' ') }}</td>
                 <td>{{ order.virtualColumns.serviceTitle }}</td>
-                <td>{{ order.virtualColumns.serviceAmount|number_format(2, ',', ' ') }}</td>
+                <td>{{ order.virtualColumns.orderServiceQuantity }}</td>
+                <td>{{ (order.virtualColumns.orderServiceQuantity * order.virtualColumns.serviceAmount)|number_format(2, ',', ' ') }}</td>
+                <td>{{ ((order.virtualColumns.orderProductQuantity * order.virtualColumns.productAmount) + (order.virtualColumns.orderServiceQuantity * order.virtualColumns.serviceAmount))|number_format(2, ',', ' ') }}</td>
                 <td>{{ order.orderDate | date('d/m/Y') }}</td>
             </tr>
            

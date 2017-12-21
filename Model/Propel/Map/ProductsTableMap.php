@@ -77,9 +77,9 @@ class ProductsTableMap extends TableMap
     const COL_ID_PRODUCT = 'products.id_product';
 
     /**
-     * the column name for the manufacturer field
+     * the column name for the picture field
      */
-    const COL_MANUFACTURER = 'products.manufacturer';
+    const COL_PICTURE = 'products.picture';
 
     /**
      * the column name for the product_main_category field
@@ -92,6 +92,11 @@ class ProductsTableMap extends TableMap
     const COL_PRODUCT_SUB_CATEGORY = 'products.product_sub_category';
 
     /**
+     * the column name for the manufacturer field
+     */
+    const COL_MANUFACTURER = 'products.manufacturer';
+
+    /**
      * the column name for the title field
      */
     const COL_TITLE = 'products.title';
@@ -100,11 +105,6 @@ class ProductsTableMap extends TableMap
      * the column name for the description field
      */
     const COL_DESCRIPTION = 'products.description';
-
-    /**
-     * the column name for the picture field
-     */
-    const COL_PICTURE = 'products.picture';
 
     /**
      * the column name for the price_vat_excluded field
@@ -128,10 +128,10 @@ class ProductsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdProduct', 'Manufacturer', 'ProductMainCategory', 'ProductSubCategory', 'Title', 'Description', 'Picture', 'PriceVatExcluded', 'PriceVatIncluded', ),
-        self::TYPE_CAMELNAME     => array('idProduct', 'manufacturer', 'productMainCategory', 'productSubCategory', 'title', 'description', 'picture', 'priceVatExcluded', 'priceVatIncluded', ),
-        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID_PRODUCT, ProductsTableMap::COL_MANUFACTURER, ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY, ProductsTableMap::COL_PRODUCT_SUB_CATEGORY, ProductsTableMap::COL_TITLE, ProductsTableMap::COL_DESCRIPTION, ProductsTableMap::COL_PICTURE, ProductsTableMap::COL_PRICE_VAT_EXCLUDED, ProductsTableMap::COL_PRICE_VAT_INCLUDED, ),
-        self::TYPE_FIELDNAME     => array('id_product', 'manufacturer', 'product_main_category', 'product_sub_category', 'title', 'description', 'picture', 'price_vat_excluded', 'price_vat_included', ),
+        self::TYPE_PHPNAME       => array('IdProduct', 'Picture', 'ProductMainCategory', 'ProductSubCategory', 'Manufacturer', 'Title', 'Description', 'PriceVatExcluded', 'PriceVatIncluded', ),
+        self::TYPE_CAMELNAME     => array('idProduct', 'picture', 'productMainCategory', 'productSubCategory', 'manufacturer', 'title', 'description', 'priceVatExcluded', 'priceVatIncluded', ),
+        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID_PRODUCT, ProductsTableMap::COL_PICTURE, ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY, ProductsTableMap::COL_PRODUCT_SUB_CATEGORY, ProductsTableMap::COL_MANUFACTURER, ProductsTableMap::COL_TITLE, ProductsTableMap::COL_DESCRIPTION, ProductsTableMap::COL_PRICE_VAT_EXCLUDED, ProductsTableMap::COL_PRICE_VAT_INCLUDED, ),
+        self::TYPE_FIELDNAME     => array('id_product', 'picture', 'product_main_category', 'product_sub_category', 'manufacturer', 'title', 'description', 'price_vat_excluded', 'price_vat_included', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -142,10 +142,10 @@ class ProductsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdProduct' => 0, 'Manufacturer' => 1, 'ProductMainCategory' => 2, 'ProductSubCategory' => 3, 'Title' => 4, 'Description' => 5, 'Picture' => 6, 'PriceVatExcluded' => 7, 'PriceVatIncluded' => 8, ),
-        self::TYPE_CAMELNAME     => array('idProduct' => 0, 'manufacturer' => 1, 'productMainCategory' => 2, 'productSubCategory' => 3, 'title' => 4, 'description' => 5, 'picture' => 6, 'priceVatExcluded' => 7, 'priceVatIncluded' => 8, ),
-        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID_PRODUCT => 0, ProductsTableMap::COL_MANUFACTURER => 1, ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY => 2, ProductsTableMap::COL_PRODUCT_SUB_CATEGORY => 3, ProductsTableMap::COL_TITLE => 4, ProductsTableMap::COL_DESCRIPTION => 5, ProductsTableMap::COL_PICTURE => 6, ProductsTableMap::COL_PRICE_VAT_EXCLUDED => 7, ProductsTableMap::COL_PRICE_VAT_INCLUDED => 8, ),
-        self::TYPE_FIELDNAME     => array('id_product' => 0, 'manufacturer' => 1, 'product_main_category' => 2, 'product_sub_category' => 3, 'title' => 4, 'description' => 5, 'picture' => 6, 'price_vat_excluded' => 7, 'price_vat_included' => 8, ),
+        self::TYPE_PHPNAME       => array('IdProduct' => 0, 'Picture' => 1, 'ProductMainCategory' => 2, 'ProductSubCategory' => 3, 'Manufacturer' => 4, 'Title' => 5, 'Description' => 6, 'PriceVatExcluded' => 7, 'PriceVatIncluded' => 8, ),
+        self::TYPE_CAMELNAME     => array('idProduct' => 0, 'picture' => 1, 'productMainCategory' => 2, 'productSubCategory' => 3, 'manufacturer' => 4, 'title' => 5, 'description' => 6, 'priceVatExcluded' => 7, 'priceVatIncluded' => 8, ),
+        self::TYPE_COLNAME       => array(ProductsTableMap::COL_ID_PRODUCT => 0, ProductsTableMap::COL_PICTURE => 1, ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY => 2, ProductsTableMap::COL_PRODUCT_SUB_CATEGORY => 3, ProductsTableMap::COL_MANUFACTURER => 4, ProductsTableMap::COL_TITLE => 5, ProductsTableMap::COL_DESCRIPTION => 6, ProductsTableMap::COL_PRICE_VAT_EXCLUDED => 7, ProductsTableMap::COL_PRICE_VAT_INCLUDED => 8, ),
+        self::TYPE_FIELDNAME     => array('id_product' => 0, 'picture' => 1, 'product_main_category' => 2, 'product_sub_category' => 3, 'manufacturer' => 4, 'title' => 5, 'description' => 6, 'price_vat_excluded' => 7, 'price_vat_included' => 8, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -167,12 +167,12 @@ class ProductsTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id_product', 'IdProduct', 'INTEGER', true, 8, null);
-        $this->addColumn('manufacturer', 'Manufacturer', 'VARCHAR', true, 255, null);
+        $this->addColumn('picture', 'Picture', 'VARCHAR', true, 255, null);
         $this->addColumn('product_main_category', 'ProductMainCategory', 'CHAR', true, null, null);
         $this->addColumn('product_sub_category', 'ProductSubCategory', 'CHAR', true, null, null);
+        $this->addColumn('manufacturer', 'Manufacturer', 'VARCHAR', true, 255, null);
         $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('picture', 'Picture', 'VARCHAR', true, 255, null);
         $this->addColumn('price_vat_excluded', 'PriceVatExcluded', 'FLOAT', true, null, null);
         $this->addColumn('price_vat_included', 'PriceVatIncluded', 'FLOAT', true, null, null);
     } // initialize()
@@ -182,6 +182,13 @@ class ProductsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Orderdetails', '\\Model\\Propel\\Orderdetails', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':id_product',
+    1 => ':id_product',
+  ),
+), null, null, 'Orderdetailss', false);
         $this->addRelation('Orders', '\\Model\\Propel\\Orders', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -333,22 +340,22 @@ class ProductsTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(ProductsTableMap::COL_ID_PRODUCT);
-            $criteria->addSelectColumn(ProductsTableMap::COL_MANUFACTURER);
+            $criteria->addSelectColumn(ProductsTableMap::COL_PICTURE);
             $criteria->addSelectColumn(ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY);
             $criteria->addSelectColumn(ProductsTableMap::COL_PRODUCT_SUB_CATEGORY);
+            $criteria->addSelectColumn(ProductsTableMap::COL_MANUFACTURER);
             $criteria->addSelectColumn(ProductsTableMap::COL_TITLE);
             $criteria->addSelectColumn(ProductsTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(ProductsTableMap::COL_PICTURE);
             $criteria->addSelectColumn(ProductsTableMap::COL_PRICE_VAT_EXCLUDED);
             $criteria->addSelectColumn(ProductsTableMap::COL_PRICE_VAT_INCLUDED);
         } else {
             $criteria->addSelectColumn($alias . '.id_product');
-            $criteria->addSelectColumn($alias . '.manufacturer');
+            $criteria->addSelectColumn($alias . '.picture');
             $criteria->addSelectColumn($alias . '.product_main_category');
             $criteria->addSelectColumn($alias . '.product_sub_category');
+            $criteria->addSelectColumn($alias . '.manufacturer');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.picture');
             $criteria->addSelectColumn($alias . '.price_vat_excluded');
             $criteria->addSelectColumn($alias . '.price_vat_included');
         }

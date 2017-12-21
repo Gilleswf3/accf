@@ -158,6 +158,13 @@ class ServicesTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Orderdetails', '\\Model\\Propel\\Orderdetails', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':id_service',
+    1 => ':id_service',
+  ),
+), null, null, 'Orderdetailss', false);
         $this->addRelation('Orders', '\\Model\\Propel\\Orders', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (

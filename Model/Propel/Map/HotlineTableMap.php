@@ -2,8 +2,8 @@
 
 namespace Model\Propel\Map;
 
-use Model\Propel\Agencies;
-use Model\Propel\AgenciesQuery;
+use Model\Propel\Hotline;
+use Model\Propel\HotlineQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'agencies' table.
+ * This class defines the structure of the 'hotline' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class AgenciesTableMap extends TableMap
+class HotlineTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class AgenciesTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Model.Propel.Map.AgenciesTableMap';
+    const CLASS_NAME = 'Model.Propel.Map.HotlineTableMap';
 
     /**
      * The default database name for this class
@@ -44,17 +44,17 @@ class AgenciesTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'agencies';
+    const TABLE_NAME = 'hotline';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Model\\Propel\\Agencies';
+    const OM_CLASS = '\\Model\\Propel\\Hotline';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Model.Propel.Agencies';
+    const CLASS_DEFAULT = 'Model.Propel.Hotline';
 
     /**
      * The total number of columns
@@ -72,29 +72,29 @@ class AgenciesTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 5;
 
     /**
-     * the column name for the id_agency field
+     * the column name for the id_hotline field
      */
-    const COL_ID_AGENCY = 'agencies.id_agency';
+    const COL_ID_HOTLINE = 'hotline.id_hotline';
 
     /**
-     * the column name for the address field
+     * the column name for the hotline_message field
      */
-    const COL_ADDRESS = 'agencies.address';
+    const COL_HOTLINE_MESSAGE = 'hotline.hotline_message';
 
     /**
-     * the column name for the zipcode field
+     * the column name for the id_customer field
      */
-    const COL_ZIPCODE = 'agencies.zipcode';
+    const COL_ID_CUSTOMER = 'hotline.id_customer';
 
     /**
-     * the column name for the city field
+     * the column name for the id_employee field
      */
-    const COL_CITY = 'agencies.city';
+    const COL_ID_EMPLOYEE = 'hotline.id_employee';
 
     /**
-     * the column name for the area field
+     * the column name for the type_author field
      */
-    const COL_AREA = 'agencies.area';
+    const COL_TYPE_AUTHOR = 'hotline.type_author';
 
     /**
      * The default string format for model objects of the related table
@@ -108,10 +108,10 @@ class AgenciesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdAgency', 'Address', 'Zipcode', 'City', 'Area', ),
-        self::TYPE_CAMELNAME     => array('idAgency', 'address', 'zipcode', 'city', 'area', ),
-        self::TYPE_COLNAME       => array(AgenciesTableMap::COL_ID_AGENCY, AgenciesTableMap::COL_ADDRESS, AgenciesTableMap::COL_ZIPCODE, AgenciesTableMap::COL_CITY, AgenciesTableMap::COL_AREA, ),
-        self::TYPE_FIELDNAME     => array('id_agency', 'address', 'zipcode', 'city', 'area', ),
+        self::TYPE_PHPNAME       => array('IdHotline', 'HotlineMessage', 'IdCustomer', 'IdEmployee', 'TypeAuthor', ),
+        self::TYPE_CAMELNAME     => array('idHotline', 'hotlineMessage', 'idCustomer', 'idEmployee', 'typeAuthor', ),
+        self::TYPE_COLNAME       => array(HotlineTableMap::COL_ID_HOTLINE, HotlineTableMap::COL_HOTLINE_MESSAGE, HotlineTableMap::COL_ID_CUSTOMER, HotlineTableMap::COL_ID_EMPLOYEE, HotlineTableMap::COL_TYPE_AUTHOR, ),
+        self::TYPE_FIELDNAME     => array('id_hotline', 'hotline_message', 'id_customer', 'id_employee', 'type_author', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -122,10 +122,10 @@ class AgenciesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdAgency' => 0, 'Address' => 1, 'Zipcode' => 2, 'City' => 3, 'Area' => 4, ),
-        self::TYPE_CAMELNAME     => array('idAgency' => 0, 'address' => 1, 'zipcode' => 2, 'city' => 3, 'area' => 4, ),
-        self::TYPE_COLNAME       => array(AgenciesTableMap::COL_ID_AGENCY => 0, AgenciesTableMap::COL_ADDRESS => 1, AgenciesTableMap::COL_ZIPCODE => 2, AgenciesTableMap::COL_CITY => 3, AgenciesTableMap::COL_AREA => 4, ),
-        self::TYPE_FIELDNAME     => array('id_agency' => 0, 'address' => 1, 'zipcode' => 2, 'city' => 3, 'area' => 4, ),
+        self::TYPE_PHPNAME       => array('IdHotline' => 0, 'HotlineMessage' => 1, 'IdCustomer' => 2, 'IdEmployee' => 3, 'TypeAuthor' => 4, ),
+        self::TYPE_CAMELNAME     => array('idHotline' => 0, 'hotlineMessage' => 1, 'idCustomer' => 2, 'idEmployee' => 3, 'typeAuthor' => 4, ),
+        self::TYPE_COLNAME       => array(HotlineTableMap::COL_ID_HOTLINE => 0, HotlineTableMap::COL_HOTLINE_MESSAGE => 1, HotlineTableMap::COL_ID_CUSTOMER => 2, HotlineTableMap::COL_ID_EMPLOYEE => 3, HotlineTableMap::COL_TYPE_AUTHOR => 4, ),
+        self::TYPE_FIELDNAME     => array('id_hotline' => 0, 'hotline_message' => 1, 'id_customer' => 2, 'id_employee' => 3, 'type_author' => 4, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -139,18 +139,18 @@ class AgenciesTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('agencies');
-        $this->setPhpName('Agencies');
+        $this->setName('hotline');
+        $this->setPhpName('Hotline');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Model\\Propel\\Agencies');
+        $this->setClassName('\\Model\\Propel\\Hotline');
         $this->setPackage('Model.Propel');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('id_agency', 'IdAgency', 'INTEGER', true, 8, null);
-        $this->addColumn('address', 'Address', 'VARCHAR', true, 255, null);
-        $this->addColumn('zipcode', 'Zipcode', 'VARCHAR', true, 255, null);
-        $this->addColumn('city', 'City', 'VARCHAR', true, 255, null);
-        $this->addColumn('area', 'Area', 'INTEGER', true, 2, null);
+        $this->addPrimaryKey('id_hotline', 'IdHotline', 'INTEGER', true, 8, null);
+        $this->addColumn('hotline_message', 'HotlineMessage', 'LONGVARCHAR', true, null, null);
+        $this->addForeignKey('id_customer', 'IdCustomer', 'INTEGER', 'customers', 'id_customer', true, 8, null);
+        $this->addForeignKey('id_employee', 'IdEmployee', 'INTEGER', 'employees', 'id_employee', true, 8, null);
+        $this->addColumn('type_author', 'TypeAuthor', 'CHAR', true, null, null);
     } // initialize()
 
     /**
@@ -158,13 +158,20 @@ class AgenciesTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Employees', '\\Model\\Propel\\Employees', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Customers', '\\Model\\Propel\\Customers', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
-    0 => ':id_agency',
-    1 => ':id_agency',
+    0 => ':id_customer',
+    1 => ':id_customer',
   ),
-), null, null, 'Employeess', false);
+), null, null, null, false);
+        $this->addRelation('Employees', '\\Model\\Propel\\Employees', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id_employee',
+    1 => ':id_employee',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -183,11 +190,11 @@ class AgenciesTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -207,7 +214,7 @@ class AgenciesTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('IdAgency', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -224,7 +231,7 @@ class AgenciesTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? AgenciesTableMap::CLASS_DEFAULT : AgenciesTableMap::OM_CLASS;
+        return $withPrefix ? HotlineTableMap::CLASS_DEFAULT : HotlineTableMap::OM_CLASS;
     }
 
     /**
@@ -238,22 +245,22 @@ class AgenciesTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Agencies object, last column rank)
+     * @return array           (Hotline object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = AgenciesTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = AgenciesTableMap::getInstanceFromPool($key))) {
+        $key = HotlineTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = HotlineTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + AgenciesTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + HotlineTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = AgenciesTableMap::OM_CLASS;
-            /** @var Agencies $obj */
+            $cls = HotlineTableMap::OM_CLASS;
+            /** @var Hotline $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            AgenciesTableMap::addInstanceToPool($obj, $key);
+            HotlineTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -276,18 +283,18 @@ class AgenciesTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = AgenciesTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = AgenciesTableMap::getInstanceFromPool($key))) {
+            $key = HotlineTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = HotlineTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Agencies $obj */
+                /** @var Hotline $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                AgenciesTableMap::addInstanceToPool($obj, $key);
+                HotlineTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -308,17 +315,17 @@ class AgenciesTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(AgenciesTableMap::COL_ID_AGENCY);
-            $criteria->addSelectColumn(AgenciesTableMap::COL_ADDRESS);
-            $criteria->addSelectColumn(AgenciesTableMap::COL_ZIPCODE);
-            $criteria->addSelectColumn(AgenciesTableMap::COL_CITY);
-            $criteria->addSelectColumn(AgenciesTableMap::COL_AREA);
+            $criteria->addSelectColumn(HotlineTableMap::COL_ID_HOTLINE);
+            $criteria->addSelectColumn(HotlineTableMap::COL_HOTLINE_MESSAGE);
+            $criteria->addSelectColumn(HotlineTableMap::COL_ID_CUSTOMER);
+            $criteria->addSelectColumn(HotlineTableMap::COL_ID_EMPLOYEE);
+            $criteria->addSelectColumn(HotlineTableMap::COL_TYPE_AUTHOR);
         } else {
-            $criteria->addSelectColumn($alias . '.id_agency');
-            $criteria->addSelectColumn($alias . '.address');
-            $criteria->addSelectColumn($alias . '.zipcode');
-            $criteria->addSelectColumn($alias . '.city');
-            $criteria->addSelectColumn($alias . '.area');
+            $criteria->addSelectColumn($alias . '.id_hotline');
+            $criteria->addSelectColumn($alias . '.hotline_message');
+            $criteria->addSelectColumn($alias . '.id_customer');
+            $criteria->addSelectColumn($alias . '.id_employee');
+            $criteria->addSelectColumn($alias . '.type_author');
         }
     }
 
@@ -331,7 +338,7 @@ class AgenciesTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(AgenciesTableMap::DATABASE_NAME)->getTable(AgenciesTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(HotlineTableMap::DATABASE_NAME)->getTable(HotlineTableMap::TABLE_NAME);
     }
 
     /**
@@ -339,16 +346,16 @@ class AgenciesTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(AgenciesTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(AgenciesTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new AgenciesTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(HotlineTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(HotlineTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new HotlineTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Agencies or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Hotline or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Agencies object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Hotline object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -359,27 +366,27 @@ class AgenciesTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(AgenciesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(HotlineTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Model\Propel\Agencies) { // it's a model object
+        } elseif ($values instanceof \Model\Propel\Hotline) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(AgenciesTableMap::DATABASE_NAME);
-            $criteria->add(AgenciesTableMap::COL_ID_AGENCY, (array) $values, Criteria::IN);
+            $criteria = new Criteria(HotlineTableMap::DATABASE_NAME);
+            $criteria->add(HotlineTableMap::COL_ID_HOTLINE, (array) $values, Criteria::IN);
         }
 
-        $query = AgenciesQuery::create()->mergeWith($criteria);
+        $query = HotlineQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            AgenciesTableMap::clearInstancePool();
+            HotlineTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                AgenciesTableMap::removeInstanceFromPool($singleval);
+                HotlineTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -387,20 +394,20 @@ class AgenciesTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the agencies table.
+     * Deletes all rows from the hotline table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return AgenciesQuery::create()->doDeleteAll($con);
+        return HotlineQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Agencies or Criteria object.
+     * Performs an INSERT on the database, given a Hotline or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Agencies object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Hotline object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -409,22 +416,22 @@ class AgenciesTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(AgenciesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(HotlineTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Agencies object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Hotline object
         }
 
-        if ($criteria->containsKey(AgenciesTableMap::COL_ID_AGENCY) && $criteria->keyContainsValue(AgenciesTableMap::COL_ID_AGENCY) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.AgenciesTableMap::COL_ID_AGENCY.')');
+        if ($criteria->containsKey(HotlineTableMap::COL_ID_HOTLINE) && $criteria->keyContainsValue(HotlineTableMap::COL_ID_HOTLINE) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.HotlineTableMap::COL_ID_HOTLINE.')');
         }
 
 
         // Set the correct dbName
-        $query = AgenciesQuery::create()->mergeWith($criteria);
+        $query = HotlineQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -433,7 +440,7 @@ class AgenciesTableMap extends TableMap
         });
     }
 
-} // AgenciesTableMap
+} // HotlineTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-AgenciesTableMap::buildTableMap();
+HotlineTableMap::buildTableMap();

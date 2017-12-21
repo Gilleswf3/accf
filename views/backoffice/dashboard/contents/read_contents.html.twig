@@ -1,57 +1,42 @@
-{# empty Twig template #}
-
-{# empty Twig template #}
 {% extends "backoffice/layout.html.twig" %}
-
     
 {% block content %}
 
 <div class="w3-col l1 MarginColumn">Marge</div>
 
-    <div class="w3-card w3-col l10 w3-margin-top w3-padding" id="displayAccfArea">    
+    <div class="w3-card w3-col l11 w3-margin-top w3-padding" id="displayAccfArea">    
         <table class="w3-centered w3-col l12 w3-table-all">
 
             <h2 class="w3-margin w3-teal">Afficher les publications</h2>
         
-            <tr>
-                
-                 <th>Photo</th>
+            <tr>                
+                <th>Photo</th>
                 <th>Titre</th>
+                <th>Sous-titre</th>
                 <th>Texte</th>
-                <th>Sous titre</th>             
                 <th>Suppression</th>
                 <th>Modification</th>
             </tr>
 
             {% for content in contents %}
  
-            <tr>
-                
-                 <td>
-                   <img src="{{asset('images/contents/'~content.pictureContent)}}" width="100" height="100"/>
-                 
-                 </td>
-          
-                <td>{{ content.contentTitle }}</td>
-                <td>{{ content.contentText }}</td>
-                <td>{{ content.subTitle }}</td>
-                <td>
-                    <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('suppress_contents', { id: content.idContent }) }}" role="button" >  Supprimer </a>
-                   
-                </td>
-                <td>
-                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('editer_services', { id: content.idContent }) }}" role="button" >  Modifier </a>
-                </td>
-               
-            </tr>
+                <tr>                
+                     <td>
+                       <img src="{{asset('images/produits/'~content.picture)}}" width="100" height="100"/>                
+                     </td>
+
+                    <td>{{ content.Title }}</td>
+                    <td>{{ content.subTitle }}</td>
+                    <td>{{ content.Text }}</td>
+                    <td>
+                        <a href="{{ path('supprimer_publication', { id: content.idContent }) }}">Supprimer</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('editer_publication', { id: content.idContent }) }}">Modifier</a>
+                    </td>           
+                </tr>
 
             {% endfor %}
-           
         </table>
-          
-   
-
-                
     </div>
-    
 {% endblock %}

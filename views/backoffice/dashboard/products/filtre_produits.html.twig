@@ -1,454 +1,60 @@
-
-
-
-
 {% extends "backoffice/layout.html.twig" %}
 
 {% block content %}
-{# empty Twig template #}
-<!-- Control buttons -->
-{#<div id="myBtnContainer">
-  <button class="btn" onclick="filterSelection('all')"> Voir tous les articles</button>
-  <button class="btn" onclick="filterSelection('dispositifs_prevention_medicale')"> Dispositifs de prevention medicale</button>
-  <button class="btn" onclick="filterSelection('dispositifs_anti_incendie')"> Dispositifs anti-incendie</button>
-  <button class="btn" onclick="filterSelection('dispositifs_anti_intrusion')"> Dispositifs anti-intrusion</button>
-</div>
-#}
-<!-- The filterable elements. Note that some have multiple class names (this can be used if they belong to multiple categories) -->
-<div id="myBtnContainer">
-    <button class="btn" onclick="filterSelection('detection_des_chutes')">Détection des chutes</button>
-    <button class="btn" onclick="filterSelection('desenfumage')">Désenfumage</button>
-    <button class="btn" onclick="filterSelection('eclairage_de_securite')">eclairage de securite</button>
-    <button class="btn" onclick="filterSelection('detection_incendie')">detection incendie</button>
-    <button class="btn" onclick="filterSelection('alarmes')">alarmes</button>
-    <button class="btn" onclick="filterSelection('video_surveillance')">video surveillance</button>
-    <button class="btn" onclick="filterSelection('controle_acce')">controle acces</button>
-    <button class="btn" onclick="filterSelection('appel_malade')">appel malade</button>
-  
-</div>
-  
 
-<div class="container">
-  {#  
-    <div class="w3-border w3-border-red filterDiv detection_des_chutes">Produit 1</div>
-    <div class="filterDiv desenfumage">Produit 2</div>
-    <div class="filterDiv eclairage_de_securite">Produit 3</div>
-    <div class="filterDiv detection_incendie">Produit 4</div>
-    <div class="filterDiv alarmes">Produit 5</div>
-    <div class="filterDiv video_surveillance">Produit 6</div>
-    <div class="filterDiv controle_acce">Produit 7</div>
-    <div class="filterDiv appel_malade">Produit 8</div>
-    <div class="filterDiv dispositifs_anti_intrusion">Produit 9</div>
-  #}
-   
-  <a href="" class="btn filterDiv dispositifs_prevention_medicale">Detection des chutes</a>
-  <a href="" class="btn filterDiv dispositifs_anti_incendie">Desenfumage</a>
-  <a href="" class="btn filterDiv dispositifs_anti_incendie">Eclairage de securite</a>
-  <a href="" class="btn filterDiv dispositifs_anti_incendie">Detection incendie</a>
-  <a href="" class="btn filterDiv dispositifs_anti_intrusion">Alarmes</a>
-  <a href="" class="btn filterDiv dispositifs_anti_intrusion">Video-surveillance</a>
-  <a href="" class="btn filterDiv dispositifs_anti_intrusion">Controle d'acces</a>
-  <a href=""class ="btn filterDiv dispositifs_prevention_medicale">Appel Malade</a>
-</div>
+<div class="w3-container w3-row-padding">
+    
+    <div class="w3-col l1 MarginColumn">Marge</div>
 
+    <div class="w3-bar w3-card w3-col l11 w3-grey w3-margin-top w3-round-large">
+        <button class="w3-bar-item w3-button" onclick="filterSelection('all')">Tout afficher</button>
 
-    {% for desenfumage in desenfumages %}
-        <div class="w3-border w3-border-red  filterDiv desenfumage">
-       <td>{{ desenfumage.title }}</td>
-       </br>
-        <td>{{ desenfumage.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~desenfumage.picture )}}" width=100" height="100/"</td>
-                
-                         </br>
-
-              
-               
-           <td>{{ desenfumage.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ desenfumage.priceVatIncluded }}</td>
-                           </br>
-
-               
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">Dispositifs anti-incendie</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <button class="w3-bar-item w3-button displayFilter" onclick="filterSelection('desenfumage')">Désenfumage</button>
+                <button class="w3-bar-item w3-button displayFilter" onclick="filterSelection('detection')">Détection incendie</button>
+                <button class="w3-bar-item w3-button displayFilter" onclick="filterSelection('eclairage')">Eclairage de sécurité</button>
+            </div>
         </div>
-        
-        
-        {% endfor %}
 
- {#      
-<div class="w3-border w3-border-red filterDiv desenfumage"> {{ desenfumage.manufacturer }}
-
-
- {{ desenfumage.title }}
-
-
- {{ desenfumage.description }}
-
- {{ asset('images/produits/'~desenfumage.picture )}}
-
-
- {{ desenfumage.priceVatExcluded }}
-
- {{ desenfumage.priceVatIncluded }}
-</div>
-
-
-
- {% for desenfumage in desenfumages %}
-        <div class="w3-border w3-border-red  filterDiv desenfumage">
-       <td>{{ desenfumage.title }}</td>
-          
-        <td>{{ desenfumage.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-         
-                
-          {% for detectionChute in detectionChutes %}
-        <div class="w3-border w3-border-red  filterDiv detection_des_chutes">
-       <td>{{ detectionChute.title }}</td>
-       </br>
-        <td>{{ detectionChute.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~detectionChute.picture )}}" width=100" height="100/"</td>
-                
-                         </br>
-
-              
-               
-           <td>{{ detectionChute.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ detectionChute.priceVatIncluded }}</td>
-                           </br>
-
-               
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">Dispositifs anti-intrusion</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <button class="w3-bar-item w3-button displayFilter" onclick="filterSelection('alarmes')">Alarmes</button>
+                <button class="w3-bar-item w3-button displayFilter" onclick="filterSelection('acces')">Contrôle d'accès</button>
+                <button class="w3-bar-item w3-button displayFilter" onclick="filterSelection('video')">Vidéo-surveillance</button>
+            </div>
         </div>
-        
-        
-        {% endfor %}
 
-
-{% for alarme in alarmes %}
-        <div class="w3-border w3-border-red  filterDiv alarmes">
-       <td>{{ alarme.title }}</td>
-                          </br>
-
-        <td>{{ alarme.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                         </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~alarme.picture )}}" width=100" height="100/"</td>
-                
-                         </br>
-
-              
-               
-           <td>{{ alarme.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ alarme.priceVatIncluded }}</td>
-               
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">Dispositifs de prévention médicale</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <a href="#" class="w3-bar-item w3-button displayFilter" onclick="filterSelection('appel')">Appel Malade</a>
+                <a href="#" class="w3-bar-item w3-button displayFilter" onclick="filterSelection('chutes')">Détection des chutes</a>
+            </div>
         </div>
-        
-        
-        {% endfor %}
-
-{#{% for alarme  in alarmes %}
-
-
-<div class="w3-border w3-border-red filterDiv alarmes"> {{ alarme.manufacturer }}
-
- {{ alarme.title }}
-
-
- {{ alarme.description }}
-
-
- {{ asset('images/produits/'~alarme.picture )}}
-
-
-{{ alarme.priceVatExcluded }}
-
-
-{{ alarme.priceVatIncluded }}
-</div>
-
-
-{% endfor %}
-#}
-
-{% for appelMalade in appelMalades %}
-        <div class="w3-border w3-border-red  filterDiv appel_malade">
-       <td>{{ appelMalade.title }}</td>
-                          </br>
-
-        <td>{{ appelMalade.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                         </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~appelMalade.picture )}}" width=100" height="100/"</td>
-                
-                         </br>
-
-              
-               
-           <td>{{ appelMalade.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ appelMalade.priceVatIncluded }}</td>
-               
-        </div>
-        
-        
-        {% endfor %}
-
-{#
-{% for appelMalade  in appelMalades %}
-
-
-<div class="w3-border w3-border-red filterDiv appel_malade"> {{ appelMalade.manufacturer }}
-
- {{ appelMalade.title }}
-
-
- {{ appelMalade.description }}
-
-
- {{ asset('images/produits/'~appelMalade.picture )}}
-
-
-{{ appelMalade.priceVatExcluded }}
-
-
-{{ appelMalade.priceVatIncluded }}
-</div>
-
-
-{% endfor %}
-#}
-
- {% for controleAcce in controleAcces %}
-        <div class="w3-border w3-border-red  filterDiv controle_acces">
-       <td>{{ controleAcce.title }}</td>
-                          </br>
-
-        <td>{{ controleAcce.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                         </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~controleAcce.picture )}}" width=100" height="100/"</td>
-                
-         
-                              </br>
-
-               
-           <td>{{ controleAcce.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ controleAcce.priceVatIncluded }}</td>
-               
-        </div>
-        
-        {% endfor %}
-        
-   {#     
-{% for controleAcce  in controleAcces %}
-
-
-<div class="w3-border w3-border-red filterDiv controle_acces"> {{ controleAcce.manufacturer }}
-
- {{ controleAcce.title }}
-
-
- {{ controleAcce.description }}
-
-
- {{ asset('images/produits/'~controleAcce.picture )}}
-
-
-{{ controleAcce.priceVatExcluded }}
-
-
-{{ controleAcce.priceVatIncluded }}
+    </div>
 
 </div>
 
+    
+<div class="w3-container w3-row-padding">
 
-{% endfor %}
+    <div class="w3-col l1 MarginColumn">Marge</div>
 
-#}
-
- {% for videoSurveillance in videoSurveillances %}
-        <div class="w3-border w3-border-red  filterDiv video_surveillance">
-       <td>{{ videoSurveillance.title }}</td>
-                          </br>
-
-        <td>{{ videoSurveillance.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                         </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~videoSurveillance.picture )}}" width=100" height="100/"</td>
-                
-         
-                              </br>
-
-               
-           <td>{{ videoSurveillance.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ videoSurveillance.priceVatIncluded }}</td>
-               
-        </div>
-        
-        {% endfor %}
-{#
-{% for videoSurveillance  in videoSurveillances %}
-
-
-<div class="w3-border w3-border-red filterDiv video_surveillance"> {{ videoSurveillance.manufacturer }}
-
- {{ videoSurveillance.title }}
-
-
- {{ videoSurveillance.description }}
-
-
- {{ asset('images/produits/'~videoSurveillance.picture )}}
-
-
-{{ videoSurveillance.priceVatExcluded }}
-
-
-{{ videoSurveillance.priceVatIncluded }}
-
+    <div class="container w3-col l11">
+        <div class="filteredContent desenfumage w3-col l3">Désenfumage</div>
+        <div class="filteredContent detection w3-col l3">Détection</div>
+        <div class="filteredContent eclairage w3-col l3">Eclairage</div>
+        <div class="filteredContent alarmes w3-col l3">Alarmes</div>
+        <div class="filteredContent acces w3-col l3">Controle</div>
+        <div class="filteredContent video w3-col l3">Video</div>
+        <div class="filteredContent appel w3-col l3">Appel</div>
+        <div class="filteredContent chutes w3-col l3">Chutes</div>
+        <div class="filteredContent chutes w3-col l3">Chutes</div>
+    </div>
+    
 </div>
 
-
-
-
-{% endfor %}
-#}
-{% for detectionIncendie in detectionIncendies %}
-        <div class="w3-border w3-border-red  filterDiv detection_incendie">
-       <td>{{ detectionIncendie.title }}</td>
-                          </br>
-
-        <td>{{ detectionIncendie.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                         </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~detectionIncendie.picture )}}" width=100" height="100/"</td>
-                
-         
-                              </br>
-
-               
-           <td>{{ detectionIncendie.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ detectionIncendie.priceVatIncluded }}</td>
-               
-        </div>
-        
-        {% endfor %}
-        
-        
-  {#      
-{% for detectionIncendie  in detectionIncendies %}
-
-
-<div class="w3-border w3-border-red filterDiv detection_incendie"> {{ detectionIncendie.manufacturer }}
-
- {{ detectionIncendie.title }}
-
-
- {{ detectionIncendie.description }}
-
-
- {{ asset('images/produits/'~detectionIncendie.picture )}}
-
-
-{{ detectionIncendie.priceVatExcluded }}
-
-
-{{ detectionIncendie.priceVatIncluded }}
-
-</div>
-
-
-{% endfor %}
-#}
-  
-  
-  {% for eclairageSecurite in eclairageSecurites %}
-        <div class="w3-border w3-border-red  filterDiv eclairage_de_securite">
-       <td>{{ eclairageSecurite.title }}</td>
-                          </br>
-
-        <td>{{ eclairageSecurite.description[:109] }}</td>
-                {#<td>{{ product.productMainCategory }}</td>#}
-                         </br>
-
-                
-          <td>
-           <img src="{{ asset('images/produits/'~eclairageSecurite.picture )}}" width=100" height="100/"</td>
-                
-         
-                              </br>
-
-               
-           <td>{{ eclairageSecurite.priceVatExcluded }}</td>
-                           </br>
-
-           <td>{{ eclairageSecurite.priceVatIncluded }}</td>
-               
-        </div>
-        
-        {% endfor %}
- {#
-{% for eclairageSecurite  in eclairageSecurites %}
-
-
-<div class="w3-border w3-border-red filterDiv eclairage_de_securite"> {{ eclairageSecurite.manufacturer }}
-
- {{ eclairageSecurite.title }}
-
-
- {{ eclairageSecurite.description }}
-
-
- {{ asset('images/produits/'~eclairageSecurite.picture )}}
-
-
-{{ eclairageSecurite.priceVatExcluded }}
-
-
-{{ eclairageSecurite.priceVatIncluded }}
-
-</div>
-
-
-{% endfor %}
-#}
 {% endblock %}
-
-
-

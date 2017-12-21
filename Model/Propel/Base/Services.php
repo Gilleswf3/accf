@@ -4,10 +4,13 @@ namespace Model\Propel\Base;
 
 use \Exception;
 use \PDO;
+use Model\Propel\Orderdetails as ChildOrderdetails;
+use Model\Propel\OrderdetailsQuery as ChildOrderdetailsQuery;
 use Model\Propel\Orders as ChildOrders;
 use Model\Propel\OrdersQuery as ChildOrdersQuery;
 use Model\Propel\Services as ChildServices;
 use Model\Propel\ServicesQuery as ChildServicesQuery;
+use Model\Propel\Map\OrderdetailsTableMap;
 use Model\Propel\Map\OrdersTableMap;
 use Model\Propel\Map\ServicesTableMap;
 use Propel\Runtime\Propel;
@@ -100,6 +103,12 @@ abstract class Services implements ActiveRecordInterface
     protected $price_vat_included;
 
     /**
+     * @var        ObjectCollection|ChildOrderdetails[] Collection to store aggregation of ChildOrderdetails objects.
+     */
+    protected $collOrderdetailss;
+    protected $collOrderdetailssPartial;
+
+    /**
      * @var        ObjectCollection|ChildOrders[] Collection to store aggregation of ChildOrders objects.
      */
     protected $collOrderss;
@@ -112,6 +121,12 @@ abstract class Services implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildOrderdetails[]
+     */
+    protected $orderdetailssScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -613,6 +628,8 @@ abstract class Services implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collOrderdetailss = null;
+
             $this->collOrderss = null;
 
         } // if (deep)
@@ -727,6 +744,23 @@ abstract class Services implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->orderdetailssScheduledForDeletion !== null) {
+                if (!$this->orderdetailssScheduledForDeletion->isEmpty()) {
+                    \Model\Propel\OrderdetailsQuery::create()
+                        ->filterByPrimaryKeys($this->orderdetailssScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->orderdetailssScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collOrderdetailss !== null) {
+                foreach ($this->collOrderdetailss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->orderssScheduledForDeletion !== null) {
@@ -933,6 +967,21 @@ abstract class Services implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collOrderdetailss) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'orderdetailss';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'orderdetailss';
+                        break;
+                    default:
+                        $key = 'Orderdetailss';
+                }
+
+                $result[$key] = $this->collOrderdetailss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collOrderss) {
 
                 switch ($keyType) {
@@ -1190,6 +1239,12 @@ abstract class Services implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
+            foreach ($this->getOrderdetailss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addOrderdetails($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getOrderss() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addOrders($relObj->copy($deepCopy));
@@ -1237,10 +1292,289 @@ abstract class Services implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Orderdetails' == $relationName) {
+            $this->initOrderdetailss();
+            return;
+        }
         if ('Orders' == $relationName) {
             $this->initOrderss();
             return;
         }
+    }
+
+    /**
+     * Clears out the collOrderdetailss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addOrderdetailss()
+     */
+    public function clearOrderdetailss()
+    {
+        $this->collOrderdetailss = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collOrderdetailss collection loaded partially.
+     */
+    public function resetPartialOrderdetailss($v = true)
+    {
+        $this->collOrderdetailssPartial = $v;
+    }
+
+    /**
+     * Initializes the collOrderdetailss collection.
+     *
+     * By default this just sets the collOrderdetailss collection to an empty array (like clearcollOrderdetailss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initOrderdetailss($overrideExisting = true)
+    {
+        if (null !== $this->collOrderdetailss && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = OrderdetailsTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collOrderdetailss = new $collectionClassName;
+        $this->collOrderdetailss->setModel('\Model\Propel\Orderdetails');
+    }
+
+    /**
+     * Gets an array of ChildOrderdetails objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildServices is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
+     * @throws PropelException
+     */
+    public function getOrderdetailss(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderdetailssPartial && !$this->isNew();
+        if (null === $this->collOrderdetailss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collOrderdetailss) {
+                // return empty collection
+                $this->initOrderdetailss();
+            } else {
+                $collOrderdetailss = ChildOrderdetailsQuery::create(null, $criteria)
+                    ->filterByServices($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collOrderdetailssPartial && count($collOrderdetailss)) {
+                        $this->initOrderdetailss(false);
+
+                        foreach ($collOrderdetailss as $obj) {
+                            if (false == $this->collOrderdetailss->contains($obj)) {
+                                $this->collOrderdetailss->append($obj);
+                            }
+                        }
+
+                        $this->collOrderdetailssPartial = true;
+                    }
+
+                    return $collOrderdetailss;
+                }
+
+                if ($partial && $this->collOrderdetailss) {
+                    foreach ($this->collOrderdetailss as $obj) {
+                        if ($obj->isNew()) {
+                            $collOrderdetailss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collOrderdetailss = $collOrderdetailss;
+                $this->collOrderdetailssPartial = false;
+            }
+        }
+
+        return $this->collOrderdetailss;
+    }
+
+    /**
+     * Sets a collection of ChildOrderdetails objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $orderdetailss A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildServices The current object (for fluent API support)
+     */
+    public function setOrderdetailss(Collection $orderdetailss, ConnectionInterface $con = null)
+    {
+        /** @var ChildOrderdetails[] $orderdetailssToDelete */
+        $orderdetailssToDelete = $this->getOrderdetailss(new Criteria(), $con)->diff($orderdetailss);
+
+
+        $this->orderdetailssScheduledForDeletion = $orderdetailssToDelete;
+
+        foreach ($orderdetailssToDelete as $orderdetailsRemoved) {
+            $orderdetailsRemoved->setServices(null);
+        }
+
+        $this->collOrderdetailss = null;
+        foreach ($orderdetailss as $orderdetails) {
+            $this->addOrderdetails($orderdetails);
+        }
+
+        $this->collOrderdetailss = $orderdetailss;
+        $this->collOrderdetailssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Orderdetails objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Orderdetails objects.
+     * @throws PropelException
+     */
+    public function countOrderdetailss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderdetailssPartial && !$this->isNew();
+        if (null === $this->collOrderdetailss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collOrderdetailss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getOrderdetailss());
+            }
+
+            $query = ChildOrderdetailsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByServices($this)
+                ->count($con);
+        }
+
+        return count($this->collOrderdetailss);
+    }
+
+    /**
+     * Method called to associate a ChildOrderdetails object to this object
+     * through the ChildOrderdetails foreign key attribute.
+     *
+     * @param  ChildOrderdetails $l ChildOrderdetails
+     * @return $this|\Model\Propel\Services The current object (for fluent API support)
+     */
+    public function addOrderdetails(ChildOrderdetails $l)
+    {
+        if ($this->collOrderdetailss === null) {
+            $this->initOrderdetailss();
+            $this->collOrderdetailssPartial = true;
+        }
+
+        if (!$this->collOrderdetailss->contains($l)) {
+            $this->doAddOrderdetails($l);
+
+            if ($this->orderdetailssScheduledForDeletion and $this->orderdetailssScheduledForDeletion->contains($l)) {
+                $this->orderdetailssScheduledForDeletion->remove($this->orderdetailssScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildOrderdetails $orderdetails The ChildOrderdetails object to add.
+     */
+    protected function doAddOrderdetails(ChildOrderdetails $orderdetails)
+    {
+        $this->collOrderdetailss[]= $orderdetails;
+        $orderdetails->setServices($this);
+    }
+
+    /**
+     * @param  ChildOrderdetails $orderdetails The ChildOrderdetails object to remove.
+     * @return $this|ChildServices The current object (for fluent API support)
+     */
+    public function removeOrderdetails(ChildOrderdetails $orderdetails)
+    {
+        if ($this->getOrderdetailss()->contains($orderdetails)) {
+            $pos = $this->collOrderdetailss->search($orderdetails);
+            $this->collOrderdetailss->remove($pos);
+            if (null === $this->orderdetailssScheduledForDeletion) {
+                $this->orderdetailssScheduledForDeletion = clone $this->collOrderdetailss;
+                $this->orderdetailssScheduledForDeletion->clear();
+            }
+            $this->orderdetailssScheduledForDeletion[]= clone $orderdetails;
+            $orderdetails->setServices(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Services is new, it will return
+     * an empty collection; or if this Services has previously
+     * been saved, it will retrieve related Orderdetailss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Services.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
+     */
+    public function getOrderdetailssJoinOrders(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderdetailsQuery::create(null, $criteria);
+        $query->joinWith('Orders', $joinBehavior);
+
+        return $this->getOrderdetailss($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Services is new, it will return
+     * an empty collection; or if this Services has previously
+     * been saved, it will retrieve related Orderdetailss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Services.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
+     */
+    public function getOrderdetailssJoinProducts(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderdetailsQuery::create(null, $criteria);
+        $query->joinWith('Products', $joinBehavior);
+
+        return $this->getOrderdetailss($query, $con);
     }
 
     /**
@@ -1548,6 +1882,11 @@ abstract class Services implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collOrderdetailss) {
+                foreach ($this->collOrderdetailss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrderss) {
                 foreach ($this->collOrderss as $o) {
                     $o->clearAllReferences($deep);
@@ -1555,6 +1894,7 @@ abstract class Services implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collOrderdetailss = null;
         $this->collOrderss = null;
     }
 

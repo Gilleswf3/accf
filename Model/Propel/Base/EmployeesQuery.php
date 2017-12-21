@@ -26,6 +26,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployeesQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildEmployeesQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method     ChildEmployeesQuery orderByJob($order = Criteria::ASC) Order by the job column
+ * @method     ChildEmployeesQuery orderByPassword($order = Criteria::ASC) Order by the password column
  * @method     ChildEmployeesQuery orderByPicture($order = Criteria::ASC) Order by the picture column
  * @method     ChildEmployeesQuery orderByRole($order = Criteria::ASC) Order by the role column
  * @method     ChildEmployeesQuery orderByIdAgency($order = Criteria::ASC) Order by the id_agency column
@@ -36,6 +37,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployeesQuery groupByEmail() Group by the email column
  * @method     ChildEmployeesQuery groupByPhone() Group by the phone column
  * @method     ChildEmployeesQuery groupByJob() Group by the job column
+ * @method     ChildEmployeesQuery groupByPassword() Group by the password column
  * @method     ChildEmployeesQuery groupByPicture() Group by the picture column
  * @method     ChildEmployeesQuery groupByRole() Group by the role column
  * @method     ChildEmployeesQuery groupByIdAgency() Group by the id_agency column
@@ -58,17 +60,27 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployeesQuery rightJoinWithAgencies() Adds a RIGHT JOIN clause and with to the query using the Agencies relation
  * @method     ChildEmployeesQuery innerJoinWithAgencies() Adds a INNER JOIN clause and with to the query using the Agencies relation
  *
- * @method     ChildEmployeesQuery leftJoinStandards($relationAlias = null) Adds a LEFT JOIN clause to the query using the Standards relation
- * @method     ChildEmployeesQuery rightJoinStandards($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Standards relation
- * @method     ChildEmployeesQuery innerJoinStandards($relationAlias = null) Adds a INNER JOIN clause to the query using the Standards relation
+ * @method     ChildEmployeesQuery leftJoinContents($relationAlias = null) Adds a LEFT JOIN clause to the query using the Contents relation
+ * @method     ChildEmployeesQuery rightJoinContents($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Contents relation
+ * @method     ChildEmployeesQuery innerJoinContents($relationAlias = null) Adds a INNER JOIN clause to the query using the Contents relation
  *
- * @method     ChildEmployeesQuery joinWithStandards($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Standards relation
+ * @method     ChildEmployeesQuery joinWithContents($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Contents relation
  *
- * @method     ChildEmployeesQuery leftJoinWithStandards() Adds a LEFT JOIN clause and with to the query using the Standards relation
- * @method     ChildEmployeesQuery rightJoinWithStandards() Adds a RIGHT JOIN clause and with to the query using the Standards relation
- * @method     ChildEmployeesQuery innerJoinWithStandards() Adds a INNER JOIN clause and with to the query using the Standards relation
+ * @method     ChildEmployeesQuery leftJoinWithContents() Adds a LEFT JOIN clause and with to the query using the Contents relation
+ * @method     ChildEmployeesQuery rightJoinWithContents() Adds a RIGHT JOIN clause and with to the query using the Contents relation
+ * @method     ChildEmployeesQuery innerJoinWithContents() Adds a INNER JOIN clause and with to the query using the Contents relation
  *
- * @method     \Model\Propel\AgenciesQuery|\Model\Propel\StandardsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildEmployeesQuery leftJoinHotline($relationAlias = null) Adds a LEFT JOIN clause to the query using the Hotline relation
+ * @method     ChildEmployeesQuery rightJoinHotline($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Hotline relation
+ * @method     ChildEmployeesQuery innerJoinHotline($relationAlias = null) Adds a INNER JOIN clause to the query using the Hotline relation
+ *
+ * @method     ChildEmployeesQuery joinWithHotline($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Hotline relation
+ *
+ * @method     ChildEmployeesQuery leftJoinWithHotline() Adds a LEFT JOIN clause and with to the query using the Hotline relation
+ * @method     ChildEmployeesQuery rightJoinWithHotline() Adds a RIGHT JOIN clause and with to the query using the Hotline relation
+ * @method     ChildEmployeesQuery innerJoinWithHotline() Adds a INNER JOIN clause and with to the query using the Hotline relation
+ *
+ * @method     \Model\Propel\AgenciesQuery|\Model\Propel\ContentsQuery|\Model\Propel\HotlineQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildEmployees findOne(ConnectionInterface $con = null) Return the first ChildEmployees matching the query
  * @method     ChildEmployees findOneOrCreate(ConnectionInterface $con = null) Return the first ChildEmployees matching the query, or a new ChildEmployees object populated from the query conditions when no match is found
@@ -79,6 +91,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployees findOneByEmail(string $email) Return the first ChildEmployees filtered by the email column
  * @method     ChildEmployees findOneByPhone(string $phone) Return the first ChildEmployees filtered by the phone column
  * @method     ChildEmployees findOneByJob(string $job) Return the first ChildEmployees filtered by the job column
+ * @method     ChildEmployees findOneByPassword(string $password) Return the first ChildEmployees filtered by the password column
  * @method     ChildEmployees findOneByPicture(string $picture) Return the first ChildEmployees filtered by the picture column
  * @method     ChildEmployees findOneByRole(string $role) Return the first ChildEmployees filtered by the role column
  * @method     ChildEmployees findOneByIdAgency(int $id_agency) Return the first ChildEmployees filtered by the id_agency column *
@@ -92,6 +105,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployees requireOneByEmail(string $email) Return the first ChildEmployees filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmployees requireOneByPhone(string $phone) Return the first ChildEmployees filtered by the phone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmployees requireOneByJob(string $job) Return the first ChildEmployees filtered by the job column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEmployees requireOneByPassword(string $password) Return the first ChildEmployees filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmployees requireOneByPicture(string $picture) Return the first ChildEmployees filtered by the picture column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmployees requireOneByRole(string $role) Return the first ChildEmployees filtered by the role column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmployees requireOneByIdAgency(int $id_agency) Return the first ChildEmployees filtered by the id_agency column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -103,6 +117,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmployees[]|ObjectCollection findByEmail(string $email) Return ChildEmployees objects filtered by the email column
  * @method     ChildEmployees[]|ObjectCollection findByPhone(string $phone) Return ChildEmployees objects filtered by the phone column
  * @method     ChildEmployees[]|ObjectCollection findByJob(string $job) Return ChildEmployees objects filtered by the job column
+ * @method     ChildEmployees[]|ObjectCollection findByPassword(string $password) Return ChildEmployees objects filtered by the password column
  * @method     ChildEmployees[]|ObjectCollection findByPicture(string $picture) Return ChildEmployees objects filtered by the picture column
  * @method     ChildEmployees[]|ObjectCollection findByRole(string $role) Return ChildEmployees objects filtered by the role column
  * @method     ChildEmployees[]|ObjectCollection findByIdAgency(int $id_agency) Return ChildEmployees objects filtered by the id_agency column
@@ -204,7 +219,7 @@ abstract class EmployeesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_employee, firstname, lastname, email, phone, job, picture, role, id_agency FROM employees WHERE id_employee = :p0';
+        $sql = 'SELECT id_employee, firstname, lastname, email, phone, job, password, picture, role, id_agency FROM employees WHERE id_employee = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -461,6 +476,31 @@ abstract class EmployeesQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the password column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPassword('fooValue');   // WHERE password = 'fooValue'
+     * $query->filterByPassword('%fooValue%', Criteria::LIKE); // WHERE password LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $password The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildEmployeesQuery The current query, for fluid interface
+     */
+    public function filterByPassword($password = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($password)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EmployeesTableMap::COL_PASSWORD, $password, $comparison);
+    }
+
+    /**
      * Filter the query on the picture column
      *
      * Example usage:
@@ -631,40 +671,40 @@ abstract class EmployeesQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Model\Propel\Standards object
+     * Filter the query by a related \Model\Propel\Contents object
      *
-     * @param \Model\Propel\Standards|ObjectCollection $standards the related object to use as filter
+     * @param \Model\Propel\Contents|ObjectCollection $contents the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildEmployeesQuery The current query, for fluid interface
      */
-    public function filterByStandards($standards, $comparison = null)
+    public function filterByContents($contents, $comparison = null)
     {
-        if ($standards instanceof \Model\Propel\Standards) {
+        if ($contents instanceof \Model\Propel\Contents) {
             return $this
-                ->addUsingAlias(EmployeesTableMap::COL_ID_EMPLOYEE, $standards->getIdEmployee(), $comparison);
-        } elseif ($standards instanceof ObjectCollection) {
+                ->addUsingAlias(EmployeesTableMap::COL_ID_EMPLOYEE, $contents->getIdEmployee(), $comparison);
+        } elseif ($contents instanceof ObjectCollection) {
             return $this
-                ->useStandardsQuery()
-                ->filterByPrimaryKeys($standards->getPrimaryKeys())
+                ->useContentsQuery()
+                ->filterByPrimaryKeys($contents->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByStandards() only accepts arguments of type \Model\Propel\Standards or Collection');
+            throw new PropelException('filterByContents() only accepts arguments of type \Model\Propel\Contents or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Standards relation
+     * Adds a JOIN clause to the query using the Contents relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildEmployeesQuery The current query, for fluid interface
      */
-    public function joinStandards($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinContents($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Standards');
+        $relationMap = $tableMap->getRelation('Contents');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -679,14 +719,14 @@ abstract class EmployeesQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Standards');
+            $this->addJoinObject($join, 'Contents');
         }
 
         return $this;
     }
 
     /**
-     * Use the Standards relation Standards object
+     * Use the Contents relation Contents object
      *
      * @see useQuery()
      *
@@ -694,13 +734,86 @@ abstract class EmployeesQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \Model\Propel\StandardsQuery A secondary query class using the current class as primary query
+     * @return \Model\Propel\ContentsQuery A secondary query class using the current class as primary query
      */
-    public function useStandardsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useContentsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinStandards($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Standards', '\Model\Propel\StandardsQuery');
+            ->joinContents($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Contents', '\Model\Propel\ContentsQuery');
+    }
+
+    /**
+     * Filter the query by a related \Model\Propel\Hotline object
+     *
+     * @param \Model\Propel\Hotline|ObjectCollection $hotline the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildEmployeesQuery The current query, for fluid interface
+     */
+    public function filterByHotline($hotline, $comparison = null)
+    {
+        if ($hotline instanceof \Model\Propel\Hotline) {
+            return $this
+                ->addUsingAlias(EmployeesTableMap::COL_ID_EMPLOYEE, $hotline->getIdEmployee(), $comparison);
+        } elseif ($hotline instanceof ObjectCollection) {
+            return $this
+                ->useHotlineQuery()
+                ->filterByPrimaryKeys($hotline->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByHotline() only accepts arguments of type \Model\Propel\Hotline or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Hotline relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildEmployeesQuery The current query, for fluid interface
+     */
+    public function joinHotline($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Hotline');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Hotline');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Hotline relation Hotline object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Model\Propel\HotlineQuery A secondary query class using the current class as primary query
+     */
+    public function useHotlineQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinHotline($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Hotline', '\Model\Propel\HotlineQuery');
     }
 
     /**

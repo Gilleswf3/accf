@@ -70,7 +70,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOrdersQuery rightJoinWithServices() Adds a RIGHT JOIN clause and with to the query using the Services relation
  * @method     ChildOrdersQuery innerJoinWithServices() Adds a INNER JOIN clause and with to the query using the Services relation
  *
- * @method     \Model\Propel\CustomersQuery|\Model\Propel\ProductsQuery|\Model\Propel\ServicesQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildOrdersQuery leftJoinOrderdetails($relationAlias = null) Adds a LEFT JOIN clause to the query using the Orderdetails relation
+ * @method     ChildOrdersQuery rightJoinOrderdetails($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Orderdetails relation
+ * @method     ChildOrdersQuery innerJoinOrderdetails($relationAlias = null) Adds a INNER JOIN clause to the query using the Orderdetails relation
+ *
+ * @method     ChildOrdersQuery joinWithOrderdetails($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Orderdetails relation
+ *
+ * @method     ChildOrdersQuery leftJoinWithOrderdetails() Adds a LEFT JOIN clause and with to the query using the Orderdetails relation
+ * @method     ChildOrdersQuery rightJoinWithOrderdetails() Adds a RIGHT JOIN clause and with to the query using the Orderdetails relation
+ * @method     ChildOrdersQuery innerJoinWithOrderdetails() Adds a INNER JOIN clause and with to the query using the Orderdetails relation
+ *
+ * @method     \Model\Propel\CustomersQuery|\Model\Propel\ProductsQuery|\Model\Propel\ServicesQuery|\Model\Propel\OrderdetailsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildOrders findOne(ConnectionInterface $con = null) Return the first ChildOrders matching the query
  * @method     ChildOrders findOneOrCreate(ConnectionInterface $con = null) Return the first ChildOrders matching the query, or a new ChildOrders object populated from the query conditions when no match is found
@@ -726,6 +736,79 @@ abstract class OrdersQuery extends ModelCriteria
         return $this
             ->joinServices($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Services', '\Model\Propel\ServicesQuery');
+    }
+
+    /**
+     * Filter the query by a related \Model\Propel\Orderdetails object
+     *
+     * @param \Model\Propel\Orderdetails|ObjectCollection $orderdetails the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrdersQuery The current query, for fluid interface
+     */
+    public function filterByOrderdetails($orderdetails, $comparison = null)
+    {
+        if ($orderdetails instanceof \Model\Propel\Orderdetails) {
+            return $this
+                ->addUsingAlias(OrdersTableMap::COL_ID_ORDER, $orderdetails->getIdOrder(), $comparison);
+        } elseif ($orderdetails instanceof ObjectCollection) {
+            return $this
+                ->useOrderdetailsQuery()
+                ->filterByPrimaryKeys($orderdetails->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByOrderdetails() only accepts arguments of type \Model\Propel\Orderdetails or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Orderdetails relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildOrdersQuery The current query, for fluid interface
+     */
+    public function joinOrderdetails($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Orderdetails');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Orderdetails');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Orderdetails relation Orderdetails object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Model\Propel\OrderdetailsQuery A secondary query class using the current class as primary query
+     */
+    public function useOrderdetailsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinOrderdetails($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Orderdetails', '\Model\Propel\OrderdetailsQuery');
     }
 
     /**

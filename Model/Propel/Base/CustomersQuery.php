@@ -21,14 +21,15 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildCustomersQuery orderByIdCustomer($order = Criteria::ASC) Order by the id_customer column
+ * @method     ChildCustomersQuery orderByCompany($order = Criteria::ASC) Order by the company column
  * @method     ChildCustomersQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method     ChildCustomersQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
  * @method     ChildCustomersQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildCustomersQuery orderByPhone($order = Criteria::ASC) Order by the phone column
+ * @method     ChildCustomersQuery orderByJob($order = Criteria::ASC) Order by the job column
  * @method     ChildCustomersQuery orderByPassword($order = Criteria::ASC) Order by the password column
  * @method     ChildCustomersQuery orderByRegistrationDate($order = Criteria::ASC) Order by the registration_date column
- * @method     ChildCustomersQuery orderByJob($order = Criteria::ASC) Order by the job column
- * @method     ChildCustomersQuery orderByCompany($order = Criteria::ASC) Order by the company column
+ * @method     ChildCustomersQuery orderByRole($order = Criteria::ASC) Order by the role column
  * @method     ChildCustomersQuery orderByBilltoAddress($order = Criteria::ASC) Order by the billto_address column
  * @method     ChildCustomersQuery orderByBilltoZipcode($order = Criteria::ASC) Order by the billto_zipcode column
  * @method     ChildCustomersQuery orderByBilltoCity($order = Criteria::ASC) Order by the billto_city column
@@ -37,14 +38,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomersQuery orderByShiptoCity($order = Criteria::ASC) Order by the shipto_city column
  *
  * @method     ChildCustomersQuery groupByIdCustomer() Group by the id_customer column
+ * @method     ChildCustomersQuery groupByCompany() Group by the company column
  * @method     ChildCustomersQuery groupByFirstname() Group by the firstname column
  * @method     ChildCustomersQuery groupByLastname() Group by the lastname column
  * @method     ChildCustomersQuery groupByEmail() Group by the email column
  * @method     ChildCustomersQuery groupByPhone() Group by the phone column
+ * @method     ChildCustomersQuery groupByJob() Group by the job column
  * @method     ChildCustomersQuery groupByPassword() Group by the password column
  * @method     ChildCustomersQuery groupByRegistrationDate() Group by the registration_date column
- * @method     ChildCustomersQuery groupByJob() Group by the job column
- * @method     ChildCustomersQuery groupByCompany() Group by the company column
+ * @method     ChildCustomersQuery groupByRole() Group by the role column
  * @method     ChildCustomersQuery groupByBilltoAddress() Group by the billto_address column
  * @method     ChildCustomersQuery groupByBilltoZipcode() Group by the billto_zipcode column
  * @method     ChildCustomersQuery groupByBilltoCity() Group by the billto_city column
@@ -60,6 +62,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomersQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildCustomersQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildCustomersQuery leftJoinHotline($relationAlias = null) Adds a LEFT JOIN clause to the query using the Hotline relation
+ * @method     ChildCustomersQuery rightJoinHotline($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Hotline relation
+ * @method     ChildCustomersQuery innerJoinHotline($relationAlias = null) Adds a INNER JOIN clause to the query using the Hotline relation
+ *
+ * @method     ChildCustomersQuery joinWithHotline($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Hotline relation
+ *
+ * @method     ChildCustomersQuery leftJoinWithHotline() Adds a LEFT JOIN clause and with to the query using the Hotline relation
+ * @method     ChildCustomersQuery rightJoinWithHotline() Adds a RIGHT JOIN clause and with to the query using the Hotline relation
+ * @method     ChildCustomersQuery innerJoinWithHotline() Adds a INNER JOIN clause and with to the query using the Hotline relation
+ *
  * @method     ChildCustomersQuery leftJoinOrders($relationAlias = null) Adds a LEFT JOIN clause to the query using the Orders relation
  * @method     ChildCustomersQuery rightJoinOrders($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Orders relation
  * @method     ChildCustomersQuery innerJoinOrders($relationAlias = null) Adds a INNER JOIN clause to the query using the Orders relation
@@ -70,20 +82,21 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomersQuery rightJoinWithOrders() Adds a RIGHT JOIN clause and with to the query using the Orders relation
  * @method     ChildCustomersQuery innerJoinWithOrders() Adds a INNER JOIN clause and with to the query using the Orders relation
  *
- * @method     \Model\Propel\OrdersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \Model\Propel\HotlineQuery|\Model\Propel\OrdersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildCustomers findOne(ConnectionInterface $con = null) Return the first ChildCustomers matching the query
  * @method     ChildCustomers findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCustomers matching the query, or a new ChildCustomers object populated from the query conditions when no match is found
  *
  * @method     ChildCustomers findOneByIdCustomer(int $id_customer) Return the first ChildCustomers filtered by the id_customer column
+ * @method     ChildCustomers findOneByCompany(string $company) Return the first ChildCustomers filtered by the company column
  * @method     ChildCustomers findOneByFirstname(string $firstname) Return the first ChildCustomers filtered by the firstname column
  * @method     ChildCustomers findOneByLastname(string $lastname) Return the first ChildCustomers filtered by the lastname column
  * @method     ChildCustomers findOneByEmail(string $email) Return the first ChildCustomers filtered by the email column
  * @method     ChildCustomers findOneByPhone(string $phone) Return the first ChildCustomers filtered by the phone column
+ * @method     ChildCustomers findOneByJob(string $job) Return the first ChildCustomers filtered by the job column
  * @method     ChildCustomers findOneByPassword(string $password) Return the first ChildCustomers filtered by the password column
  * @method     ChildCustomers findOneByRegistrationDate(string $registration_date) Return the first ChildCustomers filtered by the registration_date column
- * @method     ChildCustomers findOneByJob(string $job) Return the first ChildCustomers filtered by the job column
- * @method     ChildCustomers findOneByCompany(string $company) Return the first ChildCustomers filtered by the company column
+ * @method     ChildCustomers findOneByRole(string $role) Return the first ChildCustomers filtered by the role column
  * @method     ChildCustomers findOneByBilltoAddress(string $billto_address) Return the first ChildCustomers filtered by the billto_address column
  * @method     ChildCustomers findOneByBilltoZipcode(string $billto_zipcode) Return the first ChildCustomers filtered by the billto_zipcode column
  * @method     ChildCustomers findOneByBilltoCity(string $billto_city) Return the first ChildCustomers filtered by the billto_city column
@@ -95,14 +108,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCustomers requireOne(ConnectionInterface $con = null) Return the first ChildCustomers matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCustomers requireOneByIdCustomer(int $id_customer) Return the first ChildCustomers filtered by the id_customer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCustomers requireOneByCompany(string $company) Return the first ChildCustomers filtered by the company column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByFirstname(string $firstname) Return the first ChildCustomers filtered by the firstname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByLastname(string $lastname) Return the first ChildCustomers filtered by the lastname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByEmail(string $email) Return the first ChildCustomers filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByPhone(string $phone) Return the first ChildCustomers filtered by the phone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCustomers requireOneByJob(string $job) Return the first ChildCustomers filtered by the job column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByPassword(string $password) Return the first ChildCustomers filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByRegistrationDate(string $registration_date) Return the first ChildCustomers filtered by the registration_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildCustomers requireOneByJob(string $job) Return the first ChildCustomers filtered by the job column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildCustomers requireOneByCompany(string $company) Return the first ChildCustomers filtered by the company column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCustomers requireOneByRole(string $role) Return the first ChildCustomers filtered by the role column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByBilltoAddress(string $billto_address) Return the first ChildCustomers filtered by the billto_address column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByBilltoZipcode(string $billto_zipcode) Return the first ChildCustomers filtered by the billto_zipcode column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCustomers requireOneByBilltoCity(string $billto_city) Return the first ChildCustomers filtered by the billto_city column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -112,14 +126,15 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCustomers[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCustomers objects based on current ModelCriteria
  * @method     ChildCustomers[]|ObjectCollection findByIdCustomer(int $id_customer) Return ChildCustomers objects filtered by the id_customer column
+ * @method     ChildCustomers[]|ObjectCollection findByCompany(string $company) Return ChildCustomers objects filtered by the company column
  * @method     ChildCustomers[]|ObjectCollection findByFirstname(string $firstname) Return ChildCustomers objects filtered by the firstname column
  * @method     ChildCustomers[]|ObjectCollection findByLastname(string $lastname) Return ChildCustomers objects filtered by the lastname column
  * @method     ChildCustomers[]|ObjectCollection findByEmail(string $email) Return ChildCustomers objects filtered by the email column
  * @method     ChildCustomers[]|ObjectCollection findByPhone(string $phone) Return ChildCustomers objects filtered by the phone column
+ * @method     ChildCustomers[]|ObjectCollection findByJob(string $job) Return ChildCustomers objects filtered by the job column
  * @method     ChildCustomers[]|ObjectCollection findByPassword(string $password) Return ChildCustomers objects filtered by the password column
  * @method     ChildCustomers[]|ObjectCollection findByRegistrationDate(string $registration_date) Return ChildCustomers objects filtered by the registration_date column
- * @method     ChildCustomers[]|ObjectCollection findByJob(string $job) Return ChildCustomers objects filtered by the job column
- * @method     ChildCustomers[]|ObjectCollection findByCompany(string $company) Return ChildCustomers objects filtered by the company column
+ * @method     ChildCustomers[]|ObjectCollection findByRole(string $role) Return ChildCustomers objects filtered by the role column
  * @method     ChildCustomers[]|ObjectCollection findByBilltoAddress(string $billto_address) Return ChildCustomers objects filtered by the billto_address column
  * @method     ChildCustomers[]|ObjectCollection findByBilltoZipcode(string $billto_zipcode) Return ChildCustomers objects filtered by the billto_zipcode column
  * @method     ChildCustomers[]|ObjectCollection findByBilltoCity(string $billto_city) Return ChildCustomers objects filtered by the billto_city column
@@ -224,7 +239,7 @@ abstract class CustomersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_customer, firstname, lastname, email, phone, password, registration_date, job, company, billto_address, billto_zipcode, billto_city, shipto_address, shipto_zipcode, shipto_city FROM customers WHERE id_customer = :p0';
+        $sql = 'SELECT id_customer, company, firstname, lastname, email, phone, job, password, registration_date, role, billto_address, billto_zipcode, billto_city, shipto_address, shipto_zipcode, shipto_city FROM customers WHERE id_customer = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -356,6 +371,31 @@ abstract class CustomersQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the company column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCompany('fooValue');   // WHERE company = 'fooValue'
+     * $query->filterByCompany('%fooValue%', Criteria::LIKE); // WHERE company LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $company The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCustomersQuery The current query, for fluid interface
+     */
+    public function filterByCompany($company = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($company)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CustomersTableMap::COL_COMPANY, $company, $comparison);
+    }
+
+    /**
      * Filter the query on the firstname column
      *
      * Example usage:
@@ -456,6 +496,31 @@ abstract class CustomersQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the job column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByJob('fooValue');   // WHERE job = 'fooValue'
+     * $query->filterByJob('%fooValue%', Criteria::LIKE); // WHERE job LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $job The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCustomersQuery The current query, for fluid interface
+     */
+    public function filterByJob($job = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($job)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CustomersTableMap::COL_JOB, $job, $comparison);
+    }
+
+    /**
      * Filter the query on the password column
      *
      * Example usage:
@@ -524,53 +589,28 @@ abstract class CustomersQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the job column
+     * Filter the query on the role column
      *
      * Example usage:
      * <code>
-     * $query->filterByJob('fooValue');   // WHERE job = 'fooValue'
-     * $query->filterByJob('%fooValue%', Criteria::LIKE); // WHERE job LIKE '%fooValue%'
+     * $query->filterByRole('fooValue');   // WHERE role = 'fooValue'
+     * $query->filterByRole('%fooValue%', Criteria::LIKE); // WHERE role LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $job The value to use as filter.
+     * @param     string $role The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildCustomersQuery The current query, for fluid interface
      */
-    public function filterByJob($job = null, $comparison = null)
+    public function filterByRole($role = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($job)) {
+            if (is_array($role)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(CustomersTableMap::COL_JOB, $job, $comparison);
-    }
-
-    /**
-     * Filter the query on the company column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCompany('fooValue');   // WHERE company = 'fooValue'
-     * $query->filterByCompany('%fooValue%', Criteria::LIKE); // WHERE company LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $company The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildCustomersQuery The current query, for fluid interface
-     */
-    public function filterByCompany($company = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($company)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(CustomersTableMap::COL_COMPANY, $company, $comparison);
+        return $this->addUsingAlias(CustomersTableMap::COL_ROLE, $role, $comparison);
     }
 
     /**
@@ -721,6 +761,79 @@ abstract class CustomersQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CustomersTableMap::COL_SHIPTO_CITY, $shiptoCity, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Model\Propel\Hotline object
+     *
+     * @param \Model\Propel\Hotline|ObjectCollection $hotline the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCustomersQuery The current query, for fluid interface
+     */
+    public function filterByHotline($hotline, $comparison = null)
+    {
+        if ($hotline instanceof \Model\Propel\Hotline) {
+            return $this
+                ->addUsingAlias(CustomersTableMap::COL_ID_CUSTOMER, $hotline->getIdCustomer(), $comparison);
+        } elseif ($hotline instanceof ObjectCollection) {
+            return $this
+                ->useHotlineQuery()
+                ->filterByPrimaryKeys($hotline->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByHotline() only accepts arguments of type \Model\Propel\Hotline or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Hotline relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildCustomersQuery The current query, for fluid interface
+     */
+    public function joinHotline($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Hotline');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Hotline');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Hotline relation Hotline object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Model\Propel\HotlineQuery A secondary query class using the current class as primary query
+     */
+    public function useHotlineQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinHotline($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Hotline', '\Model\Propel\HotlineQuery');
     }
 
     /**

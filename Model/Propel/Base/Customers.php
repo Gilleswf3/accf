@@ -7,9 +7,12 @@ use \Exception;
 use \PDO;
 use Model\Propel\Customers as ChildCustomers;
 use Model\Propel\CustomersQuery as ChildCustomersQuery;
+use Model\Propel\Hotline as ChildHotline;
+use Model\Propel\HotlineQuery as ChildHotlineQuery;
 use Model\Propel\Orders as ChildOrders;
 use Model\Propel\OrdersQuery as ChildOrdersQuery;
 use Model\Propel\Map\CustomersTableMap;
+use Model\Propel\Map\HotlineTableMap;
 use Model\Propel\Map\OrdersTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -74,6 +77,13 @@ abstract class Customers implements ActiveRecordInterface
     protected $id_customer;
 
     /**
+     * The value for the company field.
+     *
+     * @var        string
+     */
+    protected $company;
+
+    /**
      * The value for the firstname field.
      *
      * @var        string
@@ -102,6 +112,13 @@ abstract class Customers implements ActiveRecordInterface
     protected $phone;
 
     /**
+     * The value for the job field.
+     *
+     * @var        string
+     */
+    protected $job;
+
+    /**
      * The value for the password field.
      *
      * @var        string
@@ -116,18 +133,11 @@ abstract class Customers implements ActiveRecordInterface
     protected $registration_date;
 
     /**
-     * The value for the job field.
+     * The value for the role field.
      *
      * @var        string
      */
-    protected $job;
-
-    /**
-     * The value for the company field.
-     *
-     * @var        string
-     */
-    protected $company;
+    protected $role;
 
     /**
      * The value for the billto_address field.
@@ -172,6 +182,12 @@ abstract class Customers implements ActiveRecordInterface
     protected $shipto_city;
 
     /**
+     * @var        ObjectCollection|ChildHotline[] Collection to store aggregation of ChildHotline objects.
+     */
+    protected $collHotlines;
+    protected $collHotlinesPartial;
+
+    /**
      * @var        ObjectCollection|ChildOrders[] Collection to store aggregation of ChildOrders objects.
      */
     protected $collOrderss;
@@ -184,6 +200,12 @@ abstract class Customers implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildHotline[]
+     */
+    protected $hotlinesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -427,6 +449,16 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
+     * Get the [company] column value.
+     *
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
      * Get the [firstname] column value.
      *
      * @return string
@@ -467,6 +499,16 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
+     * Get the [job] column value.
+     *
+     * @return string
+     */
+    public function getJob()
+    {
+        return $this->job;
+    }
+
+    /**
      * Get the [password] column value.
      *
      * @return string
@@ -497,23 +539,13 @@ abstract class Customers implements ActiveRecordInterface
     }
 
     /**
-     * Get the [job] column value.
+     * Get the [role] column value.
      *
      * @return string
      */
-    public function getJob()
+    public function getRole()
     {
-        return $this->job;
-    }
-
-    /**
-     * Get the [company] column value.
-     *
-     * @return string
-     */
-    public function getCompany()
-    {
-        return $this->company;
+        return $this->role;
     }
 
     /**
@@ -597,6 +629,26 @@ abstract class Customers implements ActiveRecordInterface
     } // setIdCustomer()
 
     /**
+     * Set the value of [company] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
+     */
+    public function setCompany($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->company !== $v) {
+            $this->company = $v;
+            $this->modifiedColumns[CustomersTableMap::COL_COMPANY] = true;
+        }
+
+        return $this;
+    } // setCompany()
+
+    /**
      * Set the value of [firstname] column.
      *
      * @param string $v new value
@@ -677,6 +729,26 @@ abstract class Customers implements ActiveRecordInterface
     } // setPhone()
 
     /**
+     * Set the value of [job] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
+     */
+    public function setJob($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->job !== $v) {
+            $this->job = $v;
+            $this->modifiedColumns[CustomersTableMap::COL_JOB] = true;
+        }
+
+        return $this;
+    } // setJob()
+
+    /**
      * Set the value of [password] column.
      *
      * @param string $v new value
@@ -717,44 +789,24 @@ abstract class Customers implements ActiveRecordInterface
     } // setRegistrationDate()
 
     /**
-     * Set the value of [job] column.
+     * Set the value of [role] column.
      *
      * @param string $v new value
      * @return $this|\Model\Propel\Customers The current object (for fluent API support)
      */
-    public function setJob($v)
+    public function setRole($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->job !== $v) {
-            $this->job = $v;
-            $this->modifiedColumns[CustomersTableMap::COL_JOB] = true;
+        if ($this->role !== $v) {
+            $this->role = $v;
+            $this->modifiedColumns[CustomersTableMap::COL_ROLE] = true;
         }
 
         return $this;
-    } // setJob()
-
-    /**
-     * Set the value of [company] column.
-     *
-     * @param string $v new value
-     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
-     */
-    public function setCompany($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->company !== $v) {
-            $this->company = $v;
-            $this->modifiedColumns[CustomersTableMap::COL_COMPANY] = true;
-        }
-
-        return $this;
-    } // setCompany()
+    } // setRole()
 
     /**
      * Set the value of [billto_address] column.
@@ -915,49 +967,52 @@ abstract class Customers implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CustomersTableMap::translateFieldName('IdCustomer', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_customer = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CustomersTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CustomersTableMap::translateFieldName('Company', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->company = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CustomersTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->firstname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CustomersTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CustomersTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->lastname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CustomersTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CustomersTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
             $this->email = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CustomersTableMap::translateFieldName('Phone', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CustomersTableMap::translateFieldName('Phone', TableMap::TYPE_PHPNAME, $indexType)];
             $this->phone = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CustomersTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CustomersTableMap::translateFieldName('Job', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->job = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CustomersTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
             $this->password = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CustomersTableMap::translateFieldName('RegistrationDate', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CustomersTableMap::translateFieldName('RegistrationDate', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->registration_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CustomersTableMap::translateFieldName('Job', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->job = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CustomersTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->role = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CustomersTableMap::translateFieldName('Company', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->company = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CustomersTableMap::translateFieldName('BilltoAddress', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CustomersTableMap::translateFieldName('BilltoAddress', TableMap::TYPE_PHPNAME, $indexType)];
             $this->billto_address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CustomersTableMap::translateFieldName('BilltoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CustomersTableMap::translateFieldName('BilltoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->billto_zipcode = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CustomersTableMap::translateFieldName('BilltoCity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CustomersTableMap::translateFieldName('BilltoCity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->billto_city = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CustomersTableMap::translateFieldName('ShiptoAddress', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CustomersTableMap::translateFieldName('ShiptoAddress', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CustomersTableMap::translateFieldName('ShiptoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CustomersTableMap::translateFieldName('ShiptoZipcode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_zipcode = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CustomersTableMap::translateFieldName('ShiptoCity', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : CustomersTableMap::translateFieldName('ShiptoCity', TableMap::TYPE_PHPNAME, $indexType)];
             $this->shipto_city = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -967,7 +1022,7 @@ abstract class Customers implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 15; // 15 = CustomersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = CustomersTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Customers'), 0, $e);
@@ -1027,6 +1082,8 @@ abstract class Customers implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collHotlines = null;
 
             $this->collOrderss = null;
 
@@ -1144,6 +1201,23 @@ abstract class Customers implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->hotlinesScheduledForDeletion !== null) {
+                if (!$this->hotlinesScheduledForDeletion->isEmpty()) {
+                    \Model\Propel\HotlineQuery::create()
+                        ->filterByPrimaryKeys($this->hotlinesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->hotlinesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collHotlines !== null) {
+                foreach ($this->collHotlines as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->orderssScheduledForDeletion !== null) {
                 if (!$this->orderssScheduledForDeletion->isEmpty()) {
                     \Model\Propel\OrdersQuery::create()
@@ -1190,6 +1264,9 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_ID_CUSTOMER)) {
             $modifiedColumns[':p' . $index++]  = 'id_customer';
         }
+        if ($this->isColumnModified(CustomersTableMap::COL_COMPANY)) {
+            $modifiedColumns[':p' . $index++]  = 'company';
+        }
         if ($this->isColumnModified(CustomersTableMap::COL_FIRSTNAME)) {
             $modifiedColumns[':p' . $index++]  = 'firstname';
         }
@@ -1202,17 +1279,17 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_PHONE)) {
             $modifiedColumns[':p' . $index++]  = 'phone';
         }
+        if ($this->isColumnModified(CustomersTableMap::COL_JOB)) {
+            $modifiedColumns[':p' . $index++]  = 'job';
+        }
         if ($this->isColumnModified(CustomersTableMap::COL_PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = 'password';
         }
         if ($this->isColumnModified(CustomersTableMap::COL_REGISTRATION_DATE)) {
             $modifiedColumns[':p' . $index++]  = 'registration_date';
         }
-        if ($this->isColumnModified(CustomersTableMap::COL_JOB)) {
-            $modifiedColumns[':p' . $index++]  = 'job';
-        }
-        if ($this->isColumnModified(CustomersTableMap::COL_COMPANY)) {
-            $modifiedColumns[':p' . $index++]  = 'company';
+        if ($this->isColumnModified(CustomersTableMap::COL_ROLE)) {
+            $modifiedColumns[':p' . $index++]  = 'role';
         }
         if ($this->isColumnModified(CustomersTableMap::COL_BILLTO_ADDRESS)) {
             $modifiedColumns[':p' . $index++]  = 'billto_address';
@@ -1246,6 +1323,9 @@ abstract class Customers implements ActiveRecordInterface
                     case 'id_customer':
                         $stmt->bindValue($identifier, $this->id_customer, PDO::PARAM_INT);
                         break;
+                    case 'company':
+                        $stmt->bindValue($identifier, $this->company, PDO::PARAM_STR);
+                        break;
                     case 'firstname':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
@@ -1258,17 +1338,17 @@ abstract class Customers implements ActiveRecordInterface
                     case 'phone':
                         $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
                         break;
+                    case 'job':
+                        $stmt->bindValue($identifier, $this->job, PDO::PARAM_STR);
+                        break;
                     case 'password':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
                         break;
                     case 'registration_date':
                         $stmt->bindValue($identifier, $this->registration_date ? $this->registration_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'job':
-                        $stmt->bindValue($identifier, $this->job, PDO::PARAM_STR);
-                        break;
-                    case 'company':
-                        $stmt->bindValue($identifier, $this->company, PDO::PARAM_STR);
+                    case 'role':
+                        $stmt->bindValue($identifier, $this->role, PDO::PARAM_STR);
                         break;
                     case 'billto_address':
                         $stmt->bindValue($identifier, $this->billto_address, PDO::PARAM_STR);
@@ -1354,45 +1434,48 @@ abstract class Customers implements ActiveRecordInterface
                 return $this->getIdCustomer();
                 break;
             case 1:
-                return $this->getFirstname();
-                break;
-            case 2:
-                return $this->getLastname();
-                break;
-            case 3:
-                return $this->getEmail();
-                break;
-            case 4:
-                return $this->getPhone();
-                break;
-            case 5:
-                return $this->getPassword();
-                break;
-            case 6:
-                return $this->getRegistrationDate();
-                break;
-            case 7:
-                return $this->getJob();
-                break;
-            case 8:
                 return $this->getCompany();
                 break;
+            case 2:
+                return $this->getFirstname();
+                break;
+            case 3:
+                return $this->getLastname();
+                break;
+            case 4:
+                return $this->getEmail();
+                break;
+            case 5:
+                return $this->getPhone();
+                break;
+            case 6:
+                return $this->getJob();
+                break;
+            case 7:
+                return $this->getPassword();
+                break;
+            case 8:
+                return $this->getRegistrationDate();
+                break;
             case 9:
-                return $this->getBilltoAddress();
+                return $this->getRole();
                 break;
             case 10:
-                return $this->getBilltoZipcode();
+                return $this->getBilltoAddress();
                 break;
             case 11:
-                return $this->getBilltoCity();
+                return $this->getBilltoZipcode();
                 break;
             case 12:
-                return $this->getShiptoAddress();
+                return $this->getBilltoCity();
                 break;
             case 13:
-                return $this->getShiptoZipcode();
+                return $this->getShiptoAddress();
                 break;
             case 14:
+                return $this->getShiptoZipcode();
+                break;
+            case 15:
                 return $this->getShiptoCity();
                 break;
             default:
@@ -1426,23 +1509,24 @@ abstract class Customers implements ActiveRecordInterface
         $keys = CustomersTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getIdCustomer(),
-            $keys[1] => $this->getFirstname(),
-            $keys[2] => $this->getLastname(),
-            $keys[3] => $this->getEmail(),
-            $keys[4] => $this->getPhone(),
-            $keys[5] => $this->getPassword(),
-            $keys[6] => $this->getRegistrationDate(),
-            $keys[7] => $this->getJob(),
-            $keys[8] => $this->getCompany(),
-            $keys[9] => $this->getBilltoAddress(),
-            $keys[10] => $this->getBilltoZipcode(),
-            $keys[11] => $this->getBilltoCity(),
-            $keys[12] => $this->getShiptoAddress(),
-            $keys[13] => $this->getShiptoZipcode(),
-            $keys[14] => $this->getShiptoCity(),
+            $keys[1] => $this->getCompany(),
+            $keys[2] => $this->getFirstname(),
+            $keys[3] => $this->getLastname(),
+            $keys[4] => $this->getEmail(),
+            $keys[5] => $this->getPhone(),
+            $keys[6] => $this->getJob(),
+            $keys[7] => $this->getPassword(),
+            $keys[8] => $this->getRegistrationDate(),
+            $keys[9] => $this->getRole(),
+            $keys[10] => $this->getBilltoAddress(),
+            $keys[11] => $this->getBilltoZipcode(),
+            $keys[12] => $this->getBilltoCity(),
+            $keys[13] => $this->getShiptoAddress(),
+            $keys[14] => $this->getShiptoZipcode(),
+            $keys[15] => $this->getShiptoCity(),
         );
-        if ($result[$keys[6]] instanceof \DateTimeInterface) {
-            $result[$keys[6]] = $result[$keys[6]]->format('c');
+        if ($result[$keys[8]] instanceof \DateTimeInterface) {
+            $result[$keys[8]] = $result[$keys[8]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1451,6 +1535,21 @@ abstract class Customers implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collHotlines) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'hotlines';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'hotlines';
+                        break;
+                    default:
+                        $key = 'Hotlines';
+                }
+
+                $result[$key] = $this->collHotlines->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collOrderss) {
 
                 switch ($keyType) {
@@ -1504,45 +1603,48 @@ abstract class Customers implements ActiveRecordInterface
                 $this->setIdCustomer($value);
                 break;
             case 1:
-                $this->setFirstname($value);
-                break;
-            case 2:
-                $this->setLastname($value);
-                break;
-            case 3:
-                $this->setEmail($value);
-                break;
-            case 4:
-                $this->setPhone($value);
-                break;
-            case 5:
-                $this->setPassword($value);
-                break;
-            case 6:
-                $this->setRegistrationDate($value);
-                break;
-            case 7:
-                $this->setJob($value);
-                break;
-            case 8:
                 $this->setCompany($value);
                 break;
+            case 2:
+                $this->setFirstname($value);
+                break;
+            case 3:
+                $this->setLastname($value);
+                break;
+            case 4:
+                $this->setEmail($value);
+                break;
+            case 5:
+                $this->setPhone($value);
+                break;
+            case 6:
+                $this->setJob($value);
+                break;
+            case 7:
+                $this->setPassword($value);
+                break;
+            case 8:
+                $this->setRegistrationDate($value);
+                break;
             case 9:
-                $this->setBilltoAddress($value);
+                $this->setRole($value);
                 break;
             case 10:
-                $this->setBilltoZipcode($value);
+                $this->setBilltoAddress($value);
                 break;
             case 11:
-                $this->setBilltoCity($value);
+                $this->setBilltoZipcode($value);
                 break;
             case 12:
-                $this->setShiptoAddress($value);
+                $this->setBilltoCity($value);
                 break;
             case 13:
-                $this->setShiptoZipcode($value);
+                $this->setShiptoAddress($value);
                 break;
             case 14:
+                $this->setShiptoZipcode($value);
+                break;
+            case 15:
                 $this->setShiptoCity($value);
                 break;
         } // switch()
@@ -1575,46 +1677,49 @@ abstract class Customers implements ActiveRecordInterface
             $this->setIdCustomer($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setFirstname($arr[$keys[1]]);
+            $this->setCompany($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setLastname($arr[$keys[2]]);
+            $this->setFirstname($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setEmail($arr[$keys[3]]);
+            $this->setLastname($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setPhone($arr[$keys[4]]);
+            $this->setEmail($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setPassword($arr[$keys[5]]);
+            $this->setPhone($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setRegistrationDate($arr[$keys[6]]);
+            $this->setJob($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setJob($arr[$keys[7]]);
+            $this->setPassword($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setCompany($arr[$keys[8]]);
+            $this->setRegistrationDate($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setBilltoAddress($arr[$keys[9]]);
+            $this->setRole($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setBilltoZipcode($arr[$keys[10]]);
+            $this->setBilltoAddress($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setBilltoCity($arr[$keys[11]]);
+            $this->setBilltoZipcode($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setShiptoAddress($arr[$keys[12]]);
+            $this->setBilltoCity($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setShiptoZipcode($arr[$keys[13]]);
+            $this->setShiptoAddress($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setShiptoCity($arr[$keys[14]]);
+            $this->setShiptoZipcode($arr[$keys[14]]);
+        }
+        if (array_key_exists($keys[15], $arr)) {
+            $this->setShiptoCity($arr[$keys[15]]);
         }
     }
 
@@ -1660,6 +1765,9 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_ID_CUSTOMER)) {
             $criteria->add(CustomersTableMap::COL_ID_CUSTOMER, $this->id_customer);
         }
+        if ($this->isColumnModified(CustomersTableMap::COL_COMPANY)) {
+            $criteria->add(CustomersTableMap::COL_COMPANY, $this->company);
+        }
         if ($this->isColumnModified(CustomersTableMap::COL_FIRSTNAME)) {
             $criteria->add(CustomersTableMap::COL_FIRSTNAME, $this->firstname);
         }
@@ -1672,17 +1780,17 @@ abstract class Customers implements ActiveRecordInterface
         if ($this->isColumnModified(CustomersTableMap::COL_PHONE)) {
             $criteria->add(CustomersTableMap::COL_PHONE, $this->phone);
         }
+        if ($this->isColumnModified(CustomersTableMap::COL_JOB)) {
+            $criteria->add(CustomersTableMap::COL_JOB, $this->job);
+        }
         if ($this->isColumnModified(CustomersTableMap::COL_PASSWORD)) {
             $criteria->add(CustomersTableMap::COL_PASSWORD, $this->password);
         }
         if ($this->isColumnModified(CustomersTableMap::COL_REGISTRATION_DATE)) {
             $criteria->add(CustomersTableMap::COL_REGISTRATION_DATE, $this->registration_date);
         }
-        if ($this->isColumnModified(CustomersTableMap::COL_JOB)) {
-            $criteria->add(CustomersTableMap::COL_JOB, $this->job);
-        }
-        if ($this->isColumnModified(CustomersTableMap::COL_COMPANY)) {
-            $criteria->add(CustomersTableMap::COL_COMPANY, $this->company);
+        if ($this->isColumnModified(CustomersTableMap::COL_ROLE)) {
+            $criteria->add(CustomersTableMap::COL_ROLE, $this->role);
         }
         if ($this->isColumnModified(CustomersTableMap::COL_BILLTO_ADDRESS)) {
             $criteria->add(CustomersTableMap::COL_BILLTO_ADDRESS, $this->billto_address);
@@ -1788,14 +1896,15 @@ abstract class Customers implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setCompany($this->getCompany());
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setLastname($this->getLastname());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPhone($this->getPhone());
+        $copyObj->setJob($this->getJob());
         $copyObj->setPassword($this->getPassword());
         $copyObj->setRegistrationDate($this->getRegistrationDate());
-        $copyObj->setJob($this->getJob());
-        $copyObj->setCompany($this->getCompany());
+        $copyObj->setRole($this->getRole());
         $copyObj->setBilltoAddress($this->getBilltoAddress());
         $copyObj->setBilltoZipcode($this->getBilltoZipcode());
         $copyObj->setBilltoCity($this->getBilltoCity());
@@ -1807,6 +1916,12 @@ abstract class Customers implements ActiveRecordInterface
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
+
+            foreach ($this->getHotlines() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addHotline($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getOrderss() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1855,10 +1970,264 @@ abstract class Customers implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Hotline' == $relationName) {
+            $this->initHotlines();
+            return;
+        }
         if ('Orders' == $relationName) {
             $this->initOrderss();
             return;
         }
+    }
+
+    /**
+     * Clears out the collHotlines collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addHotlines()
+     */
+    public function clearHotlines()
+    {
+        $this->collHotlines = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collHotlines collection loaded partially.
+     */
+    public function resetPartialHotlines($v = true)
+    {
+        $this->collHotlinesPartial = $v;
+    }
+
+    /**
+     * Initializes the collHotlines collection.
+     *
+     * By default this just sets the collHotlines collection to an empty array (like clearcollHotlines());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initHotlines($overrideExisting = true)
+    {
+        if (null !== $this->collHotlines && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = HotlineTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collHotlines = new $collectionClassName;
+        $this->collHotlines->setModel('\Model\Propel\Hotline');
+    }
+
+    /**
+     * Gets an array of ChildHotline objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCustomers is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildHotline[] List of ChildHotline objects
+     * @throws PropelException
+     */
+    public function getHotlines(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collHotlinesPartial && !$this->isNew();
+        if (null === $this->collHotlines || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collHotlines) {
+                // return empty collection
+                $this->initHotlines();
+            } else {
+                $collHotlines = ChildHotlineQuery::create(null, $criteria)
+                    ->filterByCustomers($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collHotlinesPartial && count($collHotlines)) {
+                        $this->initHotlines(false);
+
+                        foreach ($collHotlines as $obj) {
+                            if (false == $this->collHotlines->contains($obj)) {
+                                $this->collHotlines->append($obj);
+                            }
+                        }
+
+                        $this->collHotlinesPartial = true;
+                    }
+
+                    return $collHotlines;
+                }
+
+                if ($partial && $this->collHotlines) {
+                    foreach ($this->collHotlines as $obj) {
+                        if ($obj->isNew()) {
+                            $collHotlines[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collHotlines = $collHotlines;
+                $this->collHotlinesPartial = false;
+            }
+        }
+
+        return $this->collHotlines;
+    }
+
+    /**
+     * Sets a collection of ChildHotline objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $hotlines A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildCustomers The current object (for fluent API support)
+     */
+    public function setHotlines(Collection $hotlines, ConnectionInterface $con = null)
+    {
+        /** @var ChildHotline[] $hotlinesToDelete */
+        $hotlinesToDelete = $this->getHotlines(new Criteria(), $con)->diff($hotlines);
+
+
+        $this->hotlinesScheduledForDeletion = $hotlinesToDelete;
+
+        foreach ($hotlinesToDelete as $hotlineRemoved) {
+            $hotlineRemoved->setCustomers(null);
+        }
+
+        $this->collHotlines = null;
+        foreach ($hotlines as $hotline) {
+            $this->addHotline($hotline);
+        }
+
+        $this->collHotlines = $hotlines;
+        $this->collHotlinesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Hotline objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Hotline objects.
+     * @throws PropelException
+     */
+    public function countHotlines(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collHotlinesPartial && !$this->isNew();
+        if (null === $this->collHotlines || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collHotlines) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getHotlines());
+            }
+
+            $query = ChildHotlineQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCustomers($this)
+                ->count($con);
+        }
+
+        return count($this->collHotlines);
+    }
+
+    /**
+     * Method called to associate a ChildHotline object to this object
+     * through the ChildHotline foreign key attribute.
+     *
+     * @param  ChildHotline $l ChildHotline
+     * @return $this|\Model\Propel\Customers The current object (for fluent API support)
+     */
+    public function addHotline(ChildHotline $l)
+    {
+        if ($this->collHotlines === null) {
+            $this->initHotlines();
+            $this->collHotlinesPartial = true;
+        }
+
+        if (!$this->collHotlines->contains($l)) {
+            $this->doAddHotline($l);
+
+            if ($this->hotlinesScheduledForDeletion and $this->hotlinesScheduledForDeletion->contains($l)) {
+                $this->hotlinesScheduledForDeletion->remove($this->hotlinesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildHotline $hotline The ChildHotline object to add.
+     */
+    protected function doAddHotline(ChildHotline $hotline)
+    {
+        $this->collHotlines[]= $hotline;
+        $hotline->setCustomers($this);
+    }
+
+    /**
+     * @param  ChildHotline $hotline The ChildHotline object to remove.
+     * @return $this|ChildCustomers The current object (for fluent API support)
+     */
+    public function removeHotline(ChildHotline $hotline)
+    {
+        if ($this->getHotlines()->contains($hotline)) {
+            $pos = $this->collHotlines->search($hotline);
+            $this->collHotlines->remove($pos);
+            if (null === $this->hotlinesScheduledForDeletion) {
+                $this->hotlinesScheduledForDeletion = clone $this->collHotlines;
+                $this->hotlinesScheduledForDeletion->clear();
+            }
+            $this->hotlinesScheduledForDeletion[]= clone $hotline;
+            $hotline->setCustomers(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Customers is new, it will return
+     * an empty collection; or if this Customers has previously
+     * been saved, it will retrieve related Hotlines from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Customers.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildHotline[] List of ChildHotline objects
+     */
+    public function getHotlinesJoinEmployees(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildHotlineQuery::create(null, $criteria);
+        $query->joinWith('Employees', $joinBehavior);
+
+        return $this->getHotlines($query, $con);
     }
 
     /**
@@ -2144,14 +2513,15 @@ abstract class Customers implements ActiveRecordInterface
     public function clear()
     {
         $this->id_customer = null;
+        $this->company = null;
         $this->firstname = null;
         $this->lastname = null;
         $this->email = null;
         $this->phone = null;
+        $this->job = null;
         $this->password = null;
         $this->registration_date = null;
-        $this->job = null;
-        $this->company = null;
+        $this->role = null;
         $this->billto_address = null;
         $this->billto_zipcode = null;
         $this->billto_city = null;
@@ -2176,6 +2546,11 @@ abstract class Customers implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collHotlines) {
+                foreach ($this->collHotlines as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrderss) {
                 foreach ($this->collOrderss as $o) {
                     $o->clearAllReferences($deep);
@@ -2183,6 +2558,7 @@ abstract class Customers implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collHotlines = null;
         $this->collOrderss = null;
     }
 

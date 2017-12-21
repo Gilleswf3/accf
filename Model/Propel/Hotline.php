@@ -2,10 +2,10 @@
 
 namespace Model\Propel;
 
-use Model\Propel\Base\Content as BaseContent;
+use Model\Propel\Base\Hotline as BaseHotline;
 
 /**
- * Skeleton subclass for representing a row from the 'content' table.
+ * Skeleton subclass for representing a row from the 'hotline' table.
  *
  *
  *
@@ -14,7 +14,7 @@ use Model\Propel\Base\Content as BaseContent;
  * long as it does not already exist in the output directory.
  *
  */
-class Content extends BaseContent
+class Hotline extends BaseHotline
 {
 
 }

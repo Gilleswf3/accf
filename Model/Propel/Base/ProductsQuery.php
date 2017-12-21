@@ -21,22 +21,22 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildProductsQuery orderByIdProduct($order = Criteria::ASC) Order by the id_product column
- * @method     ChildProductsQuery orderByManufacturer($order = Criteria::ASC) Order by the manufacturer column
+ * @method     ChildProductsQuery orderByPicture($order = Criteria::ASC) Order by the picture column
  * @method     ChildProductsQuery orderByProductMainCategory($order = Criteria::ASC) Order by the product_main_category column
  * @method     ChildProductsQuery orderByProductSubCategory($order = Criteria::ASC) Order by the product_sub_category column
+ * @method     ChildProductsQuery orderByManufacturer($order = Criteria::ASC) Order by the manufacturer column
  * @method     ChildProductsQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildProductsQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     ChildProductsQuery orderByPicture($order = Criteria::ASC) Order by the picture column
  * @method     ChildProductsQuery orderByPriceVatExcluded($order = Criteria::ASC) Order by the price_vat_excluded column
  * @method     ChildProductsQuery orderByPriceVatIncluded($order = Criteria::ASC) Order by the price_vat_included column
  *
  * @method     ChildProductsQuery groupByIdProduct() Group by the id_product column
- * @method     ChildProductsQuery groupByManufacturer() Group by the manufacturer column
+ * @method     ChildProductsQuery groupByPicture() Group by the picture column
  * @method     ChildProductsQuery groupByProductMainCategory() Group by the product_main_category column
  * @method     ChildProductsQuery groupByProductSubCategory() Group by the product_sub_category column
+ * @method     ChildProductsQuery groupByManufacturer() Group by the manufacturer column
  * @method     ChildProductsQuery groupByTitle() Group by the title column
  * @method     ChildProductsQuery groupByDescription() Group by the description column
- * @method     ChildProductsQuery groupByPicture() Group by the picture column
  * @method     ChildProductsQuery groupByPriceVatExcluded() Group by the price_vat_excluded column
  * @method     ChildProductsQuery groupByPriceVatIncluded() Group by the price_vat_included column
  *
@@ -48,6 +48,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductsQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildProductsQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildProductsQuery leftJoinOrderdetails($relationAlias = null) Adds a LEFT JOIN clause to the query using the Orderdetails relation
+ * @method     ChildProductsQuery rightJoinOrderdetails($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Orderdetails relation
+ * @method     ChildProductsQuery innerJoinOrderdetails($relationAlias = null) Adds a INNER JOIN clause to the query using the Orderdetails relation
+ *
+ * @method     ChildProductsQuery joinWithOrderdetails($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Orderdetails relation
+ *
+ * @method     ChildProductsQuery leftJoinWithOrderdetails() Adds a LEFT JOIN clause and with to the query using the Orderdetails relation
+ * @method     ChildProductsQuery rightJoinWithOrderdetails() Adds a RIGHT JOIN clause and with to the query using the Orderdetails relation
+ * @method     ChildProductsQuery innerJoinWithOrderdetails() Adds a INNER JOIN clause and with to the query using the Orderdetails relation
+ *
  * @method     ChildProductsQuery leftJoinOrders($relationAlias = null) Adds a LEFT JOIN clause to the query using the Orders relation
  * @method     ChildProductsQuery rightJoinOrders($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Orders relation
  * @method     ChildProductsQuery innerJoinOrders($relationAlias = null) Adds a INNER JOIN clause to the query using the Orders relation
@@ -58,18 +68,18 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductsQuery rightJoinWithOrders() Adds a RIGHT JOIN clause and with to the query using the Orders relation
  * @method     ChildProductsQuery innerJoinWithOrders() Adds a INNER JOIN clause and with to the query using the Orders relation
  *
- * @method     \Model\Propel\OrdersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \Model\Propel\OrderdetailsQuery|\Model\Propel\OrdersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildProducts findOne(ConnectionInterface $con = null) Return the first ChildProducts matching the query
  * @method     ChildProducts findOneOrCreate(ConnectionInterface $con = null) Return the first ChildProducts matching the query, or a new ChildProducts object populated from the query conditions when no match is found
  *
  * @method     ChildProducts findOneByIdProduct(int $id_product) Return the first ChildProducts filtered by the id_product column
- * @method     ChildProducts findOneByManufacturer(string $manufacturer) Return the first ChildProducts filtered by the manufacturer column
+ * @method     ChildProducts findOneByPicture(string $picture) Return the first ChildProducts filtered by the picture column
  * @method     ChildProducts findOneByProductMainCategory(string $product_main_category) Return the first ChildProducts filtered by the product_main_category column
  * @method     ChildProducts findOneByProductSubCategory(string $product_sub_category) Return the first ChildProducts filtered by the product_sub_category column
+ * @method     ChildProducts findOneByManufacturer(string $manufacturer) Return the first ChildProducts filtered by the manufacturer column
  * @method     ChildProducts findOneByTitle(string $title) Return the first ChildProducts filtered by the title column
  * @method     ChildProducts findOneByDescription(string $description) Return the first ChildProducts filtered by the description column
- * @method     ChildProducts findOneByPicture(string $picture) Return the first ChildProducts filtered by the picture column
  * @method     ChildProducts findOneByPriceVatExcluded(double $price_vat_excluded) Return the first ChildProducts filtered by the price_vat_excluded column
  * @method     ChildProducts findOneByPriceVatIncluded(double $price_vat_included) Return the first ChildProducts filtered by the price_vat_included column *
 
@@ -77,23 +87,23 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProducts requireOne(ConnectionInterface $con = null) Return the first ChildProducts matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildProducts requireOneByIdProduct(int $id_product) Return the first ChildProducts filtered by the id_product column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProducts requireOneByManufacturer(string $manufacturer) Return the first ChildProducts filtered by the manufacturer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProducts requireOneByPicture(string $picture) Return the first ChildProducts filtered by the picture column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByProductMainCategory(string $product_main_category) Return the first ChildProducts filtered by the product_main_category column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByProductSubCategory(string $product_sub_category) Return the first ChildProducts filtered by the product_sub_category column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildProducts requireOneByManufacturer(string $manufacturer) Return the first ChildProducts filtered by the manufacturer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByTitle(string $title) Return the first ChildProducts filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByDescription(string $description) Return the first ChildProducts filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildProducts requireOneByPicture(string $picture) Return the first ChildProducts filtered by the picture column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByPriceVatExcluded(double $price_vat_excluded) Return the first ChildProducts filtered by the price_vat_excluded column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildProducts requireOneByPriceVatIncluded(double $price_vat_included) Return the first ChildProducts filtered by the price_vat_included column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildProducts[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildProducts objects based on current ModelCriteria
  * @method     ChildProducts[]|ObjectCollection findByIdProduct(int $id_product) Return ChildProducts objects filtered by the id_product column
- * @method     ChildProducts[]|ObjectCollection findByManufacturer(string $manufacturer) Return ChildProducts objects filtered by the manufacturer column
+ * @method     ChildProducts[]|ObjectCollection findByPicture(string $picture) Return ChildProducts objects filtered by the picture column
  * @method     ChildProducts[]|ObjectCollection findByProductMainCategory(string $product_main_category) Return ChildProducts objects filtered by the product_main_category column
  * @method     ChildProducts[]|ObjectCollection findByProductSubCategory(string $product_sub_category) Return ChildProducts objects filtered by the product_sub_category column
+ * @method     ChildProducts[]|ObjectCollection findByManufacturer(string $manufacturer) Return ChildProducts objects filtered by the manufacturer column
  * @method     ChildProducts[]|ObjectCollection findByTitle(string $title) Return ChildProducts objects filtered by the title column
  * @method     ChildProducts[]|ObjectCollection findByDescription(string $description) Return ChildProducts objects filtered by the description column
- * @method     ChildProducts[]|ObjectCollection findByPicture(string $picture) Return ChildProducts objects filtered by the picture column
  * @method     ChildProducts[]|ObjectCollection findByPriceVatExcluded(double $price_vat_excluded) Return ChildProducts objects filtered by the price_vat_excluded column
  * @method     ChildProducts[]|ObjectCollection findByPriceVatIncluded(double $price_vat_included) Return ChildProducts objects filtered by the price_vat_included column
  * @method     ChildProducts[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
@@ -194,7 +204,7 @@ abstract class ProductsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_product, manufacturer, product_main_category, product_sub_category, title, description, picture, price_vat_excluded, price_vat_included FROM products WHERE id_product = :p0';
+        $sql = 'SELECT id_product, picture, product_main_category, product_sub_category, manufacturer, title, description, price_vat_excluded, price_vat_included FROM products WHERE id_product = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -326,28 +336,28 @@ abstract class ProductsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the manufacturer column
+     * Filter the query on the picture column
      *
      * Example usage:
      * <code>
-     * $query->filterByManufacturer('fooValue');   // WHERE manufacturer = 'fooValue'
-     * $query->filterByManufacturer('%fooValue%', Criteria::LIKE); // WHERE manufacturer LIKE '%fooValue%'
+     * $query->filterByPicture('fooValue');   // WHERE picture = 'fooValue'
+     * $query->filterByPicture('%fooValue%', Criteria::LIKE); // WHERE picture LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $manufacturer The value to use as filter.
+     * @param     string $picture The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildProductsQuery The current query, for fluid interface
      */
-    public function filterByManufacturer($manufacturer = null, $comparison = null)
+    public function filterByPicture($picture = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($manufacturer)) {
+            if (is_array($picture)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(ProductsTableMap::COL_MANUFACTURER, $manufacturer, $comparison);
+        return $this->addUsingAlias(ProductsTableMap::COL_PICTURE, $picture, $comparison);
     }
 
     /**
@@ -401,6 +411,31 @@ abstract class ProductsQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the manufacturer column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByManufacturer('fooValue');   // WHERE manufacturer = 'fooValue'
+     * $query->filterByManufacturer('%fooValue%', Criteria::LIKE); // WHERE manufacturer LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $manufacturer The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildProductsQuery The current query, for fluid interface
+     */
+    public function filterByManufacturer($manufacturer = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($manufacturer)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductsTableMap::COL_MANUFACTURER, $manufacturer, $comparison);
+    }
+
+    /**
      * Filter the query on the title column
      *
      * Example usage:
@@ -448,31 +483,6 @@ abstract class ProductsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductsTableMap::COL_DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the picture column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPicture('fooValue');   // WHERE picture = 'fooValue'
-     * $query->filterByPicture('%fooValue%', Criteria::LIKE); // WHERE picture LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $picture The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildProductsQuery The current query, for fluid interface
-     */
-    public function filterByPicture($picture = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($picture)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProductsTableMap::COL_PICTURE, $picture, $comparison);
     }
 
     /**
@@ -555,6 +565,79 @@ abstract class ProductsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductsTableMap::COL_PRICE_VAT_INCLUDED, $priceVatIncluded, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Model\Propel\Orderdetails object
+     *
+     * @param \Model\Propel\Orderdetails|ObjectCollection $orderdetails the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductsQuery The current query, for fluid interface
+     */
+    public function filterByOrderdetails($orderdetails, $comparison = null)
+    {
+        if ($orderdetails instanceof \Model\Propel\Orderdetails) {
+            return $this
+                ->addUsingAlias(ProductsTableMap::COL_ID_PRODUCT, $orderdetails->getIdProduct(), $comparison);
+        } elseif ($orderdetails instanceof ObjectCollection) {
+            return $this
+                ->useOrderdetailsQuery()
+                ->filterByPrimaryKeys($orderdetails->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByOrderdetails() only accepts arguments of type \Model\Propel\Orderdetails or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Orderdetails relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildProductsQuery The current query, for fluid interface
+     */
+    public function joinOrderdetails($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Orderdetails');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Orderdetails');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Orderdetails relation Orderdetails object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Model\Propel\OrderdetailsQuery A secondary query class using the current class as primary query
+     */
+    public function useOrderdetailsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinOrderdetails($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Orderdetails', '\Model\Propel\OrderdetailsQuery');
     }
 
     /**

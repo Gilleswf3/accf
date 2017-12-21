@@ -4,10 +4,13 @@ namespace Model\Propel\Base;
 
 use \Exception;
 use \PDO;
+use Model\Propel\Orderdetails as ChildOrderdetails;
+use Model\Propel\OrderdetailsQuery as ChildOrderdetailsQuery;
 use Model\Propel\Orders as ChildOrders;
 use Model\Propel\OrdersQuery as ChildOrdersQuery;
 use Model\Propel\Products as ChildProducts;
 use Model\Propel\ProductsQuery as ChildProductsQuery;
+use Model\Propel\Map\OrderdetailsTableMap;
 use Model\Propel\Map\OrdersTableMap;
 use Model\Propel\Map\ProductsTableMap;
 use Propel\Runtime\Propel;
@@ -72,11 +75,11 @@ abstract class Products implements ActiveRecordInterface
     protected $id_product;
 
     /**
-     * The value for the manufacturer field.
+     * The value for the picture field.
      *
      * @var        string
      */
-    protected $manufacturer;
+    protected $picture;
 
     /**
      * The value for the product_main_category field.
@@ -93,6 +96,13 @@ abstract class Products implements ActiveRecordInterface
     protected $product_sub_category;
 
     /**
+     * The value for the manufacturer field.
+     *
+     * @var        string
+     */
+    protected $manufacturer;
+
+    /**
      * The value for the title field.
      *
      * @var        string
@@ -105,13 +115,6 @@ abstract class Products implements ActiveRecordInterface
      * @var        string
      */
     protected $description;
-
-    /**
-     * The value for the picture field.
-     *
-     * @var        string
-     */
-    protected $picture;
 
     /**
      * The value for the price_vat_excluded field.
@@ -128,6 +131,12 @@ abstract class Products implements ActiveRecordInterface
     protected $price_vat_included;
 
     /**
+     * @var        ObjectCollection|ChildOrderdetails[] Collection to store aggregation of ChildOrderdetails objects.
+     */
+    protected $collOrderdetailss;
+    protected $collOrderdetailssPartial;
+
+    /**
      * @var        ObjectCollection|ChildOrders[] Collection to store aggregation of ChildOrders objects.
      */
     protected $collOrderss;
@@ -140,6 +149,12 @@ abstract class Products implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildOrderdetails[]
+     */
+    protected $orderdetailssScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -383,13 +398,13 @@ abstract class Products implements ActiveRecordInterface
     }
 
     /**
-     * Get the [manufacturer] column value.
+     * Get the [picture] column value.
      *
      * @return string
      */
-    public function getManufacturer()
+    public function getPicture()
     {
-        return $this->manufacturer;
+        return $this->picture;
     }
 
     /**
@@ -413,6 +428,16 @@ abstract class Products implements ActiveRecordInterface
     }
 
     /**
+     * Get the [manufacturer] column value.
+     *
+     * @return string
+     */
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    /**
      * Get the [title] column value.
      *
      * @return string
@@ -430,16 +455,6 @@ abstract class Products implements ActiveRecordInterface
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Get the [picture] column value.
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
     }
 
     /**
@@ -483,24 +498,24 @@ abstract class Products implements ActiveRecordInterface
     } // setIdProduct()
 
     /**
-     * Set the value of [manufacturer] column.
+     * Set the value of [picture] column.
      *
      * @param string $v new value
      * @return $this|\Model\Propel\Products The current object (for fluent API support)
      */
-    public function setManufacturer($v)
+    public function setPicture($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->manufacturer !== $v) {
-            $this->manufacturer = $v;
-            $this->modifiedColumns[ProductsTableMap::COL_MANUFACTURER] = true;
+        if ($this->picture !== $v) {
+            $this->picture = $v;
+            $this->modifiedColumns[ProductsTableMap::COL_PICTURE] = true;
         }
 
         return $this;
-    } // setManufacturer()
+    } // setPicture()
 
     /**
      * Set the value of [product_main_category] column.
@@ -543,6 +558,26 @@ abstract class Products implements ActiveRecordInterface
     } // setProductSubCategory()
 
     /**
+     * Set the value of [manufacturer] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Products The current object (for fluent API support)
+     */
+    public function setManufacturer($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->manufacturer !== $v) {
+            $this->manufacturer = $v;
+            $this->modifiedColumns[ProductsTableMap::COL_MANUFACTURER] = true;
+        }
+
+        return $this;
+    } // setManufacturer()
+
+    /**
      * Set the value of [title] column.
      *
      * @param string $v new value
@@ -581,26 +616,6 @@ abstract class Products implements ActiveRecordInterface
 
         return $this;
     } // setDescription()
-
-    /**
-     * Set the value of [picture] column.
-     *
-     * @param string $v new value
-     * @return $this|\Model\Propel\Products The current object (for fluent API support)
-     */
-    public function setPicture($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->picture !== $v) {
-            $this->picture = $v;
-            $this->modifiedColumns[ProductsTableMap::COL_PICTURE] = true;
-        }
-
-        return $this;
-    } // setPicture()
 
     /**
      * Set the value of [price_vat_excluded] column.
@@ -681,8 +696,8 @@ abstract class Products implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ProductsTableMap::translateFieldName('IdProduct', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_product = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ProductsTableMap::translateFieldName('Manufacturer', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->manufacturer = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ProductsTableMap::translateFieldName('Picture', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->picture = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ProductsTableMap::translateFieldName('ProductMainCategory', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_main_category = (null !== $col) ? (string) $col : null;
@@ -690,14 +705,14 @@ abstract class Products implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ProductsTableMap::translateFieldName('ProductSubCategory', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_sub_category = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProductsTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProductsTableMap::translateFieldName('Manufacturer', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->manufacturer = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProductsTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProductsTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ProductsTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ProductsTableMap::translateFieldName('Picture', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->picture = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : ProductsTableMap::translateFieldName('PriceVatExcluded', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price_vat_excluded = (null !== $col) ? (double) $col : null;
@@ -772,6 +787,8 @@ abstract class Products implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collOrderdetailss = null;
 
             $this->collOrderss = null;
 
@@ -889,6 +906,23 @@ abstract class Products implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->orderdetailssScheduledForDeletion !== null) {
+                if (!$this->orderdetailssScheduledForDeletion->isEmpty()) {
+                    \Model\Propel\OrderdetailsQuery::create()
+                        ->filterByPrimaryKeys($this->orderdetailssScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->orderdetailssScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collOrderdetailss !== null) {
+                foreach ($this->collOrderdetailss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->orderssScheduledForDeletion !== null) {
                 if (!$this->orderssScheduledForDeletion->isEmpty()) {
                     foreach ($this->orderssScheduledForDeletion as $orders) {
@@ -936,8 +970,8 @@ abstract class Products implements ActiveRecordInterface
         if ($this->isColumnModified(ProductsTableMap::COL_ID_PRODUCT)) {
             $modifiedColumns[':p' . $index++]  = 'id_product';
         }
-        if ($this->isColumnModified(ProductsTableMap::COL_MANUFACTURER)) {
-            $modifiedColumns[':p' . $index++]  = 'manufacturer';
+        if ($this->isColumnModified(ProductsTableMap::COL_PICTURE)) {
+            $modifiedColumns[':p' . $index++]  = 'picture';
         }
         if ($this->isColumnModified(ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY)) {
             $modifiedColumns[':p' . $index++]  = 'product_main_category';
@@ -945,14 +979,14 @@ abstract class Products implements ActiveRecordInterface
         if ($this->isColumnModified(ProductsTableMap::COL_PRODUCT_SUB_CATEGORY)) {
             $modifiedColumns[':p' . $index++]  = 'product_sub_category';
         }
+        if ($this->isColumnModified(ProductsTableMap::COL_MANUFACTURER)) {
+            $modifiedColumns[':p' . $index++]  = 'manufacturer';
+        }
         if ($this->isColumnModified(ProductsTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'title';
         }
         if ($this->isColumnModified(ProductsTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = 'description';
-        }
-        if ($this->isColumnModified(ProductsTableMap::COL_PICTURE)) {
-            $modifiedColumns[':p' . $index++]  = 'picture';
         }
         if ($this->isColumnModified(ProductsTableMap::COL_PRICE_VAT_EXCLUDED)) {
             $modifiedColumns[':p' . $index++]  = 'price_vat_excluded';
@@ -974,8 +1008,8 @@ abstract class Products implements ActiveRecordInterface
                     case 'id_product':
                         $stmt->bindValue($identifier, $this->id_product, PDO::PARAM_INT);
                         break;
-                    case 'manufacturer':
-                        $stmt->bindValue($identifier, $this->manufacturer, PDO::PARAM_STR);
+                    case 'picture':
+                        $stmt->bindValue($identifier, $this->picture, PDO::PARAM_STR);
                         break;
                     case 'product_main_category':
                         $stmt->bindValue($identifier, $this->product_main_category, PDO::PARAM_STR);
@@ -983,14 +1017,14 @@ abstract class Products implements ActiveRecordInterface
                     case 'product_sub_category':
                         $stmt->bindValue($identifier, $this->product_sub_category, PDO::PARAM_STR);
                         break;
+                    case 'manufacturer':
+                        $stmt->bindValue($identifier, $this->manufacturer, PDO::PARAM_STR);
+                        break;
                     case 'title':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case 'picture':
-                        $stmt->bindValue($identifier, $this->picture, PDO::PARAM_STR);
                         break;
                     case 'price_vat_excluded':
                         $stmt->bindValue($identifier, $this->price_vat_excluded, PDO::PARAM_STR);
@@ -1064,7 +1098,7 @@ abstract class Products implements ActiveRecordInterface
                 return $this->getIdProduct();
                 break;
             case 1:
-                return $this->getManufacturer();
+                return $this->getPicture();
                 break;
             case 2:
                 return $this->getProductMainCategory();
@@ -1073,13 +1107,13 @@ abstract class Products implements ActiveRecordInterface
                 return $this->getProductSubCategory();
                 break;
             case 4:
-                return $this->getTitle();
+                return $this->getManufacturer();
                 break;
             case 5:
-                return $this->getDescription();
+                return $this->getTitle();
                 break;
             case 6:
-                return $this->getPicture();
+                return $this->getDescription();
                 break;
             case 7:
                 return $this->getPriceVatExcluded();
@@ -1118,12 +1152,12 @@ abstract class Products implements ActiveRecordInterface
         $keys = ProductsTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getIdProduct(),
-            $keys[1] => $this->getManufacturer(),
+            $keys[1] => $this->getPicture(),
             $keys[2] => $this->getProductMainCategory(),
             $keys[3] => $this->getProductSubCategory(),
-            $keys[4] => $this->getTitle(),
-            $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getPicture(),
+            $keys[4] => $this->getManufacturer(),
+            $keys[5] => $this->getTitle(),
+            $keys[6] => $this->getDescription(),
             $keys[7] => $this->getPriceVatExcluded(),
             $keys[8] => $this->getPriceVatIncluded(),
         );
@@ -1133,6 +1167,21 @@ abstract class Products implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collOrderdetailss) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'orderdetailss';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'orderdetailss';
+                        break;
+                    default:
+                        $key = 'Orderdetailss';
+                }
+
+                $result[$key] = $this->collOrderdetailss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collOrderss) {
 
                 switch ($keyType) {
@@ -1186,7 +1235,7 @@ abstract class Products implements ActiveRecordInterface
                 $this->setIdProduct($value);
                 break;
             case 1:
-                $this->setManufacturer($value);
+                $this->setPicture($value);
                 break;
             case 2:
                 $this->setProductMainCategory($value);
@@ -1195,13 +1244,13 @@ abstract class Products implements ActiveRecordInterface
                 $this->setProductSubCategory($value);
                 break;
             case 4:
-                $this->setTitle($value);
+                $this->setManufacturer($value);
                 break;
             case 5:
-                $this->setDescription($value);
+                $this->setTitle($value);
                 break;
             case 6:
-                $this->setPicture($value);
+                $this->setDescription($value);
                 break;
             case 7:
                 $this->setPriceVatExcluded($value);
@@ -1239,7 +1288,7 @@ abstract class Products implements ActiveRecordInterface
             $this->setIdProduct($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setManufacturer($arr[$keys[1]]);
+            $this->setPicture($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setProductMainCategory($arr[$keys[2]]);
@@ -1248,13 +1297,13 @@ abstract class Products implements ActiveRecordInterface
             $this->setProductSubCategory($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setTitle($arr[$keys[4]]);
+            $this->setManufacturer($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setDescription($arr[$keys[5]]);
+            $this->setTitle($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setPicture($arr[$keys[6]]);
+            $this->setDescription($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
             $this->setPriceVatExcluded($arr[$keys[7]]);
@@ -1306,8 +1355,8 @@ abstract class Products implements ActiveRecordInterface
         if ($this->isColumnModified(ProductsTableMap::COL_ID_PRODUCT)) {
             $criteria->add(ProductsTableMap::COL_ID_PRODUCT, $this->id_product);
         }
-        if ($this->isColumnModified(ProductsTableMap::COL_MANUFACTURER)) {
-            $criteria->add(ProductsTableMap::COL_MANUFACTURER, $this->manufacturer);
+        if ($this->isColumnModified(ProductsTableMap::COL_PICTURE)) {
+            $criteria->add(ProductsTableMap::COL_PICTURE, $this->picture);
         }
         if ($this->isColumnModified(ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY)) {
             $criteria->add(ProductsTableMap::COL_PRODUCT_MAIN_CATEGORY, $this->product_main_category);
@@ -1315,14 +1364,14 @@ abstract class Products implements ActiveRecordInterface
         if ($this->isColumnModified(ProductsTableMap::COL_PRODUCT_SUB_CATEGORY)) {
             $criteria->add(ProductsTableMap::COL_PRODUCT_SUB_CATEGORY, $this->product_sub_category);
         }
+        if ($this->isColumnModified(ProductsTableMap::COL_MANUFACTURER)) {
+            $criteria->add(ProductsTableMap::COL_MANUFACTURER, $this->manufacturer);
+        }
         if ($this->isColumnModified(ProductsTableMap::COL_TITLE)) {
             $criteria->add(ProductsTableMap::COL_TITLE, $this->title);
         }
         if ($this->isColumnModified(ProductsTableMap::COL_DESCRIPTION)) {
             $criteria->add(ProductsTableMap::COL_DESCRIPTION, $this->description);
-        }
-        if ($this->isColumnModified(ProductsTableMap::COL_PICTURE)) {
-            $criteria->add(ProductsTableMap::COL_PICTURE, $this->picture);
         }
         if ($this->isColumnModified(ProductsTableMap::COL_PRICE_VAT_EXCLUDED)) {
             $criteria->add(ProductsTableMap::COL_PRICE_VAT_EXCLUDED, $this->price_vat_excluded);
@@ -1416,12 +1465,12 @@ abstract class Products implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setManufacturer($this->getManufacturer());
+        $copyObj->setPicture($this->getPicture());
         $copyObj->setProductMainCategory($this->getProductMainCategory());
         $copyObj->setProductSubCategory($this->getProductSubCategory());
+        $copyObj->setManufacturer($this->getManufacturer());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setPicture($this->getPicture());
         $copyObj->setPriceVatExcluded($this->getPriceVatExcluded());
         $copyObj->setPriceVatIncluded($this->getPriceVatIncluded());
 
@@ -1429,6 +1478,12 @@ abstract class Products implements ActiveRecordInterface
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
+
+            foreach ($this->getOrderdetailss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addOrderdetails($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getOrderss() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1477,10 +1532,289 @@ abstract class Products implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Orderdetails' == $relationName) {
+            $this->initOrderdetailss();
+            return;
+        }
         if ('Orders' == $relationName) {
             $this->initOrderss();
             return;
         }
+    }
+
+    /**
+     * Clears out the collOrderdetailss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addOrderdetailss()
+     */
+    public function clearOrderdetailss()
+    {
+        $this->collOrderdetailss = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collOrderdetailss collection loaded partially.
+     */
+    public function resetPartialOrderdetailss($v = true)
+    {
+        $this->collOrderdetailssPartial = $v;
+    }
+
+    /**
+     * Initializes the collOrderdetailss collection.
+     *
+     * By default this just sets the collOrderdetailss collection to an empty array (like clearcollOrderdetailss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initOrderdetailss($overrideExisting = true)
+    {
+        if (null !== $this->collOrderdetailss && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = OrderdetailsTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collOrderdetailss = new $collectionClassName;
+        $this->collOrderdetailss->setModel('\Model\Propel\Orderdetails');
+    }
+
+    /**
+     * Gets an array of ChildOrderdetails objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildProducts is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
+     * @throws PropelException
+     */
+    public function getOrderdetailss(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderdetailssPartial && !$this->isNew();
+        if (null === $this->collOrderdetailss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collOrderdetailss) {
+                // return empty collection
+                $this->initOrderdetailss();
+            } else {
+                $collOrderdetailss = ChildOrderdetailsQuery::create(null, $criteria)
+                    ->filterByProducts($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collOrderdetailssPartial && count($collOrderdetailss)) {
+                        $this->initOrderdetailss(false);
+
+                        foreach ($collOrderdetailss as $obj) {
+                            if (false == $this->collOrderdetailss->contains($obj)) {
+                                $this->collOrderdetailss->append($obj);
+                            }
+                        }
+
+                        $this->collOrderdetailssPartial = true;
+                    }
+
+                    return $collOrderdetailss;
+                }
+
+                if ($partial && $this->collOrderdetailss) {
+                    foreach ($this->collOrderdetailss as $obj) {
+                        if ($obj->isNew()) {
+                            $collOrderdetailss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collOrderdetailss = $collOrderdetailss;
+                $this->collOrderdetailssPartial = false;
+            }
+        }
+
+        return $this->collOrderdetailss;
+    }
+
+    /**
+     * Sets a collection of ChildOrderdetails objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $orderdetailss A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildProducts The current object (for fluent API support)
+     */
+    public function setOrderdetailss(Collection $orderdetailss, ConnectionInterface $con = null)
+    {
+        /** @var ChildOrderdetails[] $orderdetailssToDelete */
+        $orderdetailssToDelete = $this->getOrderdetailss(new Criteria(), $con)->diff($orderdetailss);
+
+
+        $this->orderdetailssScheduledForDeletion = $orderdetailssToDelete;
+
+        foreach ($orderdetailssToDelete as $orderdetailsRemoved) {
+            $orderdetailsRemoved->setProducts(null);
+        }
+
+        $this->collOrderdetailss = null;
+        foreach ($orderdetailss as $orderdetails) {
+            $this->addOrderdetails($orderdetails);
+        }
+
+        $this->collOrderdetailss = $orderdetailss;
+        $this->collOrderdetailssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Orderdetails objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Orderdetails objects.
+     * @throws PropelException
+     */
+    public function countOrderdetailss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderdetailssPartial && !$this->isNew();
+        if (null === $this->collOrderdetailss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collOrderdetailss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getOrderdetailss());
+            }
+
+            $query = ChildOrderdetailsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProducts($this)
+                ->count($con);
+        }
+
+        return count($this->collOrderdetailss);
+    }
+
+    /**
+     * Method called to associate a ChildOrderdetails object to this object
+     * through the ChildOrderdetails foreign key attribute.
+     *
+     * @param  ChildOrderdetails $l ChildOrderdetails
+     * @return $this|\Model\Propel\Products The current object (for fluent API support)
+     */
+    public function addOrderdetails(ChildOrderdetails $l)
+    {
+        if ($this->collOrderdetailss === null) {
+            $this->initOrderdetailss();
+            $this->collOrderdetailssPartial = true;
+        }
+
+        if (!$this->collOrderdetailss->contains($l)) {
+            $this->doAddOrderdetails($l);
+
+            if ($this->orderdetailssScheduledForDeletion and $this->orderdetailssScheduledForDeletion->contains($l)) {
+                $this->orderdetailssScheduledForDeletion->remove($this->orderdetailssScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildOrderdetails $orderdetails The ChildOrderdetails object to add.
+     */
+    protected function doAddOrderdetails(ChildOrderdetails $orderdetails)
+    {
+        $this->collOrderdetailss[]= $orderdetails;
+        $orderdetails->setProducts($this);
+    }
+
+    /**
+     * @param  ChildOrderdetails $orderdetails The ChildOrderdetails object to remove.
+     * @return $this|ChildProducts The current object (for fluent API support)
+     */
+    public function removeOrderdetails(ChildOrderdetails $orderdetails)
+    {
+        if ($this->getOrderdetailss()->contains($orderdetails)) {
+            $pos = $this->collOrderdetailss->search($orderdetails);
+            $this->collOrderdetailss->remove($pos);
+            if (null === $this->orderdetailssScheduledForDeletion) {
+                $this->orderdetailssScheduledForDeletion = clone $this->collOrderdetailss;
+                $this->orderdetailssScheduledForDeletion->clear();
+            }
+            $this->orderdetailssScheduledForDeletion[]= clone $orderdetails;
+            $orderdetails->setProducts(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Products is new, it will return
+     * an empty collection; or if this Products has previously
+     * been saved, it will retrieve related Orderdetailss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Products.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
+     */
+    public function getOrderdetailssJoinOrders(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderdetailsQuery::create(null, $criteria);
+        $query->joinWith('Orders', $joinBehavior);
+
+        return $this->getOrderdetailss($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Products is new, it will return
+     * an empty collection; or if this Products has previously
+     * been saved, it will retrieve related Orderdetailss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Products.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
+     */
+    public function getOrderdetailssJoinServices(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderdetailsQuery::create(null, $criteria);
+        $query->joinWith('Services', $joinBehavior);
+
+        return $this->getOrderdetailss($query, $con);
     }
 
     /**
@@ -1766,12 +2100,12 @@ abstract class Products implements ActiveRecordInterface
     public function clear()
     {
         $this->id_product = null;
-        $this->manufacturer = null;
+        $this->picture = null;
         $this->product_main_category = null;
         $this->product_sub_category = null;
+        $this->manufacturer = null;
         $this->title = null;
         $this->description = null;
-        $this->picture = null;
         $this->price_vat_excluded = null;
         $this->price_vat_included = null;
         $this->alreadyInSave = false;
@@ -1792,6 +2126,11 @@ abstract class Products implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collOrderdetailss) {
+                foreach ($this->collOrderdetailss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrderss) {
                 foreach ($this->collOrderss as $o) {
                     $o->clearAllReferences($deep);
@@ -1799,6 +2138,7 @@ abstract class Products implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collOrderdetailss = null;
         $this->collOrderss = null;
     }
 

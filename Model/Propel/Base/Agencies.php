@@ -95,7 +95,7 @@ abstract class Agencies implements ActiveRecordInterface
     /**
      * The value for the area field.
      *
-     * @var        string
+     * @var        int
      */
     protected $area;
 
@@ -387,7 +387,7 @@ abstract class Agencies implements ActiveRecordInterface
     /**
      * Get the [area] column value.
      *
-     * @return string
+     * @return int
      */
     public function getArea()
     {
@@ -477,13 +477,13 @@ abstract class Agencies implements ActiveRecordInterface
     /**
      * Set the value of [area] column.
      *
-     * @param string $v new value
+     * @param int $v new value
      * @return $this|\Model\Propel\Agencies The current object (for fluent API support)
      */
     public function setArea($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
         if ($this->area !== $v) {
@@ -543,7 +543,7 @@ abstract class Agencies implements ActiveRecordInterface
             $this->city = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AgenciesTableMap::translateFieldName('Area', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->area = (null !== $col) ? (string) $col : null;
+            $this->area = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -811,7 +811,7 @@ abstract class Agencies implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->city, PDO::PARAM_STR);
                         break;
                     case 'area':
-                        $stmt->bindValue($identifier, $this->area, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->area, PDO::PARAM_INT);
                         break;
                 }
             }

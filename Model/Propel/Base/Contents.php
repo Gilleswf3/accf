@@ -4,8 +4,10 @@ namespace Model\Propel\Base;
 
 use \Exception;
 use \PDO;
-use Model\Propel\ContentQuery as ChildContentQuery;
-use Model\Propel\Map\ContentTableMap;
+use Model\Propel\ContentsQuery as ChildContentsQuery;
+use Model\Propel\Employees as ChildEmployees;
+use Model\Propel\EmployeesQuery as ChildEmployeesQuery;
+use Model\Propel\Map\ContentsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -19,18 +21,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'content' table.
+ * Base class that represents a row from the 'contents' table.
  *
  *
  *
  * @package    propel.generator.Model.Propel.Base
  */
-abstract class Content implements ActiveRecordInterface
+abstract class Contents implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Model\\Propel\\Map\\ContentTableMap';
+    const TABLE_MAP = '\\Model\\Propel\\Map\\ContentsTableMap';
 
 
     /**
@@ -67,25 +69,44 @@ abstract class Content implements ActiveRecordInterface
     protected $id_content;
 
     /**
-     * The value for the picture_content field.
+     * The value for the picture field.
      *
      * @var        string
      */
-    protected $picture_content;
+    protected $picture;
 
     /**
-     * The value for the content_title field.
+     * The value for the title field.
      *
      * @var        string
      */
-    protected $content_title;
+    protected $title;
 
     /**
-     * The value for the content_text field.
+     * The value for the subtitle field.
      *
      * @var        string
      */
-    protected $content_text;
+    protected $subtitle;
+
+    /**
+     * The value for the text field.
+     *
+     * @var        string
+     */
+    protected $text;
+
+    /**
+     * The value for the id_employee field.
+     *
+     * @var        int
+     */
+    protected $id_employee;
+
+    /**
+     * @var        ChildEmployees
+     */
+    protected $aEmployees;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -96,7 +117,7 @@ abstract class Content implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Model\Propel\Base\Content object.
+     * Initializes internal state of Model\Propel\Base\Contents object.
      */
     public function __construct()
     {
@@ -191,9 +212,9 @@ abstract class Content implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Content</code> instance.  If
-     * <code>obj</code> is an instance of <code>Content</code>, delegates to
-     * <code>equals(Content)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Contents</code> instance.  If
+     * <code>obj</code> is an instance of <code>Contents</code>, delegates to
+     * <code>equals(Contents)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -259,7 +280,7 @@ abstract class Content implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Content The current object, for fluid interface
+     * @return $this|Contents The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -331,40 +352,60 @@ abstract class Content implements ActiveRecordInterface
     }
 
     /**
-     * Get the [picture_content] column value.
+     * Get the [picture] column value.
      *
      * @return string
      */
-    public function getPictureContent()
+    public function getPicture()
     {
-        return $this->picture_content;
+        return $this->picture;
     }
 
     /**
-     * Get the [content_title] column value.
+     * Get the [title] column value.
      *
      * @return string
      */
-    public function getContentTitle()
+    public function getTitle()
     {
-        return $this->content_title;
+        return $this->title;
     }
 
     /**
-     * Get the [content_text] column value.
+     * Get the [subtitle] column value.
      *
      * @return string
      */
-    public function getContentText()
+    public function getSubtitle()
     {
-        return $this->content_text;
+        return $this->subtitle;
+    }
+
+    /**
+     * Get the [text] column value.
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Get the [id_employee] column value.
+     *
+     * @return int
+     */
+    public function getIdEmployee()
+    {
+        return $this->id_employee;
     }
 
     /**
      * Set the value of [id_content] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Content The current object (for fluent API support)
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
      */
     public function setIdContent($v)
     {
@@ -374,71 +415,115 @@ abstract class Content implements ActiveRecordInterface
 
         if ($this->id_content !== $v) {
             $this->id_content = $v;
-            $this->modifiedColumns[ContentTableMap::COL_ID_CONTENT] = true;
+            $this->modifiedColumns[ContentsTableMap::COL_ID_CONTENT] = true;
         }
 
         return $this;
     } // setIdContent()
 
     /**
-     * Set the value of [picture_content] column.
+     * Set the value of [picture] column.
      *
      * @param string $v new value
-     * @return $this|\Model\Propel\Content The current object (for fluent API support)
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
      */
-    public function setPictureContent($v)
+    public function setPicture($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->picture_content !== $v) {
-            $this->picture_content = $v;
-            $this->modifiedColumns[ContentTableMap::COL_PICTURE_CONTENT] = true;
+        if ($this->picture !== $v) {
+            $this->picture = $v;
+            $this->modifiedColumns[ContentsTableMap::COL_PICTURE] = true;
         }
 
         return $this;
-    } // setPictureContent()
+    } // setPicture()
 
     /**
-     * Set the value of [content_title] column.
+     * Set the value of [title] column.
      *
      * @param string $v new value
-     * @return $this|\Model\Propel\Content The current object (for fluent API support)
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
      */
-    public function setContentTitle($v)
+    public function setTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->content_title !== $v) {
-            $this->content_title = $v;
-            $this->modifiedColumns[ContentTableMap::COL_CONTENT_TITLE] = true;
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[ContentsTableMap::COL_TITLE] = true;
         }
 
         return $this;
-    } // setContentTitle()
+    } // setTitle()
 
     /**
-     * Set the value of [content_text] column.
+     * Set the value of [subtitle] column.
      *
      * @param string $v new value
-     * @return $this|\Model\Propel\Content The current object (for fluent API support)
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
      */
-    public function setContentText($v)
+    public function setSubtitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->content_text !== $v) {
-            $this->content_text = $v;
-            $this->modifiedColumns[ContentTableMap::COL_CONTENT_TEXT] = true;
+        if ($this->subtitle !== $v) {
+            $this->subtitle = $v;
+            $this->modifiedColumns[ContentsTableMap::COL_SUBTITLE] = true;
         }
 
         return $this;
-    } // setContentText()
+    } // setSubtitle()
+
+    /**
+     * Set the value of [text] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
+     */
+    public function setText($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->text !== $v) {
+            $this->text = $v;
+            $this->modifiedColumns[ContentsTableMap::COL_TEXT] = true;
+        }
+
+        return $this;
+    } // setText()
+
+    /**
+     * Set the value of [id_employee] column.
+     *
+     * @param int $v new value
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
+     */
+    public function setIdEmployee($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_employee !== $v) {
+            $this->id_employee = $v;
+            $this->modifiedColumns[ContentsTableMap::COL_ID_EMPLOYEE] = true;
+        }
+
+        if ($this->aEmployees !== null && $this->aEmployees->getIdEmployee() !== $v) {
+            $this->aEmployees = null;
+        }
+
+        return $this;
+    } // setIdEmployee()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -476,17 +561,23 @@ abstract class Content implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ContentTableMap::translateFieldName('IdContent', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ContentsTableMap::translateFieldName('IdContent', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_content = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ContentTableMap::translateFieldName('PictureContent', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->picture_content = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ContentsTableMap::translateFieldName('Picture', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->picture = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ContentTableMap::translateFieldName('ContentTitle', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->content_title = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ContentsTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ContentTableMap::translateFieldName('ContentText', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->content_text = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ContentsTableMap::translateFieldName('Subtitle', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->subtitle = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ContentsTableMap::translateFieldName('Text', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->text = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ContentsTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_employee = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -495,10 +586,10 @@ abstract class Content implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = ContentTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = ContentsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Content'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Contents'), 0, $e);
         }
     }
 
@@ -517,6 +608,9 @@ abstract class Content implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aEmployees !== null && $this->id_employee !== $this->aEmployees->getIdEmployee()) {
+            $this->aEmployees = null;
+        }
     } // ensureConsistency
 
     /**
@@ -540,13 +634,13 @@ abstract class Content implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ContentTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(ContentsTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildContentQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildContentsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -556,6 +650,7 @@ abstract class Content implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aEmployees = null;
         } // if (deep)
     }
 
@@ -565,8 +660,8 @@ abstract class Content implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Content::setDeleted()
-     * @see Content::isDeleted()
+     * @see Contents::setDeleted()
+     * @see Contents::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -575,11 +670,11 @@ abstract class Content implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ContentTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ContentsTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildContentQuery::create()
+            $deleteQuery = ChildContentsQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -614,7 +709,7 @@ abstract class Content implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ContentTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ContentsTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -633,7 +728,7 @@ abstract class Content implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ContentTableMap::addInstanceToPool($this);
+                ContentsTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -658,6 +753,18 @@ abstract class Content implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aEmployees !== null) {
+                if ($this->aEmployees->isModified() || $this->aEmployees->isNew()) {
+                    $affectedRows += $this->aEmployees->save($con);
+                }
+                $this->setEmployees($this->aEmployees);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -690,27 +797,33 @@ abstract class Content implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ContentTableMap::COL_ID_CONTENT] = true;
+        $this->modifiedColumns[ContentsTableMap::COL_ID_CONTENT] = true;
         if (null !== $this->id_content) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ContentTableMap::COL_ID_CONTENT . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ContentsTableMap::COL_ID_CONTENT . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ContentTableMap::COL_ID_CONTENT)) {
+        if ($this->isColumnModified(ContentsTableMap::COL_ID_CONTENT)) {
             $modifiedColumns[':p' . $index++]  = 'id_content';
         }
-        if ($this->isColumnModified(ContentTableMap::COL_PICTURE_CONTENT)) {
-            $modifiedColumns[':p' . $index++]  = 'picture_content';
+        if ($this->isColumnModified(ContentsTableMap::COL_PICTURE)) {
+            $modifiedColumns[':p' . $index++]  = 'picture';
         }
-        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'content_title';
+        if ($this->isColumnModified(ContentsTableMap::COL_TITLE)) {
+            $modifiedColumns[':p' . $index++]  = 'title';
         }
-        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TEXT)) {
-            $modifiedColumns[':p' . $index++]  = 'content_text';
+        if ($this->isColumnModified(ContentsTableMap::COL_SUBTITLE)) {
+            $modifiedColumns[':p' . $index++]  = 'subtitle';
+        }
+        if ($this->isColumnModified(ContentsTableMap::COL_TEXT)) {
+            $modifiedColumns[':p' . $index++]  = 'text';
+        }
+        if ($this->isColumnModified(ContentsTableMap::COL_ID_EMPLOYEE)) {
+            $modifiedColumns[':p' . $index++]  = 'id_employee';
         }
 
         $sql = sprintf(
-            'INSERT INTO content (%s) VALUES (%s)',
+            'INSERT INTO contents (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -722,14 +835,20 @@ abstract class Content implements ActiveRecordInterface
                     case 'id_content':
                         $stmt->bindValue($identifier, $this->id_content, PDO::PARAM_INT);
                         break;
-                    case 'picture_content':
-                        $stmt->bindValue($identifier, $this->picture_content, PDO::PARAM_STR);
+                    case 'picture':
+                        $stmt->bindValue($identifier, $this->picture, PDO::PARAM_STR);
                         break;
-                    case 'content_title':
-                        $stmt->bindValue($identifier, $this->content_title, PDO::PARAM_STR);
+                    case 'title':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'content_text':
-                        $stmt->bindValue($identifier, $this->content_text, PDO::PARAM_STR);
+                    case 'subtitle':
+                        $stmt->bindValue($identifier, $this->subtitle, PDO::PARAM_STR);
+                        break;
+                    case 'text':
+                        $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
+                        break;
+                    case 'id_employee':
+                        $stmt->bindValue($identifier, $this->id_employee, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -777,7 +896,7 @@ abstract class Content implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ContentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = ContentsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -797,13 +916,19 @@ abstract class Content implements ActiveRecordInterface
                 return $this->getIdContent();
                 break;
             case 1:
-                return $this->getPictureContent();
+                return $this->getPicture();
                 break;
             case 2:
-                return $this->getContentTitle();
+                return $this->getTitle();
                 break;
             case 3:
-                return $this->getContentText();
+                return $this->getSubtitle();
+                break;
+            case 4:
+                return $this->getText();
+                break;
+            case 5:
+                return $this->getIdEmployee();
                 break;
             default:
                 return null;
@@ -822,28 +947,48 @@ abstract class Content implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Content'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Contents'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Content'][$this->hashCode()] = true;
-        $keys = ContentTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Contents'][$this->hashCode()] = true;
+        $keys = ContentsTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getIdContent(),
-            $keys[1] => $this->getPictureContent(),
-            $keys[2] => $this->getContentTitle(),
-            $keys[3] => $this->getContentText(),
+            $keys[1] => $this->getPicture(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getSubtitle(),
+            $keys[4] => $this->getText(),
+            $keys[5] => $this->getIdEmployee(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aEmployees) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'employees';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'employees';
+                        break;
+                    default:
+                        $key = 'Employees';
+                }
+
+                $result[$key] = $this->aEmployees->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -857,11 +1002,11 @@ abstract class Content implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Model\Propel\Content
+     * @return $this|\Model\Propel\Contents
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ContentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = ContentsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -872,7 +1017,7 @@ abstract class Content implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Model\Propel\Content
+     * @return $this|\Model\Propel\Contents
      */
     public function setByPosition($pos, $value)
     {
@@ -881,13 +1026,19 @@ abstract class Content implements ActiveRecordInterface
                 $this->setIdContent($value);
                 break;
             case 1:
-                $this->setPictureContent($value);
+                $this->setPicture($value);
                 break;
             case 2:
-                $this->setContentTitle($value);
+                $this->setTitle($value);
                 break;
             case 3:
-                $this->setContentText($value);
+                $this->setSubtitle($value);
+                break;
+            case 4:
+                $this->setText($value);
+                break;
+            case 5:
+                $this->setIdEmployee($value);
                 break;
         } // switch()
 
@@ -913,19 +1064,25 @@ abstract class Content implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ContentTableMap::getFieldNames($keyType);
+        $keys = ContentsTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setIdContent($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setPictureContent($arr[$keys[1]]);
+            $this->setPicture($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setContentTitle($arr[$keys[2]]);
+            $this->setTitle($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setContentText($arr[$keys[3]]);
+            $this->setSubtitle($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setText($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setIdEmployee($arr[$keys[5]]);
         }
     }
 
@@ -946,7 +1103,7 @@ abstract class Content implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Model\Propel\Content The current object, for fluid interface
+     * @return $this|\Model\Propel\Contents The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -966,19 +1123,25 @@ abstract class Content implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ContentTableMap::DATABASE_NAME);
+        $criteria = new Criteria(ContentsTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ContentTableMap::COL_ID_CONTENT)) {
-            $criteria->add(ContentTableMap::COL_ID_CONTENT, $this->id_content);
+        if ($this->isColumnModified(ContentsTableMap::COL_ID_CONTENT)) {
+            $criteria->add(ContentsTableMap::COL_ID_CONTENT, $this->id_content);
         }
-        if ($this->isColumnModified(ContentTableMap::COL_PICTURE_CONTENT)) {
-            $criteria->add(ContentTableMap::COL_PICTURE_CONTENT, $this->picture_content);
+        if ($this->isColumnModified(ContentsTableMap::COL_PICTURE)) {
+            $criteria->add(ContentsTableMap::COL_PICTURE, $this->picture);
         }
-        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TITLE)) {
-            $criteria->add(ContentTableMap::COL_CONTENT_TITLE, $this->content_title);
+        if ($this->isColumnModified(ContentsTableMap::COL_TITLE)) {
+            $criteria->add(ContentsTableMap::COL_TITLE, $this->title);
         }
-        if ($this->isColumnModified(ContentTableMap::COL_CONTENT_TEXT)) {
-            $criteria->add(ContentTableMap::COL_CONTENT_TEXT, $this->content_text);
+        if ($this->isColumnModified(ContentsTableMap::COL_SUBTITLE)) {
+            $criteria->add(ContentsTableMap::COL_SUBTITLE, $this->subtitle);
+        }
+        if ($this->isColumnModified(ContentsTableMap::COL_TEXT)) {
+            $criteria->add(ContentsTableMap::COL_TEXT, $this->text);
+        }
+        if ($this->isColumnModified(ContentsTableMap::COL_ID_EMPLOYEE)) {
+            $criteria->add(ContentsTableMap::COL_ID_EMPLOYEE, $this->id_employee);
         }
 
         return $criteria;
@@ -996,8 +1159,8 @@ abstract class Content implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildContentQuery::create();
-        $criteria->add(ContentTableMap::COL_ID_CONTENT, $this->id_content);
+        $criteria = ChildContentsQuery::create();
+        $criteria->add(ContentsTableMap::COL_ID_CONTENT, $this->id_content);
 
         return $criteria;
     }
@@ -1059,16 +1222,18 @@ abstract class Content implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Model\Propel\Content (or compatible) type.
+     * @param      object $copyObj An object of \Model\Propel\Contents (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setPictureContent($this->getPictureContent());
-        $copyObj->setContentTitle($this->getContentTitle());
-        $copyObj->setContentText($this->getContentText());
+        $copyObj->setPicture($this->getPicture());
+        $copyObj->setTitle($this->getTitle());
+        $copyObj->setSubtitle($this->getSubtitle());
+        $copyObj->setText($this->getText());
+        $copyObj->setIdEmployee($this->getIdEmployee());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdContent(NULL); // this is a auto-increment column, so set to default value
@@ -1084,7 +1249,7 @@ abstract class Content implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Model\Propel\Content Clone of current object.
+     * @return \Model\Propel\Contents Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1098,16 +1263,72 @@ abstract class Content implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildEmployees object.
+     *
+     * @param  ChildEmployees $v
+     * @return $this|\Model\Propel\Contents The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEmployees(ChildEmployees $v = null)
+    {
+        if ($v === null) {
+            $this->setIdEmployee(NULL);
+        } else {
+            $this->setIdEmployee($v->getIdEmployee());
+        }
+
+        $this->aEmployees = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildEmployees object, it will not be re-added.
+        if ($v !== null) {
+            $v->addContents($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildEmployees object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildEmployees The associated ChildEmployees object.
+     * @throws PropelException
+     */
+    public function getEmployees(ConnectionInterface $con = null)
+    {
+        if ($this->aEmployees === null && ($this->id_employee != 0)) {
+            $this->aEmployees = ChildEmployeesQuery::create()->findPk($this->id_employee, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEmployees->addContentss($this);
+             */
+        }
+
+        return $this->aEmployees;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aEmployees) {
+            $this->aEmployees->removeContents($this);
+        }
         $this->id_content = null;
-        $this->picture_content = null;
-        $this->content_title = null;
-        $this->content_text = null;
+        $this->picture = null;
+        $this->title = null;
+        $this->subtitle = null;
+        $this->text = null;
+        $this->id_employee = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1128,6 +1349,7 @@ abstract class Content implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aEmployees = null;
     }
 
     /**
@@ -1137,7 +1359,7 @@ abstract class Content implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ContentTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(ContentsTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

@@ -4,10 +4,14 @@ namespace Model\Propel\Base;
 
 use \Exception;
 use \PDO;
-use Model\Propel\Employees as ChildEmployees;
-use Model\Propel\EmployeesQuery as ChildEmployeesQuery;
-use Model\Propel\StandardsQuery as ChildStandardsQuery;
-use Model\Propel\Map\StandardsTableMap;
+use Model\Propel\OrderdetailsQuery as ChildOrderdetailsQuery;
+use Model\Propel\Orders as ChildOrders;
+use Model\Propel\OrdersQuery as ChildOrdersQuery;
+use Model\Propel\Products as ChildProducts;
+use Model\Propel\ProductsQuery as ChildProductsQuery;
+use Model\Propel\Services as ChildServices;
+use Model\Propel\ServicesQuery as ChildServicesQuery;
+use Model\Propel\Map\OrderdetailsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,18 +25,18 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
 /**
- * Base class that represents a row from the 'standards' table.
+ * Base class that represents a row from the 'orderdetails' table.
  *
  *
  *
  * @package    propel.generator.Model.Propel.Base
  */
-abstract class Standards implements ActiveRecordInterface
+abstract class Orderdetails implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Model\\Propel\\Map\\StandardsTableMap';
+    const TABLE_MAP = '\\Model\\Propel\\Map\\OrderdetailsTableMap';
 
 
     /**
@@ -62,44 +66,75 @@ abstract class Standards implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id_standard field.
+     * The value for the id_order_details field.
      *
      * @var        int
      */
-    protected $id_standard;
+    protected $id_order_details;
 
     /**
-     * The value for the title field.
-     *
-     * @var        string
-     */
-    protected $title;
-
-    /**
-     * The value for the subtitle field.
-     *
-     * @var        string
-     */
-    protected $subtitle;
-
-    /**
-     * The value for the description field.
-     *
-     * @var        string
-     */
-    protected $description;
-
-    /**
-     * The value for the id_employee field.
+     * The value for the id_order field.
      *
      * @var        int
      */
-    protected $id_employee;
+    protected $id_order;
 
     /**
-     * @var        ChildEmployees
+     * The value for the id_product field.
+     *
+     * @var        int
      */
-    protected $aEmployees;
+    protected $id_product;
+
+    /**
+     * The value for the product_unit_price field.
+     *
+     * @var        double
+     */
+    protected $product_unit_price;
+
+    /**
+     * The value for the product_quantity field.
+     *
+     * @var        int
+     */
+    protected $product_quantity;
+
+    /**
+     * The value for the id_service field.
+     *
+     * @var        int
+     */
+    protected $id_service;
+
+    /**
+     * The value for the service_unit_price field.
+     *
+     * @var        double
+     */
+    protected $service_unit_price;
+
+    /**
+     * The value for the service_quantity field.
+     *
+     * @var        int
+     */
+    protected $service_quantity;
+
+    /**
+     * @var        ChildOrders
+     */
+    protected $aOrders;
+
+    /**
+     * @var        ChildProducts
+     */
+    protected $aProducts;
+
+    /**
+     * @var        ChildServices
+     */
+    protected $aServices;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -110,7 +145,7 @@ abstract class Standards implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Model\Propel\Base\Standards object.
+     * Initializes internal state of Model\Propel\Base\Orderdetails object.
      */
     public function __construct()
     {
@@ -205,9 +240,9 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Standards</code> instance.  If
-     * <code>obj</code> is an instance of <code>Standards</code>, delegates to
-     * <code>equals(Standards)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Orderdetails</code> instance.  If
+     * <code>obj</code> is an instance of <code>Orderdetails</code>, delegates to
+     * <code>equals(Orderdetails)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -273,7 +308,7 @@ abstract class Standards implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Standards The current object, for fluid interface
+     * @return $this|Orderdetails The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -335,158 +370,256 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id_standard] column value.
+     * Get the [id_order_details] column value.
      *
      * @return int
      */
-    public function getIdStandard()
+    public function getIdOrderDetails()
     {
-        return $this->id_standard;
+        return $this->id_order_details;
     }
 
     /**
-     * Get the [title] column value.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Get the [subtitle] column value.
-     *
-     * @return string
-     */
-    public function getSubtitle()
-    {
-        return $this->subtitle;
-    }
-
-    /**
-     * Get the [description] column value.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Get the [id_employee] column value.
+     * Get the [id_order] column value.
      *
      * @return int
      */
-    public function getIdEmployee()
+    public function getIdOrder()
     {
-        return $this->id_employee;
+        return $this->id_order;
     }
 
     /**
-     * Set the value of [id_standard] column.
+     * Get the [id_product] column value.
+     *
+     * @return int
+     */
+    public function getIdProduct()
+    {
+        return $this->id_product;
+    }
+
+    /**
+     * Get the [product_unit_price] column value.
+     *
+     * @return double
+     */
+    public function getProductUnitPrice()
+    {
+        return $this->product_unit_price;
+    }
+
+    /**
+     * Get the [product_quantity] column value.
+     *
+     * @return int
+     */
+    public function getProductQuantity()
+    {
+        return $this->product_quantity;
+    }
+
+    /**
+     * Get the [id_service] column value.
+     *
+     * @return int
+     */
+    public function getIdService()
+    {
+        return $this->id_service;
+    }
+
+    /**
+     * Get the [service_unit_price] column value.
+     *
+     * @return double
+     */
+    public function getServiceUnitPrice()
+    {
+        return $this->service_unit_price;
+    }
+
+    /**
+     * Get the [service_quantity] column value.
+     *
+     * @return int
+     */
+    public function getServiceQuantity()
+    {
+        return $this->service_quantity;
+    }
+
+    /**
+     * Set the value of [id_order_details] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
      */
-    public function setIdStandard($v)
+    public function setIdOrderDetails($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_standard !== $v) {
-            $this->id_standard = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_ID_STANDARD] = true;
+        if ($this->id_order_details !== $v) {
+            $this->id_order_details = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_ID_ORDER_DETAILS] = true;
         }
 
         return $this;
-    } // setIdStandard()
+    } // setIdOrderDetails()
 
     /**
-     * Set the value of [title] column.
-     *
-     * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
-     */
-    public function setTitle($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_TITLE] = true;
-        }
-
-        return $this;
-    } // setTitle()
-
-    /**
-     * Set the value of [subtitle] column.
-     *
-     * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
-     */
-    public function setSubtitle($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->subtitle !== $v) {
-            $this->subtitle = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_SUBTITLE] = true;
-        }
-
-        return $this;
-    } // setSubtitle()
-
-    /**
-     * Set the value of [description] column.
-     *
-     * @param string $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
-     */
-    public function setDescription($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_DESCRIPTION] = true;
-        }
-
-        return $this;
-    } // setDescription()
-
-    /**
-     * Set the value of [id_employee] column.
+     * Set the value of [id_order] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
      */
-    public function setIdEmployee($v)
+    public function setIdOrder($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_employee !== $v) {
-            $this->id_employee = $v;
-            $this->modifiedColumns[StandardsTableMap::COL_ID_EMPLOYEE] = true;
+        if ($this->id_order !== $v) {
+            $this->id_order = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_ID_ORDER] = true;
         }
 
-        if ($this->aEmployees !== null && $this->aEmployees->getIdEmployee() !== $v) {
-            $this->aEmployees = null;
+        if ($this->aOrders !== null && $this->aOrders->getIdOrder() !== $v) {
+            $this->aOrders = null;
         }
 
         return $this;
-    } // setIdEmployee()
+    } // setIdOrder()
+
+    /**
+     * Set the value of [id_product] column.
+     *
+     * @param int $v new value
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     */
+    public function setIdProduct($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_product !== $v) {
+            $this->id_product = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_ID_PRODUCT] = true;
+        }
+
+        if ($this->aProducts !== null && $this->aProducts->getIdProduct() !== $v) {
+            $this->aProducts = null;
+        }
+
+        return $this;
+    } // setIdProduct()
+
+    /**
+     * Set the value of [product_unit_price] column.
+     *
+     * @param double $v new value
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     */
+    public function setProductUnitPrice($v)
+    {
+        if ($v !== null) {
+            $v = (double) $v;
+        }
+
+        if ($this->product_unit_price !== $v) {
+            $this->product_unit_price = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE] = true;
+        }
+
+        return $this;
+    } // setProductUnitPrice()
+
+    /**
+     * Set the value of [product_quantity] column.
+     *
+     * @param int $v new value
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     */
+    public function setProductQuantity($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->product_quantity !== $v) {
+            $this->product_quantity = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_PRODUCT_QUANTITY] = true;
+        }
+
+        return $this;
+    } // setProductQuantity()
+
+    /**
+     * Set the value of [id_service] column.
+     *
+     * @param int $v new value
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     */
+    public function setIdService($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_service !== $v) {
+            $this->id_service = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_ID_SERVICE] = true;
+        }
+
+        if ($this->aServices !== null && $this->aServices->getIdService() !== $v) {
+            $this->aServices = null;
+        }
+
+        return $this;
+    } // setIdService()
+
+    /**
+     * Set the value of [service_unit_price] column.
+     *
+     * @param double $v new value
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     */
+    public function setServiceUnitPrice($v)
+    {
+        if ($v !== null) {
+            $v = (double) $v;
+        }
+
+        if ($this->service_unit_price !== $v) {
+            $this->service_unit_price = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE] = true;
+        }
+
+        return $this;
+    } // setServiceUnitPrice()
+
+    /**
+     * Set the value of [service_quantity] column.
+     *
+     * @param int $v new value
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     */
+    public function setServiceQuantity($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->service_quantity !== $v) {
+            $this->service_quantity = $v;
+            $this->modifiedColumns[OrderdetailsTableMap::COL_SERVICE_QUANTITY] = true;
+        }
+
+        return $this;
+    } // setServiceQuantity()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -524,20 +657,29 @@ abstract class Standards implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StandardsTableMap::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_standard = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : OrderdetailsTableMap::translateFieldName('IdOrderDetails', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_order_details = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StandardsTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->title = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : OrderdetailsTableMap::translateFieldName('IdOrder', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_order = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : StandardsTableMap::translateFieldName('Subtitle', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->subtitle = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : OrderdetailsTableMap::translateFieldName('IdProduct', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_product = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : StandardsTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrderdetailsTableMap::translateFieldName('ProductUnitPrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->product_unit_price = (null !== $col) ? (double) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : StandardsTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_employee = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : OrderdetailsTableMap::translateFieldName('ProductQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->product_quantity = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : OrderdetailsTableMap::translateFieldName('IdService', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_service = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : OrderdetailsTableMap::translateFieldName('ServiceUnitPrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->service_unit_price = (null !== $col) ? (double) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : OrderdetailsTableMap::translateFieldName('ServiceQuantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->service_quantity = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -546,10 +688,10 @@ abstract class Standards implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = StandardsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = OrderdetailsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Standards'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Orderdetails'), 0, $e);
         }
     }
 
@@ -568,8 +710,14 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aEmployees !== null && $this->id_employee !== $this->aEmployees->getIdEmployee()) {
-            $this->aEmployees = null;
+        if ($this->aOrders !== null && $this->id_order !== $this->aOrders->getIdOrder()) {
+            $this->aOrders = null;
+        }
+        if ($this->aProducts !== null && $this->id_product !== $this->aProducts->getIdProduct()) {
+            $this->aProducts = null;
+        }
+        if ($this->aServices !== null && $this->id_service !== $this->aServices->getIdService()) {
+            $this->aServices = null;
         }
     } // ensureConsistency
 
@@ -594,13 +742,13 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(OrderdetailsTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildStandardsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildOrderdetailsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -610,7 +758,9 @@ abstract class Standards implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aEmployees = null;
+            $this->aOrders = null;
+            $this->aProducts = null;
+            $this->aServices = null;
         } // if (deep)
     }
 
@@ -620,8 +770,8 @@ abstract class Standards implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Standards::setDeleted()
-     * @see Standards::isDeleted()
+     * @see Orderdetails::setDeleted()
+     * @see Orderdetails::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -630,11 +780,11 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderdetailsTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildStandardsQuery::create()
+            $deleteQuery = ChildOrderdetailsQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -669,7 +819,7 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderdetailsTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -688,7 +838,7 @@ abstract class Standards implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                StandardsTableMap::addInstanceToPool($this);
+                OrderdetailsTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -719,11 +869,25 @@ abstract class Standards implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aEmployees !== null) {
-                if ($this->aEmployees->isModified() || $this->aEmployees->isNew()) {
-                    $affectedRows += $this->aEmployees->save($con);
+            if ($this->aOrders !== null) {
+                if ($this->aOrders->isModified() || $this->aOrders->isNew()) {
+                    $affectedRows += $this->aOrders->save($con);
                 }
-                $this->setEmployees($this->aEmployees);
+                $this->setOrders($this->aOrders);
+            }
+
+            if ($this->aProducts !== null) {
+                if ($this->aProducts->isModified() || $this->aProducts->isNew()) {
+                    $affectedRows += $this->aProducts->save($con);
+                }
+                $this->setProducts($this->aProducts);
+            }
+
+            if ($this->aServices !== null) {
+                if ($this->aServices->isModified() || $this->aServices->isNew()) {
+                    $affectedRows += $this->aServices->save($con);
+                }
+                $this->setServices($this->aServices);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -757,30 +921,35 @@ abstract class Standards implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[StandardsTableMap::COL_ID_STANDARD] = true;
-        if (null !== $this->id_standard) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . StandardsTableMap::COL_ID_STANDARD . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_STANDARD)) {
-            $modifiedColumns[':p' . $index++]  = 'id_standard';
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_ORDER_DETAILS)) {
+            $modifiedColumns[':p' . $index++]  = 'id_order_details';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'title';
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_ORDER)) {
+            $modifiedColumns[':p' . $index++]  = 'id_order';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_SUBTITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'subtitle';
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_PRODUCT)) {
+            $modifiedColumns[':p' . $index++]  = 'id_product';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE)) {
+            $modifiedColumns[':p' . $index++]  = 'product_unit_price';
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_EMPLOYEE)) {
-            $modifiedColumns[':p' . $index++]  = 'id_employee';
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_PRODUCT_QUANTITY)) {
+            $modifiedColumns[':p' . $index++]  = 'product_quantity';
+        }
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_SERVICE)) {
+            $modifiedColumns[':p' . $index++]  = 'id_service';
+        }
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE)) {
+            $modifiedColumns[':p' . $index++]  = 'service_unit_price';
+        }
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_SERVICE_QUANTITY)) {
+            $modifiedColumns[':p' . $index++]  = 'service_quantity';
         }
 
         $sql = sprintf(
-            'INSERT INTO standards (%s) VALUES (%s)',
+            'INSERT INTO orderdetails (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -789,20 +958,29 @@ abstract class Standards implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id_standard':
-                        $stmt->bindValue($identifier, $this->id_standard, PDO::PARAM_INT);
+                    case 'id_order_details':
+                        $stmt->bindValue($identifier, $this->id_order_details, PDO::PARAM_INT);
                         break;
-                    case 'title':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                    case 'id_order':
+                        $stmt->bindValue($identifier, $this->id_order, PDO::PARAM_INT);
                         break;
-                    case 'subtitle':
-                        $stmt->bindValue($identifier, $this->subtitle, PDO::PARAM_STR);
+                    case 'id_product':
+                        $stmt->bindValue($identifier, $this->id_product, PDO::PARAM_INT);
                         break;
-                    case 'description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case 'product_unit_price':
+                        $stmt->bindValue($identifier, $this->product_unit_price, PDO::PARAM_STR);
                         break;
-                    case 'id_employee':
-                        $stmt->bindValue($identifier, $this->id_employee, PDO::PARAM_INT);
+                    case 'product_quantity':
+                        $stmt->bindValue($identifier, $this->product_quantity, PDO::PARAM_INT);
+                        break;
+                    case 'id_service':
+                        $stmt->bindValue($identifier, $this->id_service, PDO::PARAM_INT);
+                        break;
+                    case 'service_unit_price':
+                        $stmt->bindValue($identifier, $this->service_unit_price, PDO::PARAM_STR);
+                        break;
+                    case 'service_quantity':
+                        $stmt->bindValue($identifier, $this->service_quantity, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -811,13 +989,6 @@ abstract class Standards implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', 0, $e);
-        }
-        $this->setIdStandard($pk);
 
         $this->setNew(false);
     }
@@ -850,7 +1021,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = StandardsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = OrderdetailsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -867,19 +1038,28 @@ abstract class Standards implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getIdStandard();
+                return $this->getIdOrderDetails();
                 break;
             case 1:
-                return $this->getTitle();
+                return $this->getIdOrder();
                 break;
             case 2:
-                return $this->getSubtitle();
+                return $this->getIdProduct();
                 break;
             case 3:
-                return $this->getDescription();
+                return $this->getProductUnitPrice();
                 break;
             case 4:
-                return $this->getIdEmployee();
+                return $this->getProductQuantity();
+                break;
+            case 5:
+                return $this->getIdService();
+                break;
+            case 6:
+                return $this->getServiceUnitPrice();
+                break;
+            case 7:
+                return $this->getServiceQuantity();
                 break;
             default:
                 return null;
@@ -905,17 +1085,20 @@ abstract class Standards implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Standards'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Orderdetails'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Standards'][$this->hashCode()] = true;
-        $keys = StandardsTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Orderdetails'][$this->hashCode()] = true;
+        $keys = OrderdetailsTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdStandard(),
-            $keys[1] => $this->getTitle(),
-            $keys[2] => $this->getSubtitle(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getIdEmployee(),
+            $keys[0] => $this->getIdOrderDetails(),
+            $keys[1] => $this->getIdOrder(),
+            $keys[2] => $this->getIdProduct(),
+            $keys[3] => $this->getProductUnitPrice(),
+            $keys[4] => $this->getProductQuantity(),
+            $keys[5] => $this->getIdService(),
+            $keys[6] => $this->getServiceUnitPrice(),
+            $keys[7] => $this->getServiceQuantity(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -923,20 +1106,50 @@ abstract class Standards implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aEmployees) {
+            if (null !== $this->aOrders) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'employees';
+                        $key = 'orders';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'employees';
+                        $key = 'orders';
                         break;
                     default:
-                        $key = 'Employees';
+                        $key = 'Orders';
                 }
 
-                $result[$key] = $this->aEmployees->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aOrders->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProducts) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'products';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'products';
+                        break;
+                    default:
+                        $key = 'Products';
+                }
+
+                $result[$key] = $this->aProducts->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aServices) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'services';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'services';
+                        break;
+                    default:
+                        $key = 'Services';
+                }
+
+                $result[$key] = $this->aServices->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -952,11 +1165,11 @@ abstract class Standards implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Model\Propel\Standards
+     * @return $this|\Model\Propel\Orderdetails
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = StandardsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = OrderdetailsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -967,25 +1180,34 @@ abstract class Standards implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Model\Propel\Standards
+     * @return $this|\Model\Propel\Orderdetails
      */
     public function setByPosition($pos, $value)
     {
         switch ($pos) {
             case 0:
-                $this->setIdStandard($value);
+                $this->setIdOrderDetails($value);
                 break;
             case 1:
-                $this->setTitle($value);
+                $this->setIdOrder($value);
                 break;
             case 2:
-                $this->setSubtitle($value);
+                $this->setIdProduct($value);
                 break;
             case 3:
-                $this->setDescription($value);
+                $this->setProductUnitPrice($value);
                 break;
             case 4:
-                $this->setIdEmployee($value);
+                $this->setProductQuantity($value);
+                break;
+            case 5:
+                $this->setIdService($value);
+                break;
+            case 6:
+                $this->setServiceUnitPrice($value);
+                break;
+            case 7:
+                $this->setServiceQuantity($value);
                 break;
         } // switch()
 
@@ -1011,22 +1233,31 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = StandardsTableMap::getFieldNames($keyType);
+        $keys = OrderdetailsTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setIdStandard($arr[$keys[0]]);
+            $this->setIdOrderDetails($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTitle($arr[$keys[1]]);
+            $this->setIdOrder($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setSubtitle($arr[$keys[2]]);
+            $this->setIdProduct($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDescription($arr[$keys[3]]);
+            $this->setProductUnitPrice($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setIdEmployee($arr[$keys[4]]);
+            $this->setProductQuantity($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setIdService($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setServiceUnitPrice($arr[$keys[6]]);
+        }
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setServiceQuantity($arr[$keys[7]]);
         }
     }
 
@@ -1047,7 +1278,7 @@ abstract class Standards implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Model\Propel\Standards The current object, for fluid interface
+     * @return $this|\Model\Propel\Orderdetails The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1067,22 +1298,31 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(StandardsTableMap::DATABASE_NAME);
+        $criteria = new Criteria(OrderdetailsTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_STANDARD)) {
-            $criteria->add(StandardsTableMap::COL_ID_STANDARD, $this->id_standard);
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_ORDER_DETAILS)) {
+            $criteria->add(OrderdetailsTableMap::COL_ID_ORDER_DETAILS, $this->id_order_details);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_TITLE)) {
-            $criteria->add(StandardsTableMap::COL_TITLE, $this->title);
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_ORDER)) {
+            $criteria->add(OrderdetailsTableMap::COL_ID_ORDER, $this->id_order);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_SUBTITLE)) {
-            $criteria->add(StandardsTableMap::COL_SUBTITLE, $this->subtitle);
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_PRODUCT)) {
+            $criteria->add(OrderdetailsTableMap::COL_ID_PRODUCT, $this->id_product);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_DESCRIPTION)) {
-            $criteria->add(StandardsTableMap::COL_DESCRIPTION, $this->description);
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE)) {
+            $criteria->add(OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE, $this->product_unit_price);
         }
-        if ($this->isColumnModified(StandardsTableMap::COL_ID_EMPLOYEE)) {
-            $criteria->add(StandardsTableMap::COL_ID_EMPLOYEE, $this->id_employee);
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_PRODUCT_QUANTITY)) {
+            $criteria->add(OrderdetailsTableMap::COL_PRODUCT_QUANTITY, $this->product_quantity);
+        }
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_ID_SERVICE)) {
+            $criteria->add(OrderdetailsTableMap::COL_ID_SERVICE, $this->id_service);
+        }
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE)) {
+            $criteria->add(OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE, $this->service_unit_price);
+        }
+        if ($this->isColumnModified(OrderdetailsTableMap::COL_SERVICE_QUANTITY)) {
+            $criteria->add(OrderdetailsTableMap::COL_SERVICE_QUANTITY, $this->service_quantity);
         }
 
         return $criteria;
@@ -1100,8 +1340,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildStandardsQuery::create();
-        $criteria->add(StandardsTableMap::COL_ID_STANDARD, $this->id_standard);
+        throw new LogicException('The Orderdetails object has no primary key');
 
         return $criteria;
     }
@@ -1114,7 +1353,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getIdStandard();
+        $validPk = false;
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1129,23 +1368,27 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns NULL since this table doesn't have a primary key.
+     * This method exists only for BC and is deprecated!
+     * @return null
      */
     public function getPrimaryKey()
     {
-        return $this->getIdStandard();
+        return null;
     }
 
     /**
-     * Generic method to set the primary key (id_standard column).
+     * Dummy primary key setter.
      *
-     * @param       int $key Primary key.
-     * @return void
+     * This function only exists to preserve backwards compatibility.  It is no longer
+     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
+     * release of Propel.
+     *
+     * @deprecated
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($pk)
     {
-        $this->setIdStandard($key);
+        // do nothing, because this object doesn't have any primary keys
     }
 
     /**
@@ -1154,7 +1397,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getIdStandard();
+        return ;
     }
 
     /**
@@ -1163,20 +1406,23 @@ abstract class Standards implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Model\Propel\Standards (or compatible) type.
+     * @param      object $copyObj An object of \Model\Propel\Orderdetails (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTitle($this->getTitle());
-        $copyObj->setSubtitle($this->getSubtitle());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setIdEmployee($this->getIdEmployee());
+        $copyObj->setIdOrderDetails($this->getIdOrderDetails());
+        $copyObj->setIdOrder($this->getIdOrder());
+        $copyObj->setIdProduct($this->getIdProduct());
+        $copyObj->setProductUnitPrice($this->getProductUnitPrice());
+        $copyObj->setProductQuantity($this->getProductQuantity());
+        $copyObj->setIdService($this->getIdService());
+        $copyObj->setServiceUnitPrice($this->getServiceUnitPrice());
+        $copyObj->setServiceQuantity($this->getServiceQuantity());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdStandard(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1189,7 +1435,7 @@ abstract class Standards implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Model\Propel\Standards Clone of current object.
+     * @return \Model\Propel\Orderdetails Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1203,26 +1449,26 @@ abstract class Standards implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildEmployees object.
+     * Declares an association between this object and a ChildOrders object.
      *
-     * @param  ChildEmployees $v
-     * @return $this|\Model\Propel\Standards The current object (for fluent API support)
+     * @param  ChildOrders $v
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setEmployees(ChildEmployees $v = null)
+    public function setOrders(ChildOrders $v = null)
     {
         if ($v === null) {
-            $this->setIdEmployee(NULL);
+            $this->setIdOrder(NULL);
         } else {
-            $this->setIdEmployee($v->getIdEmployee());
+            $this->setIdOrder($v->getIdOrder());
         }
 
-        $this->aEmployees = $v;
+        $this->aOrders = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildEmployees object, it will not be re-added.
+        // If this object has already been added to the ChildOrders object, it will not be re-added.
         if ($v !== null) {
-            $v->addStandards($this);
+            $v->addOrderdetails($this);
         }
 
 
@@ -1231,26 +1477,128 @@ abstract class Standards implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildEmployees object
+     * Get the associated ChildOrders object
      *
      * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildEmployees The associated ChildEmployees object.
+     * @return ChildOrders The associated ChildOrders object.
      * @throws PropelException
      */
-    public function getEmployees(ConnectionInterface $con = null)
+    public function getOrders(ConnectionInterface $con = null)
     {
-        if ($this->aEmployees === null && ($this->id_employee != 0)) {
-            $this->aEmployees = ChildEmployeesQuery::create()->findPk($this->id_employee, $con);
+        if ($this->aOrders === null && ($this->id_order != 0)) {
+            $this->aOrders = ChildOrdersQuery::create()->findPk($this->id_order, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aEmployees->addStandardss($this);
+                $this->aOrders->addOrderdetailss($this);
              */
         }
 
-        return $this->aEmployees;
+        return $this->aOrders;
+    }
+
+    /**
+     * Declares an association between this object and a ChildProducts object.
+     *
+     * @param  ChildProducts $v
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProducts(ChildProducts $v = null)
+    {
+        if ($v === null) {
+            $this->setIdProduct(NULL);
+        } else {
+            $this->setIdProduct($v->getIdProduct());
+        }
+
+        $this->aProducts = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildProducts object, it will not be re-added.
+        if ($v !== null) {
+            $v->addOrderdetails($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildProducts object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildProducts The associated ChildProducts object.
+     * @throws PropelException
+     */
+    public function getProducts(ConnectionInterface $con = null)
+    {
+        if ($this->aProducts === null && ($this->id_product != 0)) {
+            $this->aProducts = ChildProductsQuery::create()->findPk($this->id_product, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProducts->addOrderdetailss($this);
+             */
+        }
+
+        return $this->aProducts;
+    }
+
+    /**
+     * Declares an association between this object and a ChildServices object.
+     *
+     * @param  ChildServices $v
+     * @return $this|\Model\Propel\Orderdetails The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setServices(ChildServices $v = null)
+    {
+        if ($v === null) {
+            $this->setIdService(NULL);
+        } else {
+            $this->setIdService($v->getIdService());
+        }
+
+        $this->aServices = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildServices object, it will not be re-added.
+        if ($v !== null) {
+            $v->addOrderdetails($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildServices object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildServices The associated ChildServices object.
+     * @throws PropelException
+     */
+    public function getServices(ConnectionInterface $con = null)
+    {
+        if ($this->aServices === null && ($this->id_service != 0)) {
+            $this->aServices = ChildServicesQuery::create()->findPk($this->id_service, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aServices->addOrderdetailss($this);
+             */
+        }
+
+        return $this->aServices;
     }
 
     /**
@@ -1260,14 +1608,23 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aEmployees) {
-            $this->aEmployees->removeStandards($this);
+        if (null !== $this->aOrders) {
+            $this->aOrders->removeOrderdetails($this);
         }
-        $this->id_standard = null;
-        $this->title = null;
-        $this->subtitle = null;
-        $this->description = null;
-        $this->id_employee = null;
+        if (null !== $this->aProducts) {
+            $this->aProducts->removeOrderdetails($this);
+        }
+        if (null !== $this->aServices) {
+            $this->aServices->removeOrderdetails($this);
+        }
+        $this->id_order_details = null;
+        $this->id_order = null;
+        $this->id_product = null;
+        $this->product_unit_price = null;
+        $this->product_quantity = null;
+        $this->id_service = null;
+        $this->service_unit_price = null;
+        $this->service_quantity = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1288,7 +1645,9 @@ abstract class Standards implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aEmployees = null;
+        $this->aOrders = null;
+        $this->aProducts = null;
+        $this->aServices = null;
     }
 
     /**
@@ -1298,7 +1657,7 @@ abstract class Standards implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(StandardsTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(OrderdetailsTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

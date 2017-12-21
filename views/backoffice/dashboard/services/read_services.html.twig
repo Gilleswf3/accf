@@ -1,8 +1,5 @@
-
 {# empty Twig template #}
 {% extends "backoffice/layout.html.twig" %}
-
-
     
 {% block content %}
 
@@ -13,47 +10,30 @@
 
             <h2 class="w3-margin w3-teal">Afficher les services</h2>
         
-            <tr>
-                
-                 <th>Titre</th>
+            <tr>                
+                <th>Titre</th>
                 <th>Description</th>
                 <th>Prix HT</th>
                 <th>Prix TVA</th>             
-                <th> Suppression </th>
-                <th> Modification </th>
+                <th>Suppression</th>
+                <th>Modification</th>
             </tr>
 
             {% for service in services %}
-
-                
-                
             <tr>
-               
-               
-               
-            
-                   <td>{{ service.title}}</td>
-          
+                <td>{{ service.title}}</td>          
                 <td>{{ service.description }}</td>
-                <td>{{ service.priceVatExcluded }}</td>
-                <td>{{ service.priceVatIncluded }}</td>
+                <td>{{ service.priceVatExcluded|number_format(2, ',', ' ') }}</td>
+                <td>{{ service.priceVatIncluded|number_format(2, ',', ' ') }}</td>
                 <td>
-                    <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('suppress_services', { id: service.idService }) }}" role="button" >  Supprimer </a>
-                   
+                    <a href="{{ path('suppress_services', { id: service.idService }) }}">Supprimer</a>
                 </td>
                 <td>
-                <a style = "color: #900; border: 2px solid #900; font-weight: bold;" href="{{ path('editer_services', { id: service.idService }) }}" role="button" >  Modifier </a>
+                    <a href="{{ path('editer_services', { id: service.idService }) }}">Modifier</a>
                 </td>
-               
+
             </tr>
-
-            {% endfor %}
-           
-        </table>
-          
-   
-
-                
+            {% endfor %}           
+        </table>                
     </div>
-    
 {% endblock %}

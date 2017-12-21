@@ -7,6 +7,8 @@
 
 
         <link rel="stylesheet" href="{{ asset('backoffice/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('backoffice/filtre_produits.css') }}">
+        
         <link rel="stylesheet" href="/var/www/html/accf/backoffice/Assets/style.css">
 
         <meta charset = "utf-8">
@@ -76,14 +78,14 @@
                 <button class="w3-block w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des publications</button>
                     <div class="accordionContent">
                         <a href="{{ path('editer_publication') }}" class="w3-block w3-button w3-small">Ajouter une publication</a>
-                        <a href="{{ path('afficher_publication') }}" class="w3-block w3-button w3-small">Afficher une publication</a>
+                        <a href="{{ path('afficher_publication') }}" class="w3-block w3-button w3-small">Afficher les publications</a>
 {#                        <a href="{{ path('supprimer_publication') }}" class="w3-block w3-button w3-small">Supprimer une publication</a>#}
                     </div>
                
                 <button class="w3-block w3-border-bottom w3-border-top w3-border-white w3-button w3-text-white accordion">Gestion des services</button>
                 <div class="accordionContent">
                     <a href="{{ path('editer_services') }}" class="w3-block w3-button w3-small">Ajouter un service</a>
-                     <a href="{{ path('read_services') }}" class="w3-block w3-button w3-small">Afficher un service</a>
+                     <a href="{{ path('read_services') }}" class="w3-block w3-button w3-small">Afficher les services</a>
 {#                    <a href="{{ path('delete_services') }}" class="w3-block w3-button w3-small">Supprimer un service</a>#}
                 </div>
             </nav>
@@ -100,7 +102,9 @@
         </footer>
 
     <script src="{{ asset('backoffice/script.js') }}"></script>
-{#    <script src="/var/www/html/accf/backoffice/Assets/script.js"></script>#}
+    <script src="{{ asset('backoffice/filtre_produits.js') }}"></script>
+
+    {#    <script src="/var/www/html/accf/backoffice/Assets/script.js"></script>#}
 
     </body>
 

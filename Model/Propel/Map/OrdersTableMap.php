@@ -179,6 +179,13 @@ class OrdersTableMap extends TableMap
     1 => ':id_service',
   ),
 ), null, null, null, false);
+        $this->addRelation('Orderdetails', '\\Model\\Propel\\Orderdetails', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':id_order',
+    1 => ':id_order',
+  ),
+), null, null, 'Orderdetailss', false);
     } // buildRelations()
 
     /**

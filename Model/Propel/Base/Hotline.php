@@ -2,48 +2,39 @@
 
 namespace Model\Propel\Base;
 
-use \DateTime;
 use \Exception;
 use \PDO;
 use Model\Propel\Customers as ChildCustomers;
 use Model\Propel\CustomersQuery as ChildCustomersQuery;
-use Model\Propel\Orderdetails as ChildOrderdetails;
-use Model\Propel\OrderdetailsQuery as ChildOrderdetailsQuery;
-use Model\Propel\Orders as ChildOrders;
-use Model\Propel\OrdersQuery as ChildOrdersQuery;
-use Model\Propel\Products as ChildProducts;
-use Model\Propel\ProductsQuery as ChildProductsQuery;
-use Model\Propel\Services as ChildServices;
-use Model\Propel\ServicesQuery as ChildServicesQuery;
-use Model\Propel\Map\OrderdetailsTableMap;
-use Model\Propel\Map\OrdersTableMap;
+use Model\Propel\Employees as ChildEmployees;
+use Model\Propel\EmployeesQuery as ChildEmployeesQuery;
+use Model\Propel\HotlineQuery as ChildHotlineQuery;
+use Model\Propel\Map\HotlineTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
 /**
- * Base class that represents a row from the 'orders' table.
+ * Base class that represents a row from the 'hotline' table.
  *
  *
  *
  * @package    propel.generator.Model.Propel.Base
  */
-abstract class Orders implements ActiveRecordInterface
+abstract class Hotline implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Model\\Propel\\Map\\OrdersTableMap';
+    const TABLE_MAP = '\\Model\\Propel\\Map\\HotlineTableMap';
 
 
     /**
@@ -73,11 +64,18 @@ abstract class Orders implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id_order field.
+     * The value for the id_hotline field.
      *
      * @var        int
      */
-    protected $id_order;
+    protected $id_hotline;
+
+    /**
+     * The value for the hotline_message field.
+     *
+     * @var        string
+     */
+    protected $hotline_message;
 
     /**
      * The value for the id_customer field.
@@ -87,25 +85,18 @@ abstract class Orders implements ActiveRecordInterface
     protected $id_customer;
 
     /**
-     * The value for the id_product field.
+     * The value for the id_employee field.
      *
      * @var        int
      */
-    protected $id_product;
+    protected $id_employee;
 
     /**
-     * The value for the id_service field.
+     * The value for the type_author field.
      *
-     * @var        int
+     * @var        string
      */
-    protected $id_service;
-
-    /**
-     * The value for the order_date field.
-     *
-     * @var        DateTime
-     */
-    protected $order_date;
+    protected $type_author;
 
     /**
      * @var        ChildCustomers
@@ -113,20 +104,9 @@ abstract class Orders implements ActiveRecordInterface
     protected $aCustomers;
 
     /**
-     * @var        ChildProducts
+     * @var        ChildEmployees
      */
-    protected $aProducts;
-
-    /**
-     * @var        ChildServices
-     */
-    protected $aServices;
-
-    /**
-     * @var        ObjectCollection|ChildOrderdetails[] Collection to store aggregation of ChildOrderdetails objects.
-     */
-    protected $collOrderdetailss;
-    protected $collOrderdetailssPartial;
+    protected $aEmployees;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -137,13 +117,7 @@ abstract class Orders implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildOrderdetails[]
-     */
-    protected $orderdetailssScheduledForDeletion = null;
-
-    /**
-     * Initializes internal state of Model\Propel\Base\Orders object.
+     * Initializes internal state of Model\Propel\Base\Hotline object.
      */
     public function __construct()
     {
@@ -238,9 +212,9 @@ abstract class Orders implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Orders</code> instance.  If
-     * <code>obj</code> is an instance of <code>Orders</code>, delegates to
-     * <code>equals(Orders)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Hotline</code> instance.  If
+     * <code>obj</code> is an instance of <code>Hotline</code>, delegates to
+     * <code>equals(Hotline)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -306,7 +280,7 @@ abstract class Orders implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Orders The current object, for fluid interface
+     * @return $this|Hotline The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -368,13 +342,23 @@ abstract class Orders implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id_order] column value.
+     * Get the [id_hotline] column value.
      *
      * @return int
      */
-    public function getIdOrder()
+    public function getIdHotline()
     {
-        return $this->id_order;
+        return $this->id_hotline;
+    }
+
+    /**
+     * Get the [hotline_message] column value.
+     *
+     * @return string
+     */
+    public function getHotlineMessage()
+    {
+        return $this->hotline_message;
     }
 
     /**
@@ -388,70 +372,70 @@ abstract class Orders implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id_product] column value.
+     * Get the [id_employee] column value.
      *
      * @return int
      */
-    public function getIdProduct()
+    public function getIdEmployee()
     {
-        return $this->id_product;
+        return $this->id_employee;
     }
 
     /**
-     * Get the [id_service] column value.
+     * Get the [type_author] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getIdService()
+    public function getTypeAuthor()
     {
-        return $this->id_service;
+        return $this->type_author;
     }
 
     /**
-     * Get the [optionally formatted] temporal [order_date] column value.
-     *
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getOrderDate($format = NULL)
-    {
-        if ($format === null) {
-            return $this->order_date;
-        } else {
-            return $this->order_date instanceof \DateTimeInterface ? $this->order_date->format($format) : null;
-        }
-    }
-
-    /**
-     * Set the value of [id_order] column.
+     * Set the value of [id_hotline] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
      */
-    public function setIdOrder($v)
+    public function setIdHotline($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_order !== $v) {
-            $this->id_order = $v;
-            $this->modifiedColumns[OrdersTableMap::COL_ID_ORDER] = true;
+        if ($this->id_hotline !== $v) {
+            $this->id_hotline = $v;
+            $this->modifiedColumns[HotlineTableMap::COL_ID_HOTLINE] = true;
         }
 
         return $this;
-    } // setIdOrder()
+    } // setIdHotline()
+
+    /**
+     * Set the value of [hotline_message] column.
+     *
+     * @param string $v new value
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
+     */
+    public function setHotlineMessage($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->hotline_message !== $v) {
+            $this->hotline_message = $v;
+            $this->modifiedColumns[HotlineTableMap::COL_HOTLINE_MESSAGE] = true;
+        }
+
+        return $this;
+    } // setHotlineMessage()
 
     /**
      * Set the value of [id_customer] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
      */
     public function setIdCustomer($v)
     {
@@ -461,7 +445,7 @@ abstract class Orders implements ActiveRecordInterface
 
         if ($this->id_customer !== $v) {
             $this->id_customer = $v;
-            $this->modifiedColumns[OrdersTableMap::COL_ID_CUSTOMER] = true;
+            $this->modifiedColumns[HotlineTableMap::COL_ID_CUSTOMER] = true;
         }
 
         if ($this->aCustomers !== null && $this->aCustomers->getIdCustomer() !== $v) {
@@ -472,72 +456,48 @@ abstract class Orders implements ActiveRecordInterface
     } // setIdCustomer()
 
     /**
-     * Set the value of [id_product] column.
+     * Set the value of [id_employee] column.
      *
      * @param int $v new value
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
      */
-    public function setIdProduct($v)
+    public function setIdEmployee($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_product !== $v) {
-            $this->id_product = $v;
-            $this->modifiedColumns[OrdersTableMap::COL_ID_PRODUCT] = true;
+        if ($this->id_employee !== $v) {
+            $this->id_employee = $v;
+            $this->modifiedColumns[HotlineTableMap::COL_ID_EMPLOYEE] = true;
         }
 
-        if ($this->aProducts !== null && $this->aProducts->getIdProduct() !== $v) {
-            $this->aProducts = null;
+        if ($this->aEmployees !== null && $this->aEmployees->getIdEmployee() !== $v) {
+            $this->aEmployees = null;
         }
 
         return $this;
-    } // setIdProduct()
+    } // setIdEmployee()
 
     /**
-     * Set the value of [id_service] column.
+     * Set the value of [type_author] column.
      *
-     * @param int $v new value
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
+     * @param string $v new value
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
      */
-    public function setIdService($v)
+    public function setTypeAuthor($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->id_service !== $v) {
-            $this->id_service = $v;
-            $this->modifiedColumns[OrdersTableMap::COL_ID_SERVICE] = true;
-        }
-
-        if ($this->aServices !== null && $this->aServices->getIdService() !== $v) {
-            $this->aServices = null;
+        if ($this->type_author !== $v) {
+            $this->type_author = $v;
+            $this->modifiedColumns[HotlineTableMap::COL_TYPE_AUTHOR] = true;
         }
 
         return $this;
-    } // setIdService()
-
-    /**
-     * Sets the value of [order_date] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
-     */
-    public function setOrderDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->order_date !== null || $dt !== null) {
-            if ($this->order_date === null || $dt === null || $dt->format("Y-m-d") !== $this->order_date->format("Y-m-d")) {
-                $this->order_date = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[OrdersTableMap::COL_ORDER_DATE] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setOrderDate()
+    } // setTypeAuthor()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -575,23 +535,20 @@ abstract class Orders implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : OrdersTableMap::translateFieldName('IdOrder', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_order = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : HotlineTableMap::translateFieldName('IdHotline', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_hotline = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : OrdersTableMap::translateFieldName('IdCustomer', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : HotlineTableMap::translateFieldName('HotlineMessage', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->hotline_message = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : HotlineTableMap::translateFieldName('IdCustomer', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_customer = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : OrdersTableMap::translateFieldName('IdProduct', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_product = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : HotlineTableMap::translateFieldName('IdEmployee', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_employee = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrdersTableMap::translateFieldName('IdService', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_service = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : OrdersTableMap::translateFieldName('OrderDate', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->order_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : HotlineTableMap::translateFieldName('TypeAuthor', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->type_author = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -600,10 +557,10 @@ abstract class Orders implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = OrdersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = HotlineTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Orders'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Model\\Propel\\Hotline'), 0, $e);
         }
     }
 
@@ -625,11 +582,8 @@ abstract class Orders implements ActiveRecordInterface
         if ($this->aCustomers !== null && $this->id_customer !== $this->aCustomers->getIdCustomer()) {
             $this->aCustomers = null;
         }
-        if ($this->aProducts !== null && $this->id_product !== $this->aProducts->getIdProduct()) {
-            $this->aProducts = null;
-        }
-        if ($this->aServices !== null && $this->id_service !== $this->aServices->getIdService()) {
-            $this->aServices = null;
+        if ($this->aEmployees !== null && $this->id_employee !== $this->aEmployees->getIdEmployee()) {
+            $this->aEmployees = null;
         }
     } // ensureConsistency
 
@@ -654,13 +608,13 @@ abstract class Orders implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(OrdersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(HotlineTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildOrdersQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildHotlineQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -671,10 +625,7 @@ abstract class Orders implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCustomers = null;
-            $this->aProducts = null;
-            $this->aServices = null;
-            $this->collOrderdetailss = null;
-
+            $this->aEmployees = null;
         } // if (deep)
     }
 
@@ -684,8 +635,8 @@ abstract class Orders implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Orders::setDeleted()
-     * @see Orders::isDeleted()
+     * @see Hotline::setDeleted()
+     * @see Hotline::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -694,11 +645,11 @@ abstract class Orders implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(OrdersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(HotlineTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildOrdersQuery::create()
+            $deleteQuery = ChildHotlineQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -733,7 +684,7 @@ abstract class Orders implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(OrdersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(HotlineTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -752,7 +703,7 @@ abstract class Orders implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                OrdersTableMap::addInstanceToPool($this);
+                HotlineTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -790,18 +741,11 @@ abstract class Orders implements ActiveRecordInterface
                 $this->setCustomers($this->aCustomers);
             }
 
-            if ($this->aProducts !== null) {
-                if ($this->aProducts->isModified() || $this->aProducts->isNew()) {
-                    $affectedRows += $this->aProducts->save($con);
+            if ($this->aEmployees !== null) {
+                if ($this->aEmployees->isModified() || $this->aEmployees->isNew()) {
+                    $affectedRows += $this->aEmployees->save($con);
                 }
-                $this->setProducts($this->aProducts);
-            }
-
-            if ($this->aServices !== null) {
-                if ($this->aServices->isModified() || $this->aServices->isNew()) {
-                    $affectedRows += $this->aServices->save($con);
-                }
-                $this->setServices($this->aServices);
+                $this->setEmployees($this->aEmployees);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -813,23 +757,6 @@ abstract class Orders implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
-            }
-
-            if ($this->orderdetailssScheduledForDeletion !== null) {
-                if (!$this->orderdetailssScheduledForDeletion->isEmpty()) {
-                    \Model\Propel\OrderdetailsQuery::create()
-                        ->filterByPrimaryKeys($this->orderdetailssScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->orderdetailssScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collOrderdetailss !== null) {
-                foreach ($this->collOrderdetailss as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -852,30 +779,30 @@ abstract class Orders implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[OrdersTableMap::COL_ID_ORDER] = true;
-        if (null !== $this->id_order) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . OrdersTableMap::COL_ID_ORDER . ')');
+        $this->modifiedColumns[HotlineTableMap::COL_ID_HOTLINE] = true;
+        if (null !== $this->id_hotline) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . HotlineTableMap::COL_ID_HOTLINE . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_ORDER)) {
-            $modifiedColumns[':p' . $index++]  = 'id_order';
+        if ($this->isColumnModified(HotlineTableMap::COL_ID_HOTLINE)) {
+            $modifiedColumns[':p' . $index++]  = 'id_hotline';
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_CUSTOMER)) {
+        if ($this->isColumnModified(HotlineTableMap::COL_HOTLINE_MESSAGE)) {
+            $modifiedColumns[':p' . $index++]  = 'hotline_message';
+        }
+        if ($this->isColumnModified(HotlineTableMap::COL_ID_CUSTOMER)) {
             $modifiedColumns[':p' . $index++]  = 'id_customer';
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_PRODUCT)) {
-            $modifiedColumns[':p' . $index++]  = 'id_product';
+        if ($this->isColumnModified(HotlineTableMap::COL_ID_EMPLOYEE)) {
+            $modifiedColumns[':p' . $index++]  = 'id_employee';
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_SERVICE)) {
-            $modifiedColumns[':p' . $index++]  = 'id_service';
-        }
-        if ($this->isColumnModified(OrdersTableMap::COL_ORDER_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'order_date';
+        if ($this->isColumnModified(HotlineTableMap::COL_TYPE_AUTHOR)) {
+            $modifiedColumns[':p' . $index++]  = 'type_author';
         }
 
         $sql = sprintf(
-            'INSERT INTO orders (%s) VALUES (%s)',
+            'INSERT INTO hotline (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -884,20 +811,20 @@ abstract class Orders implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id_order':
-                        $stmt->bindValue($identifier, $this->id_order, PDO::PARAM_INT);
+                    case 'id_hotline':
+                        $stmt->bindValue($identifier, $this->id_hotline, PDO::PARAM_INT);
+                        break;
+                    case 'hotline_message':
+                        $stmt->bindValue($identifier, $this->hotline_message, PDO::PARAM_STR);
                         break;
                     case 'id_customer':
                         $stmt->bindValue($identifier, $this->id_customer, PDO::PARAM_INT);
                         break;
-                    case 'id_product':
-                        $stmt->bindValue($identifier, $this->id_product, PDO::PARAM_INT);
+                    case 'id_employee':
+                        $stmt->bindValue($identifier, $this->id_employee, PDO::PARAM_INT);
                         break;
-                    case 'id_service':
-                        $stmt->bindValue($identifier, $this->id_service, PDO::PARAM_INT);
-                        break;
-                    case 'order_date':
-                        $stmt->bindValue($identifier, $this->order_date ? $this->order_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'type_author':
+                        $stmt->bindValue($identifier, $this->type_author, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -912,7 +839,7 @@ abstract class Orders implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setIdOrder($pk);
+        $this->setIdHotline($pk);
 
         $this->setNew(false);
     }
@@ -945,7 +872,7 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = OrdersTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = HotlineTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -962,19 +889,19 @@ abstract class Orders implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getIdOrder();
+                return $this->getIdHotline();
                 break;
             case 1:
-                return $this->getIdCustomer();
+                return $this->getHotlineMessage();
                 break;
             case 2:
-                return $this->getIdProduct();
+                return $this->getIdCustomer();
                 break;
             case 3:
-                return $this->getIdService();
+                return $this->getIdEmployee();
                 break;
             case 4:
-                return $this->getOrderDate();
+                return $this->getTypeAuthor();
                 break;
             default:
                 return null;
@@ -1000,22 +927,18 @@ abstract class Orders implements ActiveRecordInterface
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Orders'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Hotline'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Orders'][$this->hashCode()] = true;
-        $keys = OrdersTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Hotline'][$this->hashCode()] = true;
+        $keys = HotlineTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdOrder(),
-            $keys[1] => $this->getIdCustomer(),
-            $keys[2] => $this->getIdProduct(),
-            $keys[3] => $this->getIdService(),
-            $keys[4] => $this->getOrderDate(),
+            $keys[0] => $this->getIdHotline(),
+            $keys[1] => $this->getHotlineMessage(),
+            $keys[2] => $this->getIdCustomer(),
+            $keys[3] => $this->getIdEmployee(),
+            $keys[4] => $this->getTypeAuthor(),
         );
-        if ($result[$keys[4]] instanceof \DateTimeInterface) {
-            $result[$keys[4]] = $result[$keys[4]]->format('c');
-        }
-
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -1037,50 +960,20 @@ abstract class Orders implements ActiveRecordInterface
 
                 $result[$key] = $this->aCustomers->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aProducts) {
+            if (null !== $this->aEmployees) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'products';
+                        $key = 'employees';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'products';
+                        $key = 'employees';
                         break;
                     default:
-                        $key = 'Products';
+                        $key = 'Employees';
                 }
 
-                $result[$key] = $this->aProducts->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aServices) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'services';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'services';
-                        break;
-                    default:
-                        $key = 'Services';
-                }
-
-                $result[$key] = $this->aServices->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collOrderdetailss) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'orderdetailss';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'orderdetailss';
-                        break;
-                    default:
-                        $key = 'Orderdetailss';
-                }
-
-                $result[$key] = $this->collOrderdetailss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->aEmployees->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1096,11 +989,11 @@ abstract class Orders implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Model\Propel\Orders
+     * @return $this|\Model\Propel\Hotline
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = OrdersTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = HotlineTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1111,25 +1004,25 @@ abstract class Orders implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Model\Propel\Orders
+     * @return $this|\Model\Propel\Hotline
      */
     public function setByPosition($pos, $value)
     {
         switch ($pos) {
             case 0:
-                $this->setIdOrder($value);
+                $this->setIdHotline($value);
                 break;
             case 1:
-                $this->setIdCustomer($value);
+                $this->setHotlineMessage($value);
                 break;
             case 2:
-                $this->setIdProduct($value);
+                $this->setIdCustomer($value);
                 break;
             case 3:
-                $this->setIdService($value);
+                $this->setIdEmployee($value);
                 break;
             case 4:
-                $this->setOrderDate($value);
+                $this->setTypeAuthor($value);
                 break;
         } // switch()
 
@@ -1155,22 +1048,22 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = OrdersTableMap::getFieldNames($keyType);
+        $keys = HotlineTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setIdOrder($arr[$keys[0]]);
+            $this->setIdHotline($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setIdCustomer($arr[$keys[1]]);
+            $this->setHotlineMessage($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setIdProduct($arr[$keys[2]]);
+            $this->setIdCustomer($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setIdService($arr[$keys[3]]);
+            $this->setIdEmployee($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setOrderDate($arr[$keys[4]]);
+            $this->setTypeAuthor($arr[$keys[4]]);
         }
     }
 
@@ -1191,7 +1084,7 @@ abstract class Orders implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Model\Propel\Orders The current object, for fluid interface
+     * @return $this|\Model\Propel\Hotline The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1211,22 +1104,22 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(OrdersTableMap::DATABASE_NAME);
+        $criteria = new Criteria(HotlineTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_ORDER)) {
-            $criteria->add(OrdersTableMap::COL_ID_ORDER, $this->id_order);
+        if ($this->isColumnModified(HotlineTableMap::COL_ID_HOTLINE)) {
+            $criteria->add(HotlineTableMap::COL_ID_HOTLINE, $this->id_hotline);
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_CUSTOMER)) {
-            $criteria->add(OrdersTableMap::COL_ID_CUSTOMER, $this->id_customer);
+        if ($this->isColumnModified(HotlineTableMap::COL_HOTLINE_MESSAGE)) {
+            $criteria->add(HotlineTableMap::COL_HOTLINE_MESSAGE, $this->hotline_message);
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_PRODUCT)) {
-            $criteria->add(OrdersTableMap::COL_ID_PRODUCT, $this->id_product);
+        if ($this->isColumnModified(HotlineTableMap::COL_ID_CUSTOMER)) {
+            $criteria->add(HotlineTableMap::COL_ID_CUSTOMER, $this->id_customer);
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ID_SERVICE)) {
-            $criteria->add(OrdersTableMap::COL_ID_SERVICE, $this->id_service);
+        if ($this->isColumnModified(HotlineTableMap::COL_ID_EMPLOYEE)) {
+            $criteria->add(HotlineTableMap::COL_ID_EMPLOYEE, $this->id_employee);
         }
-        if ($this->isColumnModified(OrdersTableMap::COL_ORDER_DATE)) {
-            $criteria->add(OrdersTableMap::COL_ORDER_DATE, $this->order_date);
+        if ($this->isColumnModified(HotlineTableMap::COL_TYPE_AUTHOR)) {
+            $criteria->add(HotlineTableMap::COL_TYPE_AUTHOR, $this->type_author);
         }
 
         return $criteria;
@@ -1244,8 +1137,8 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildOrdersQuery::create();
-        $criteria->add(OrdersTableMap::COL_ID_ORDER, $this->id_order);
+        $criteria = ChildHotlineQuery::create();
+        $criteria->add(HotlineTableMap::COL_ID_HOTLINE, $this->id_hotline);
 
         return $criteria;
     }
@@ -1258,7 +1151,7 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getIdOrder();
+        $validPk = null !== $this->getIdHotline();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1278,18 +1171,18 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getIdOrder();
+        return $this->getIdHotline();
     }
 
     /**
-     * Generic method to set the primary key (id_order column).
+     * Generic method to set the primary key (id_hotline column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdOrder($key);
+        $this->setIdHotline($key);
     }
 
     /**
@@ -1298,7 +1191,7 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getIdOrder();
+        return null === $this->getIdHotline();
     }
 
     /**
@@ -1307,34 +1200,20 @@ abstract class Orders implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Model\Propel\Orders (or compatible) type.
+     * @param      object $copyObj An object of \Model\Propel\Hotline (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setHotlineMessage($this->getHotlineMessage());
         $copyObj->setIdCustomer($this->getIdCustomer());
-        $copyObj->setIdProduct($this->getIdProduct());
-        $copyObj->setIdService($this->getIdService());
-        $copyObj->setOrderDate($this->getOrderDate());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getOrderdetailss() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addOrderdetails($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
+        $copyObj->setIdEmployee($this->getIdEmployee());
+        $copyObj->setTypeAuthor($this->getTypeAuthor());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdOrder(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdHotline(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1347,7 +1226,7 @@ abstract class Orders implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Model\Propel\Orders Clone of current object.
+     * @return \Model\Propel\Hotline Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1364,7 +1243,7 @@ abstract class Orders implements ActiveRecordInterface
      * Declares an association between this object and a ChildCustomers object.
      *
      * @param  ChildCustomers $v
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
      * @throws PropelException
      */
     public function setCustomers(ChildCustomers $v = null)
@@ -1380,7 +1259,7 @@ abstract class Orders implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildCustomers object, it will not be re-added.
         if ($v !== null) {
-            $v->addOrders($this);
+            $v->addHotline($this);
         }
 
 
@@ -1404,7 +1283,7 @@ abstract class Orders implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aCustomers->addOrderss($this);
+                $this->aCustomers->addHotlines($this);
              */
         }
 
@@ -1412,26 +1291,26 @@ abstract class Orders implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProducts object.
+     * Declares an association between this object and a ChildEmployees object.
      *
-     * @param  ChildProducts $v
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
+     * @param  ChildEmployees $v
+     * @return $this|\Model\Propel\Hotline The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setProducts(ChildProducts $v = null)
+    public function setEmployees(ChildEmployees $v = null)
     {
         if ($v === null) {
-            $this->setIdProduct(NULL);
+            $this->setIdEmployee(NULL);
         } else {
-            $this->setIdProduct($v->getIdProduct());
+            $this->setIdEmployee($v->getIdEmployee());
         }
 
-        $this->aProducts = $v;
+        $this->aEmployees = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProducts object, it will not be re-added.
+        // If this object has already been added to the ChildEmployees object, it will not be re-added.
         if ($v !== null) {
-            $v->addOrders($this);
+            $v->addHotline($this);
         }
 
 
@@ -1440,369 +1319,26 @@ abstract class Orders implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildProducts object
+     * Get the associated ChildEmployees object
      *
      * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildProducts The associated ChildProducts object.
+     * @return ChildEmployees The associated ChildEmployees object.
      * @throws PropelException
      */
-    public function getProducts(ConnectionInterface $con = null)
+    public function getEmployees(ConnectionInterface $con = null)
     {
-        if ($this->aProducts === null && ($this->id_product != 0)) {
-            $this->aProducts = ChildProductsQuery::create()->findPk($this->id_product, $con);
+        if ($this->aEmployees === null && ($this->id_employee != 0)) {
+            $this->aEmployees = ChildEmployeesQuery::create()->findPk($this->id_employee, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aProducts->addOrderss($this);
+                $this->aEmployees->addHotlines($this);
              */
         }
 
-        return $this->aProducts;
-    }
-
-    /**
-     * Declares an association between this object and a ChildServices object.
-     *
-     * @param  ChildServices $v
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setServices(ChildServices $v = null)
-    {
-        if ($v === null) {
-            $this->setIdService(NULL);
-        } else {
-            $this->setIdService($v->getIdService());
-        }
-
-        $this->aServices = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildServices object, it will not be re-added.
-        if ($v !== null) {
-            $v->addOrders($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildServices object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildServices The associated ChildServices object.
-     * @throws PropelException
-     */
-    public function getServices(ConnectionInterface $con = null)
-    {
-        if ($this->aServices === null && ($this->id_service != 0)) {
-            $this->aServices = ChildServicesQuery::create()->findPk($this->id_service, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aServices->addOrderss($this);
-             */
-        }
-
-        return $this->aServices;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Orderdetails' == $relationName) {
-            $this->initOrderdetailss();
-            return;
-        }
-    }
-
-    /**
-     * Clears out the collOrderdetailss collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addOrderdetailss()
-     */
-    public function clearOrderdetailss()
-    {
-        $this->collOrderdetailss = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collOrderdetailss collection loaded partially.
-     */
-    public function resetPartialOrderdetailss($v = true)
-    {
-        $this->collOrderdetailssPartial = $v;
-    }
-
-    /**
-     * Initializes the collOrderdetailss collection.
-     *
-     * By default this just sets the collOrderdetailss collection to an empty array (like clearcollOrderdetailss());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initOrderdetailss($overrideExisting = true)
-    {
-        if (null !== $this->collOrderdetailss && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = OrderdetailsTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collOrderdetailss = new $collectionClassName;
-        $this->collOrderdetailss->setModel('\Model\Propel\Orderdetails');
-    }
-
-    /**
-     * Gets an array of ChildOrderdetails objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildOrders is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
-     * @throws PropelException
-     */
-    public function getOrderdetailss(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collOrderdetailssPartial && !$this->isNew();
-        if (null === $this->collOrderdetailss || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collOrderdetailss) {
-                // return empty collection
-                $this->initOrderdetailss();
-            } else {
-                $collOrderdetailss = ChildOrderdetailsQuery::create(null, $criteria)
-                    ->filterByOrders($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collOrderdetailssPartial && count($collOrderdetailss)) {
-                        $this->initOrderdetailss(false);
-
-                        foreach ($collOrderdetailss as $obj) {
-                            if (false == $this->collOrderdetailss->contains($obj)) {
-                                $this->collOrderdetailss->append($obj);
-                            }
-                        }
-
-                        $this->collOrderdetailssPartial = true;
-                    }
-
-                    return $collOrderdetailss;
-                }
-
-                if ($partial && $this->collOrderdetailss) {
-                    foreach ($this->collOrderdetailss as $obj) {
-                        if ($obj->isNew()) {
-                            $collOrderdetailss[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collOrderdetailss = $collOrderdetailss;
-                $this->collOrderdetailssPartial = false;
-            }
-        }
-
-        return $this->collOrderdetailss;
-    }
-
-    /**
-     * Sets a collection of ChildOrderdetails objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $orderdetailss A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildOrders The current object (for fluent API support)
-     */
-    public function setOrderdetailss(Collection $orderdetailss, ConnectionInterface $con = null)
-    {
-        /** @var ChildOrderdetails[] $orderdetailssToDelete */
-        $orderdetailssToDelete = $this->getOrderdetailss(new Criteria(), $con)->diff($orderdetailss);
-
-
-        $this->orderdetailssScheduledForDeletion = $orderdetailssToDelete;
-
-        foreach ($orderdetailssToDelete as $orderdetailsRemoved) {
-            $orderdetailsRemoved->setOrders(null);
-        }
-
-        $this->collOrderdetailss = null;
-        foreach ($orderdetailss as $orderdetails) {
-            $this->addOrderdetails($orderdetails);
-        }
-
-        $this->collOrderdetailss = $orderdetailss;
-        $this->collOrderdetailssPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Orderdetails objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Orderdetails objects.
-     * @throws PropelException
-     */
-    public function countOrderdetailss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collOrderdetailssPartial && !$this->isNew();
-        if (null === $this->collOrderdetailss || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collOrderdetailss) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getOrderdetailss());
-            }
-
-            $query = ChildOrderdetailsQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByOrders($this)
-                ->count($con);
-        }
-
-        return count($this->collOrderdetailss);
-    }
-
-    /**
-     * Method called to associate a ChildOrderdetails object to this object
-     * through the ChildOrderdetails foreign key attribute.
-     *
-     * @param  ChildOrderdetails $l ChildOrderdetails
-     * @return $this|\Model\Propel\Orders The current object (for fluent API support)
-     */
-    public function addOrderdetails(ChildOrderdetails $l)
-    {
-        if ($this->collOrderdetailss === null) {
-            $this->initOrderdetailss();
-            $this->collOrderdetailssPartial = true;
-        }
-
-        if (!$this->collOrderdetailss->contains($l)) {
-            $this->doAddOrderdetails($l);
-
-            if ($this->orderdetailssScheduledForDeletion and $this->orderdetailssScheduledForDeletion->contains($l)) {
-                $this->orderdetailssScheduledForDeletion->remove($this->orderdetailssScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildOrderdetails $orderdetails The ChildOrderdetails object to add.
-     */
-    protected function doAddOrderdetails(ChildOrderdetails $orderdetails)
-    {
-        $this->collOrderdetailss[]= $orderdetails;
-        $orderdetails->setOrders($this);
-    }
-
-    /**
-     * @param  ChildOrderdetails $orderdetails The ChildOrderdetails object to remove.
-     * @return $this|ChildOrders The current object (for fluent API support)
-     */
-    public function removeOrderdetails(ChildOrderdetails $orderdetails)
-    {
-        if ($this->getOrderdetailss()->contains($orderdetails)) {
-            $pos = $this->collOrderdetailss->search($orderdetails);
-            $this->collOrderdetailss->remove($pos);
-            if (null === $this->orderdetailssScheduledForDeletion) {
-                $this->orderdetailssScheduledForDeletion = clone $this->collOrderdetailss;
-                $this->orderdetailssScheduledForDeletion->clear();
-            }
-            $this->orderdetailssScheduledForDeletion[]= clone $orderdetails;
-            $orderdetails->setOrders(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Orders is new, it will return
-     * an empty collection; or if this Orders has previously
-     * been saved, it will retrieve related Orderdetailss from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Orders.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
-     */
-    public function getOrderdetailssJoinProducts(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildOrderdetailsQuery::create(null, $criteria);
-        $query->joinWith('Products', $joinBehavior);
-
-        return $this->getOrderdetailss($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Orders is new, it will return
-     * an empty collection; or if this Orders has previously
-     * been saved, it will retrieve related Orderdetailss from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Orders.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildOrderdetails[] List of ChildOrderdetails objects
-     */
-    public function getOrderdetailssJoinServices(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildOrderdetailsQuery::create(null, $criteria);
-        $query->joinWith('Services', $joinBehavior);
-
-        return $this->getOrderdetailss($query, $con);
+        return $this->aEmployees;
     }
 
     /**
@@ -1813,19 +1349,16 @@ abstract class Orders implements ActiveRecordInterface
     public function clear()
     {
         if (null !== $this->aCustomers) {
-            $this->aCustomers->removeOrders($this);
+            $this->aCustomers->removeHotline($this);
         }
-        if (null !== $this->aProducts) {
-            $this->aProducts->removeOrders($this);
+        if (null !== $this->aEmployees) {
+            $this->aEmployees->removeHotline($this);
         }
-        if (null !== $this->aServices) {
-            $this->aServices->removeOrders($this);
-        }
-        $this->id_order = null;
+        $this->id_hotline = null;
+        $this->hotline_message = null;
         $this->id_customer = null;
-        $this->id_product = null;
-        $this->id_service = null;
-        $this->order_date = null;
+        $this->id_employee = null;
+        $this->type_author = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1844,17 +1377,10 @@ abstract class Orders implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collOrderdetailss) {
-                foreach ($this->collOrderdetailss as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collOrderdetailss = null;
         $this->aCustomers = null;
-        $this->aProducts = null;
-        $this->aServices = null;
+        $this->aEmployees = null;
     }
 
     /**
@@ -1864,7 +1390,7 @@ abstract class Orders implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(OrdersTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(HotlineTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

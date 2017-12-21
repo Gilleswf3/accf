@@ -2,13 +2,14 @@
 
 namespace Model\Propel\Map;
 
-use Model\Propel\Standards;
-use Model\Propel\StandardsQuery;
+use Model\Propel\Orderdetails;
+use Model\Propel\OrderdetailsQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
+use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -16,7 +17,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'standards' table.
+ * This class defines the structure of the 'orderdetails' table.
  *
  *
  *
@@ -26,7 +27,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class StandardsTableMap extends TableMap
+class OrderdetailsTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +35,7 @@ class StandardsTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Model.Propel.Map.StandardsTableMap';
+    const CLASS_NAME = 'Model.Propel.Map.OrderdetailsTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +45,22 @@ class StandardsTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'standards';
+    const TABLE_NAME = 'orderdetails';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Model\\Propel\\Standards';
+    const OM_CLASS = '\\Model\\Propel\\Orderdetails';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Model.Propel.Standards';
+    const CLASS_DEFAULT = 'Model.Propel.Orderdetails';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -69,32 +70,47 @@ class StandardsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
-     * the column name for the id_standard field
+     * the column name for the id_order_details field
      */
-    const COL_ID_STANDARD = 'standards.id_standard';
+    const COL_ID_ORDER_DETAILS = 'orderdetails.id_order_details';
 
     /**
-     * the column name for the title field
+     * the column name for the id_order field
      */
-    const COL_TITLE = 'standards.title';
+    const COL_ID_ORDER = 'orderdetails.id_order';
 
     /**
-     * the column name for the subtitle field
+     * the column name for the id_product field
      */
-    const COL_SUBTITLE = 'standards.subtitle';
+    const COL_ID_PRODUCT = 'orderdetails.id_product';
 
     /**
-     * the column name for the description field
+     * the column name for the product_unit_price field
      */
-    const COL_DESCRIPTION = 'standards.description';
+    const COL_PRODUCT_UNIT_PRICE = 'orderdetails.product_unit_price';
 
     /**
-     * the column name for the id_employee field
+     * the column name for the product_quantity field
      */
-    const COL_ID_EMPLOYEE = 'standards.id_employee';
+    const COL_PRODUCT_QUANTITY = 'orderdetails.product_quantity';
+
+    /**
+     * the column name for the id_service field
+     */
+    const COL_ID_SERVICE = 'orderdetails.id_service';
+
+    /**
+     * the column name for the service_unit_price field
+     */
+    const COL_SERVICE_UNIT_PRICE = 'orderdetails.service_unit_price';
+
+    /**
+     * the column name for the service_quantity field
+     */
+    const COL_SERVICE_QUANTITY = 'orderdetails.service_quantity';
 
     /**
      * The default string format for model objects of the related table
@@ -108,11 +124,11 @@ class StandardsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdStandard', 'Title', 'Subtitle', 'Description', 'IdEmployee', ),
-        self::TYPE_CAMELNAME     => array('idStandard', 'title', 'subtitle', 'description', 'idEmployee', ),
-        self::TYPE_COLNAME       => array(StandardsTableMap::COL_ID_STANDARD, StandardsTableMap::COL_TITLE, StandardsTableMap::COL_SUBTITLE, StandardsTableMap::COL_DESCRIPTION, StandardsTableMap::COL_ID_EMPLOYEE, ),
-        self::TYPE_FIELDNAME     => array('id_standard', 'title', 'subtitle', 'description', 'id_employee', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('IdOrderDetails', 'IdOrder', 'IdProduct', 'ProductUnitPrice', 'ProductQuantity', 'IdService', 'ServiceUnitPrice', 'ServiceQuantity', ),
+        self::TYPE_CAMELNAME     => array('idOrderDetails', 'idOrder', 'idProduct', 'productUnitPrice', 'productQuantity', 'idService', 'serviceUnitPrice', 'serviceQuantity', ),
+        self::TYPE_COLNAME       => array(OrderdetailsTableMap::COL_ID_ORDER_DETAILS, OrderdetailsTableMap::COL_ID_ORDER, OrderdetailsTableMap::COL_ID_PRODUCT, OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE, OrderdetailsTableMap::COL_PRODUCT_QUANTITY, OrderdetailsTableMap::COL_ID_SERVICE, OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE, OrderdetailsTableMap::COL_SERVICE_QUANTITY, ),
+        self::TYPE_FIELDNAME     => array('id_order_details', 'id_order', 'id_product', 'product_unit_price', 'product_quantity', 'id_service', 'service_unit_price', 'service_quantity', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -122,11 +138,11 @@ class StandardsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdStandard' => 0, 'Title' => 1, 'Subtitle' => 2, 'Description' => 3, 'IdEmployee' => 4, ),
-        self::TYPE_CAMELNAME     => array('idStandard' => 0, 'title' => 1, 'subtitle' => 2, 'description' => 3, 'idEmployee' => 4, ),
-        self::TYPE_COLNAME       => array(StandardsTableMap::COL_ID_STANDARD => 0, StandardsTableMap::COL_TITLE => 1, StandardsTableMap::COL_SUBTITLE => 2, StandardsTableMap::COL_DESCRIPTION => 3, StandardsTableMap::COL_ID_EMPLOYEE => 4, ),
-        self::TYPE_FIELDNAME     => array('id_standard' => 0, 'title' => 1, 'subtitle' => 2, 'description' => 3, 'id_employee' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('IdOrderDetails' => 0, 'IdOrder' => 1, 'IdProduct' => 2, 'ProductUnitPrice' => 3, 'ProductQuantity' => 4, 'IdService' => 5, 'ServiceUnitPrice' => 6, 'ServiceQuantity' => 7, ),
+        self::TYPE_CAMELNAME     => array('idOrderDetails' => 0, 'idOrder' => 1, 'idProduct' => 2, 'productUnitPrice' => 3, 'productQuantity' => 4, 'idService' => 5, 'serviceUnitPrice' => 6, 'serviceQuantity' => 7, ),
+        self::TYPE_COLNAME       => array(OrderdetailsTableMap::COL_ID_ORDER_DETAILS => 0, OrderdetailsTableMap::COL_ID_ORDER => 1, OrderdetailsTableMap::COL_ID_PRODUCT => 2, OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE => 3, OrderdetailsTableMap::COL_PRODUCT_QUANTITY => 4, OrderdetailsTableMap::COL_ID_SERVICE => 5, OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE => 6, OrderdetailsTableMap::COL_SERVICE_QUANTITY => 7, ),
+        self::TYPE_FIELDNAME     => array('id_order_details' => 0, 'id_order' => 1, 'id_product' => 2, 'product_unit_price' => 3, 'product_quantity' => 4, 'id_service' => 5, 'service_unit_price' => 6, 'service_quantity' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -139,18 +155,21 @@ class StandardsTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('standards');
-        $this->setPhpName('Standards');
+        $this->setName('orderdetails');
+        $this->setPhpName('Orderdetails');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Model\\Propel\\Standards');
+        $this->setClassName('\\Model\\Propel\\Orderdetails');
         $this->setPackage('Model.Propel');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('id_standard', 'IdStandard', 'INTEGER', true, 8, null);
-        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
-        $this->addColumn('subtitle', 'Subtitle', 'VARCHAR', true, 255, null);
-        $this->addColumn('description', 'Description', 'LONGVARCHAR', true, null, null);
-        $this->addForeignKey('id_employee', 'IdEmployee', 'INTEGER', 'employees', 'id_employee', true, 8, null);
+        $this->addColumn('id_order_details', 'IdOrderDetails', 'INTEGER', true, 8, null);
+        $this->addForeignKey('id_order', 'IdOrder', 'INTEGER', 'orders', 'id_order', true, 8, null);
+        $this->addForeignKey('id_product', 'IdProduct', 'INTEGER', 'products', 'id_product', true, 8, null);
+        $this->addColumn('product_unit_price', 'ProductUnitPrice', 'FLOAT', true, null, null);
+        $this->addColumn('product_quantity', 'ProductQuantity', 'INTEGER', true, 8, null);
+        $this->addForeignKey('id_service', 'IdService', 'INTEGER', 'services', 'id_service', true, 8, null);
+        $this->addColumn('service_unit_price', 'ServiceUnitPrice', 'FLOAT', true, null, null);
+        $this->addColumn('service_quantity', 'ServiceQuantity', 'INTEGER', true, 8, null);
     } // initialize()
 
     /**
@@ -158,11 +177,25 @@ class StandardsTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Employees', '\\Model\\Propel\\Employees', RelationMap::MANY_TO_ONE, array (
+        $this->addRelation('Orders', '\\Model\\Propel\\Orders', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
-    0 => ':id_employee',
-    1 => ':id_employee',
+    0 => ':id_order',
+    1 => ':id_order',
+  ),
+), null, null, null, false);
+        $this->addRelation('Products', '\\Model\\Propel\\Products', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id_product',
+    1 => ':id_product',
+  ),
+), null, null, null, false);
+        $this->addRelation('Services', '\\Model\\Propel\\Services', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id_service',
+    1 => ':id_service',
   ),
 ), null, null, null, false);
     } // buildRelations()
@@ -182,12 +215,7 @@ class StandardsTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)] === null) {
-            return null;
-        }
-
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)];
+        return null;
     }
 
     /**
@@ -204,11 +232,7 @@ class StandardsTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return (int) $row[
-            $indexType == TableMap::TYPE_NUM
-                ? 0 + $offset
-                : self::translateFieldName('IdStandard', TableMap::TYPE_PHPNAME, $indexType)
-        ];
+        return '';
     }
 
     /**
@@ -224,7 +248,7 @@ class StandardsTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? StandardsTableMap::CLASS_DEFAULT : StandardsTableMap::OM_CLASS;
+        return $withPrefix ? OrderdetailsTableMap::CLASS_DEFAULT : OrderdetailsTableMap::OM_CLASS;
     }
 
     /**
@@ -238,22 +262,22 @@ class StandardsTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Standards object, last column rank)
+     * @return array           (Orderdetails object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = StandardsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = StandardsTableMap::getInstanceFromPool($key))) {
+        $key = OrderdetailsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = OrderdetailsTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + StandardsTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + OrderdetailsTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = StandardsTableMap::OM_CLASS;
-            /** @var Standards $obj */
+            $cls = OrderdetailsTableMap::OM_CLASS;
+            /** @var Orderdetails $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            StandardsTableMap::addInstanceToPool($obj, $key);
+            OrderdetailsTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -276,18 +300,18 @@ class StandardsTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = StandardsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = StandardsTableMap::getInstanceFromPool($key))) {
+            $key = OrderdetailsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = OrderdetailsTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Standards $obj */
+                /** @var Orderdetails $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                StandardsTableMap::addInstanceToPool($obj, $key);
+                OrderdetailsTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -308,17 +332,23 @@ class StandardsTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(StandardsTableMap::COL_ID_STANDARD);
-            $criteria->addSelectColumn(StandardsTableMap::COL_TITLE);
-            $criteria->addSelectColumn(StandardsTableMap::COL_SUBTITLE);
-            $criteria->addSelectColumn(StandardsTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(StandardsTableMap::COL_ID_EMPLOYEE);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_ID_ORDER_DETAILS);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_ID_ORDER);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_ID_PRODUCT);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_PRODUCT_UNIT_PRICE);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_PRODUCT_QUANTITY);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_ID_SERVICE);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_SERVICE_UNIT_PRICE);
+            $criteria->addSelectColumn(OrderdetailsTableMap::COL_SERVICE_QUANTITY);
         } else {
-            $criteria->addSelectColumn($alias . '.id_standard');
-            $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.subtitle');
-            $criteria->addSelectColumn($alias . '.description');
-            $criteria->addSelectColumn($alias . '.id_employee');
+            $criteria->addSelectColumn($alias . '.id_order_details');
+            $criteria->addSelectColumn($alias . '.id_order');
+            $criteria->addSelectColumn($alias . '.id_product');
+            $criteria->addSelectColumn($alias . '.product_unit_price');
+            $criteria->addSelectColumn($alias . '.product_quantity');
+            $criteria->addSelectColumn($alias . '.id_service');
+            $criteria->addSelectColumn($alias . '.service_unit_price');
+            $criteria->addSelectColumn($alias . '.service_quantity');
         }
     }
 
@@ -331,7 +361,7 @@ class StandardsTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(StandardsTableMap::DATABASE_NAME)->getTable(StandardsTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(OrderdetailsTableMap::DATABASE_NAME)->getTable(OrderdetailsTableMap::TABLE_NAME);
     }
 
     /**
@@ -339,16 +369,16 @@ class StandardsTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StandardsTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(StandardsTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new StandardsTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(OrderdetailsTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(OrderdetailsTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new OrderdetailsTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Standards or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Orderdetails or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Standards object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Orderdetails object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -359,27 +389,26 @@ class StandardsTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderdetailsTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Model\Propel\Standards) { // it's a model object
-            // create criteria based on pk values
-            $criteria = $values->buildPkeyCriteria();
+        } elseif ($values instanceof \Model\Propel\Orderdetails) { // it's a model object
+            // create criteria based on pk value
+            $criteria = $values->buildCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(StandardsTableMap::DATABASE_NAME);
-            $criteria->add(StandardsTableMap::COL_ID_STANDARD, (array) $values, Criteria::IN);
+            throw new LogicException('The Orderdetails object has no primary key');
         }
 
-        $query = StandardsQuery::create()->mergeWith($criteria);
+        $query = OrderdetailsQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            StandardsTableMap::clearInstancePool();
+            OrderdetailsTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                StandardsTableMap::removeInstanceFromPool($singleval);
+                OrderdetailsTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -387,20 +416,20 @@ class StandardsTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the standards table.
+     * Deletes all rows from the orderdetails table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return StandardsQuery::create()->doDeleteAll($con);
+        return OrderdetailsQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Standards or Criteria object.
+     * Performs an INSERT on the database, given a Orderdetails or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Standards object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Orderdetails object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -409,22 +438,18 @@ class StandardsTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(StandardsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderdetailsTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Standards object
-        }
-
-        if ($criteria->containsKey(StandardsTableMap::COL_ID_STANDARD) && $criteria->keyContainsValue(StandardsTableMap::COL_ID_STANDARD) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StandardsTableMap::COL_ID_STANDARD.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from Orderdetails object
         }
 
 
         // Set the correct dbName
-        $query = StandardsQuery::create()->mergeWith($criteria);
+        $query = OrderdetailsQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -433,7 +458,7 @@ class StandardsTableMap extends TableMap
         });
     }
 
-} // StandardsTableMap
+} // OrderdetailsTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-StandardsTableMap::buildTableMap();
+OrderdetailsTableMap::buildTableMap();
