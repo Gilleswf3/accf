@@ -121,3 +121,22 @@ footer span{
         font-size: 12px;
     }
 }
+
+/*<--------------------------------------------->*/
+
+div#conversation{
+    position: fixed;
+    top: 47%;
+    left: 82%;
+    background: lightblue;
+    max-width: 25%;
+    min-height: 280px;
+    border-radius: 12px 12px 12px 12px;
+    width: 266px;
+}
+textarea.form-control{
+    width: 200px;
+}
+div#messages{
+    width: 200px;
+}

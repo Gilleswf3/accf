@@ -3,55 +3,55 @@
 
 {% block content %}
    
-    <div class="section section-full-screen section-signup">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="card card-signup">
-                        <form action="{{ path('inscription')}}" method="post" >
-                            <label name="nom">Nom :</label><br> 
-                            <input type="text" name="_lastname" class="form-control"/><br>
-                            
-                            <label name="prenom">Prenom :</label><br> 
-                            <input type="text" name="_firstname" class="form-control"/><br>
-                            
-                            <label name="text">Email :</label><br> 
-                            <input type="email" name="_email" class="form-control"/><br>
-                            
-                            <label name="password">Mot de passe :</label><br> 
-                            <input type="password" name="_password" class="form-control"/><br>
-                            
-                            <label name="phone">téléphone :</label><br> 
-                            <input type="text" name="_phone" class="form-control"/><br>
-                            
-                            <label name="company">Société :</label><br> 
-                            <input type="text" name="_company" class="form-control"/><br>
-                            
-                            <label name="billto_adress">Adresse de facturation :</label><br> 
-                            <input type="text" name="_billto_adress" class="form-control"/><br>
-                            
-                            <label name="billto_zipcode">Code postal :</label><br> 
-                            <input type="text" name="_billto_zipcode" class="form-control"/><br>
-                            
-                            <label name="billto_city">Ville :</label><br> 
-                            <input type="text" name="_billto_city" class="form-control"/><br>
-                            
-                            <label name="shipto_adress">Adresse de livraison :</label><br> 
-                            <input type="text" name="_shipto_adress" class="form-control"/><br>
-                            
-                            <label name="shipto_zipcode">Code postal de livraison :</label><br> 
-                            <input type="text" name="_shipto_zipcode" class="form-control"/><br>
-                            
-                            <label name="shipto_city">Ville de livraison :</label><br> 
-                            <input type="text" name="_shipto_city" class="form-control"/><br>
-                            
-                            <input type="submit" value="valider" class="btn btn-primary"/>
-                        </form>
+    
+                <div id="mainInscription">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form action="{{ path('inscription')}}" method="post" >
+                                    <label name="nom">Nom :</label><br> 
+                                    <input type="text" name="_lastname" class="form-control" placeholder="Dupont" required/>
+
+                                    <label name="prenom">Prenom :</label><br> 
+                                    <input type="text" name="_firstname" class="form-control" placeholder="Jean" required/>
+
+                                    <label name="text">Email :</label><br> 
+                                    <input type="email" name="_email" class="form-control" placeholder="JeanDupont@gmail.com" required/><br>
+
+                                    <label name="password">Mot de passe :</label><br> 
+                                    <input type="password" name="_password" class="form-control" placeholder="********" required/>
+
+                                    <label name="phone">téléphone :</label><br> 
+                                    <input type="text" name="_phone" class="form-control" placeholder="+33"/>
+
+                                    <label name="company">Société :</label><br> 
+                                    <input type="text" name="_company" class="form-control" placeholder="Google"/><br>
+
+                                    <label name="billto_adress">Adresse de facturation :</label> 
+                                    <input type="text" name="_billto_adress" class="form-control" placeholder="23 rue Saint Martin"/>
+
+                                    <label name="billto_zipcode">Code postal :</label><br> 
+                                    <input type="text" name="_billto_zipcode" class="form-control" placeholder="75000"/>
+
+                                    <label name="billto_city">Ville :</label><br> 
+                                    <input type="text" name="_billto_city" class="form-control" placeholder="Miami"/><br>
+
+                                    <label name="shipto_adress">Adresse de livraison :</label><br> 
+                                    <input type="text" name="_shipto_adress" class="form-control" placeholder="43 rue du Tapis volant"/>
+
+                                    <label name="shipto_zipcode">Code postal de livraison :</label><br> 
+                                    <input type="text" name="_shipto_zipcode" class="form-control" placeholder="93300"/>
+
+                                    <label name="shipto_city">Ville de livraison :</label><br> 
+                                    <input type="text" name="_shipto_city" class="form-control" placeholder="Aubervilliers"/><br>
+
+                                    <input type="submit" value="valider" class="btn btn-primary"/>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+           
 {% endblock %}
            
         

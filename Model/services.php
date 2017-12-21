@@ -53,7 +53,7 @@ $app->register(new SecurityServiceProvider(), array(
                 'default_target_path' => '/frontoffice/accueil'
             ),
             'anonymous' => true,
-            'logout' => array('logout_path' => '/frontoffice/logout', 'invalidate_session' => true),
+            'logout' => array('logout_path' => '/frontoffice/profile', 'invalidate_session' => true),
             'users' => function () use ($app) {
                 return CustomersQuery::create();
             }

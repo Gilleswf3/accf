@@ -1,45 +1,52 @@
 {% extends "frontoffice/layout.html.twig" %}
 
 {% block content %}
-    
-    
-    <h2>ACCFFrance, expert en sécurité </h2>
-    <div class="card-section">
-        <div class="container">
-            <div class="row">
-                <!-- single card -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="lab-card">
-                        <div class="icon">
-                            <i class="flaticon-023-flask"></i>
+    <div class="mainAccueil">
+    <div class="container" id="containerAccueil" style="background: white;position: relative;top: 50px;">
+        <h2 style="text-align: center;text-transform: uppercase;font-weight: bold;font-size: 30px;">ACCFFrance, expert en solutions de sécurité </h2><br><br>
+        <div class="card-section">
+            <div class="container">
+                <div class="row">
+                    <!-- single card -->
+                    <div class="col-md-4 col-sm-6">
+                        <a href="{{path('expertise')}}">
+                        <div class="lab-card">
+                            <div class="icon">
+                                <i class="material-icons" style="font-size: 150px;">security</i>
+                            </div>
+                            <h2>Dispositifs anti-incendie</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla..</p>
                         </div>
-                        <h2>Get in the lab</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla..</p>
+                        </a>
                     </div>
-                </div>
-                <!-- single card -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="lab-card">
-                        <div class="icon">
-                            <i class="flaticon-011-compass"></i>
+                    <!-- single card -->
+                    <div class="col-md-4 col-sm-6">
+                        <a href="{{path('expertise')}}">
+                        <div class="lab-card">
+                            <div class="icon">
+                                <i class="material-icons" style="font-size: 150px;">warning</i>
+                            </div>
+                            <h2>Dispositifs anti-intrusion</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla..</p>
                         </div>
-                        <h2>Projects online</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla..</p>
+                        </a>
                     </div>
-                </div>
-                <!-- single card -->
-                <div class="col-md-4 col-sm-12">
-                    <div class="lab-card">
-                        <div class="icon">
-                            <i class="flaticon-037-idea"></i>
+                    <!-- single card -->
+                    <div class="col-md-4 col-sm-6">
+                        <a href="{{path('expertise')}}">
+                        <div class="lab-card">
+                            <div class="icon">
+                                <i class="material-icons" style="font-size: 150px;">local_hospital</i>
+                            </div>
+                            <h2>Prévention médicale</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla..</p>
                         </div>
-                        <h2>SMART MARKETING</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla..</p>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    </div>
 {% endblock %}
 

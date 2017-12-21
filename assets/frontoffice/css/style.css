@@ -5,7 +5,8 @@ body{
 }
 header {
 	min-height: 100px;
-        background: lightgray;
+        
+        
 }
 
 #menu ul li a {
@@ -31,6 +32,13 @@ header {
 main{
     width: 100%;
     min-height: 700px;
+    
+}
+div.mainAccueil{
+     width: 100%;
+    min-height: 700px;
+    background-image: url("../../images/fondUni.jpg");
+    
 }
 footer {
 	border-top: 1px solid black;
@@ -38,61 +46,69 @@ footer {
         
         
 }
+i.material-icons{
+    position: relative;
+    left: 91px;
+}
+div.col-md-4.col-sm-6{
+    border: 1px solid white;
+    background: lightcoral;
+    height: 450px;
+    position: relative;
+    right: 16px;
+   
+}
+div.col-md-4.col-sm-6>a{
+    text-decoration: none;
+    color: white;
+}
+div.col-md-4.col-sm-6>a:hover{
+    text-decoration: none;
+    color: #07558b;
+}
+
+
+div#containerAccueil{
+    border: 1px solid black;
+    margin-top: 20px;
+    min-height: 600px;
+    border-radius: 58px 58px 58px 58px;
+    background: #5e5e5e;
+    
+}
+div#mainInscription{
+    width: 100%;
+    min-height: 700px;
+    background-image: url("../../images/fondUni.jpg");
+}
+div#mainInscription form{
+   width: 25%;
+   max-height: 50%;
+   color: white;
+   display: inline-block;
+}
+input.form-control{
+    display: inline-block;
+}
 
 footer h5 {
 	display: inline-block;
 	font-weight: bold;
 	float: right;
 }
-@media only screen and (max-width: 767px) {
-	.header-section .logo {
-		padding-top: 20px;
-		padding-bottom: 20px;
-	}
-	.header-section .menu-list {
-		display: none;
-		float: none;
-		clear: both;
-		border-top: 1px solid #ddd;
-	}
-	.header-section .menu-list li {
-		display: inline;
-	}
-	.header-section .menu-list li a {
-		display: block;
-		padding: 10px;
-		margin-right: 0;
-	}
-	.header-section .menu-list li a:after {
-		left: 0%;
-	}
-	.header-section .menu-list li a:hover:after {
-		width: 10px;
-		margin-left: 10px;
-	}
-	.header-section .menu-list .current a:after {
-		margin-left: 10px;
-	}
-	.responsive {
-		display: block;
-		color: #333;
-		font-size: 34px;
-		position: absolute;
-		right: 30px;
-		padding-top: 10px;
-	}
-	.owl-carousel .owl-nav .owl-prev,
-	.owl-carousel .owl-nav .owl-next {
-		width: 50px;
-	}
-	.hero-content img {
-		max-width: 280px;
-	}
-	.test-overlay {
-		display: none;
-	}
-
-
-        .container-fluid{
-            position: relative;
-        }
+div#conversation{
+    position: fixed;
+    top: 47%;
+    left: 82%;
+    background: lightblue;
+    max-width: 25%;
+    min-height: 280px;
+    border-radius: 12px 12px 12px 12px;
+    width: 266px;
+}
+textarea.form-control{
+    width: 200px;
+}
+div#messages{
+    width: 200px;
+}
